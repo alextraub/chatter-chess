@@ -1,0 +1,10 @@
+db.sqlite3
+node_modules/
+__pycache__
+frontend/static/**/*.*
+.vscode/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
