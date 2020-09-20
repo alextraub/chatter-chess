@@ -8,21 +8,32 @@ import PropTypes from "prop-types";
 const BoardSquare = props => {
 	const { black, piece } = props;
 
+	const squareColor = black ? 'black' : 'white';
+	const pieceClassName = piece ?
+		`piece ${piece.type} ${piece.black ? 'black' : 'white'}`
+		: '';
+
 	return (
-		<div className={black ? "black" : "white"}>
-			<span>{piece}</span>
+		<div className={`square ${squareColor}`}>
+			<span className={pieceClassName}>{}</span>
 		</div>
 	);
 }
 
 BoardSquare.propTypes = {
 	black: PropTypes.bool,
-	piece: PropTypes.oneOf('p', 'r', 'b', 'kn', 'ki', 'q', '')
+	piece: PropTypes.oneOfType([
+		PropTypes.undefined,
+		PropTypes.shape({
+			type: PropTypes.oneOf('p', 'r', 'b', 'kn', 'ki', 'q', ''),
+			black: PropTypes.bool
+		})
+	])
 }
 
 BoardSquare.defaultProps = {
 	black: false,
-	piece: ''
+	piece: undefined
 }
 
 export default BoardSquare;
