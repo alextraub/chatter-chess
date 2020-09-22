@@ -6,21 +6,22 @@
 				"prepare": "python -m pip install -r requirements.txt",
 				"build": "webpack",
 				"test": "jest",
-				"start": "cross-env-shell \"python manage.py runserver\"",
-				"dev-server": "cross-env DJANGO_SETTINGS_MODULE=\"chatter_chess.settings.dev_server\" concurrently \"cross-env-shell npx webpack-dev-server\" \"npm start\""
+				"start": "python manage.py runserver",
+				"dev-server": "cross-env DJANGO_SETTINGS_MODULE=\"chatter_chess.settings.dev_server\" concurrently \"cross-env-shell npx webpack-dev-server\" \"python manage.py runserver\""
 		},
 		"dependencies": {
-				"prop-types": "^15.7.2",
-				"react": "^16.13.1",
-				"react-dom": "^16.13.1",
 				"@babel/core": "^7.11.6",
 				"@babel/preset-env": "^7.11.5",
 				"@babel/preset-react": "^7.10.4",
 				"autoprefixer": "^9.8.6",
 				"babel-loader": "^8.1.0",
 				"css-loader": "^4.3.0",
+				"nan": "^2.14.1",
 				"postcss-loader": "^4.0.1",
 				"precss": "^4.0.0",
+				"prop-types": "^15.7.2",
+				"react": "^16.13.1",
+				"react-dom": "^16.13.1",
 				"style-loader": "^1.2.1",
 				"webpack": "^4.44.1",
 				"webpack-cli": "^3.3.12"
