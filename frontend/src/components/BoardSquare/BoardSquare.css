@@ -1,0 +1,14 @@
+.BoardSquare {
+	border: 2px solid goldenrod;
+	float: left;
+	height: 100px;
+	margin-right: -1px;
+	margin-top: -1px;
+	width: 100px;
+}
+.square.black {
+	background: black;
+}
+.square.white {
+	background: white;
+}
