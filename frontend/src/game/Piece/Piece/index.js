@@ -3,90 +3,81 @@
  * This class should be treated as abstract and never instantiated itself, but rather extended for derived classes.
  */
 class Piece {
-	#player = 0; // 0 -> white and 1 -> black
+	#player = 0;
 	#position = { row: -1, col: -1 };
 	#captured = false;
 
 	/**
 	 *
-	 * @param {{row: number; col: number}} position - An object with row and col properties that are both between 0 and 7 (inclusive)
-	 * @param {number} player - 0 or 1 (0 by default) where 0 is a white piece and 1 is a black piece
-	 * @throws {Error} Throws an error if the Piece class is instantiated by itself, and not a derived class
+	 * @param {{row: number; col: number;}} position location on the chess board
+	 * @param {0|1} player - which player the piece belongs to, 0 for white, 1 for black
+	 * @throws {Error} Only classes derived from Piece may be instantiated
+	 * @throws {Error} throws an error if an invalid board position is passed in as the first argument
 	 */
-	constructor({ row, col }, player=0) {
-		if(this instanceof Piece && this !== Piece) {
-			throw new Error('Piece is abstract and can\'t be initialized');
-		}
-
-		this.#position = { row, col };
-		this.#player = player;
-	}
+	constructor({ row, col }, player = 0) {}
 
 	/**
-	 * Returns true of the piece is black, false otherwise
-	 * @returns {boolean}
+	 * Returns if the piece belongs to the black player
+	 *
+	 * @returns {boolean} true if the piece is a black piece, false otherwise
 	 */
 	isBlack() {}
 
 	/**
-	 * Returns true if the piece is white, otherwise false
-	 * @returns {boolean}
+	 * Returns if the piece belongs to the white player
+	 *
+	 * @returns {boolean} true if the piece is a white piece, false otherwise
 	 */
 	isWhite() {}
 
 	/**
-	 * Get the current position of the piece
+	 * The most recent position of the piece
 	 *
-	 * @returns { row: number; col: number; }
+	 * @returns {{row: number; col: number;}} the current position of the piece on the chess board. If the piece isn't on the chess board, the position will be the last position the piece was located at when it was on the board
 	 */
 	get position() {
-		return { ...this.#position };
+		return null;
 	}
 
-	/* Set the position of a piece */
-	#setPosition = ({ row, col }) => {}
-
 	/**
-	 * Given a position, determine if the piece is allowed to move to that location
+	 * Change the piece's most recent board position
 	 *
-	 * @param {row: number; col: number;} position
-	 *
-	 * @returns {boolean}
-	 * @throws {Error} Throws an error if not implemented by derived classes from the Piece class
+	 * @param {{row: number; col: number;}} position the new position of the piece where row and col are between 0 and 7 (inclusive)
+	 * @throws {Error} throws an error if position is not a valid board position
 	 */
-	canMoveTo({ row, col }) {
-		throw new Error('canMoveTo({ row, col }) must be overridden');
-	}
+	#setPosition = ({ row, col }) => {};
 
 	/**
-	 * Moves the piece to a provied position
+	 * Check if a piece is allowed to move to a specified position on the board
 	 *
-	 * @param {row: number; col: number;} position
+	 * @virtual
+	 * @param {{row: number; col: number;}} position the desired position to move the piece to
+	 * @returns {true|string} true if the piece can move to the provided position, or a string explaining why the move is not valid
 	 */
-	move({ row, col }) {
-		if(this === Piece) {
-			throw new Error('move({ row, col }) is abstract and must be implemented by classes that extend Piece');
-		}
-	}
+	canMoveTo({ row, col }) {}
 
 	/**
-	 * Rutrns if a piece is on the board
-	 * @returns {boolean}
+	 * Performs a valid move, removing any captured piece, or reports why a move is in valid
+	 *
+	 * @param {{row: number; col: number;}} position the desired board position to move the piece to
+	 * @returns {true|string} true if the move was perofrmed, otherwise a string explaining why the move couldn't be performed
+	 */
+	move({ row, col }) {}
+
+	/**
+	 * Whether or not the piece has been captured by the opponent
 	 */
 	get captured() {
-		return this.#captured;
-	}
-
-	#setCaptured = newCaptured => {
-		this.#captured = newCaptured;
+		return false;
 	}
 
 	/**
-	 * Removes the piece from the board
+	 * Capture an opponent's piece
+	 *
+	 * @param {Piece} capturedPiece the piece to capture
+	 * @throws {Error} throws an error if the piece to capture cannot be captured
 	 */
-	capture(capturerer) {
-
-	}
+	capture(capturedPiece) {}
 }
 
 export default Piece;
