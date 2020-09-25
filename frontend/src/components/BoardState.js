@@ -9,45 +9,47 @@ import Rook from './'
 /* This file stores the positions of all current peices on the board 
 and can return what piece is on a position on the board, all current 
 board square values, and can change vaules if peices move of change type.*/
-function PosToNum();
+function PosToNum();                                    //initilize for use in the file
 
-constructor(Board)
+constructor(Board)                                      //create board
 {
     Board = makeChessBoard();
 }
 
-export default function peiceOnPlace(place)
+export default function peiceOnPlace(place)             //Returns what peice is stored on each tile
 {
-    p = PosToNum(place);
-    return Board[p];
+    p = PosToNum(place);                                //place is a Letter-Number combo, ie A1, B2, D8
+    return Board[p];                                    //return the array value from the position, CAN BE NULL
 }
 
-export default function movePeice(from, to)
+export default function movePeice(from, to)             //moves peices on the board, returns what was "taken"
 {
-    from = PosToNum(from);
-    to = PosToNum(to);
+    from = PosToNum(from);                              //get the array pos of from
+    to = PosToNum(to);                                  //get the array pos of to
 
-    Board[to] = Board[from];
-    Board[from] = null;
+    store = Board[to];
+    Board[to] = Board[from];                            //move the peice to its new tile in the memory array
+    Board[from] = null;                                 //null the tile left
 
-    return 0;
+    return store;                                       //return the "taken" peice
 }
 
-export default function swapPeice(position, peice)
+export default function swapPeice(position, peice)      //reutrns the peice in the given position after the trasformation to make shure it worked
 {
-    pos = PosToNum(position);
-    if(Board[pos].type = Pawn)
+    pos = PosToNum(position);                           //get the array pos of position
+    if(Board[pos].type = Pawn)                          //If the board position contains a pawn
     {
-        Board[pos] = peice;
+        Board[pos] = peice;                             //replace the pawn with the chosen peice
     }
+    return Board[pos];                                  //return array positon's new value
 }
 
-export default function returnBoardState()
+export default function returnBoardState()              //return the array containing the Board State
 {
     return Board;
 }
 
-function PosToNum(position)
+function PosToNum(position)                             //This is a helper function that turns Letter-Number pairs into their array positions
 {
     pos1, pos2 = position.split("");
     fromPos = parseInt(pos2);
@@ -76,7 +78,7 @@ function PosToNum(position)
     return fromPos-1;
 }
 
-export default function makeChessBoard()
+export default function makeChessBoard()                //This is the function to be called at the start of each game to create a borad set to its deafult
 {
     const squares = Array(64).fill(null);
 
