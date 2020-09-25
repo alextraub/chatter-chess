@@ -1,10 +1,7 @@
 import React from "react";
 import BoardComponent from './BoardComponent'
 
-function click1() {
-    console.log("resetting game");
-    <BoardComponent />
-}
+
 
 const App = () => (
     <div>
@@ -12,9 +9,7 @@ const App = () => (
         <small>Play chess with your voice</small>
         < BoardComponent />
 
-        <button onClick={click1}>
-            reset
-        </button>
+
     </div>
 );
 
