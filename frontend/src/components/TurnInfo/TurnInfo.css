@@ -1,0 +1,13 @@
+.turn-info {
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: row;
+	border: 1px inset #aaa;
+	justify-content: space-between;
+	width: 33%;
+}
+
+.turn-info div {
+	flex: 1;
+	width: 33%
+}
