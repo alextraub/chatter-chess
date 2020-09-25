@@ -9,16 +9,17 @@ import Rook from './'
 /* This file stores the positions of all current peices on the board 
 and can return what piece is on a position on the board, all current 
 board square values, and can change vaules if peices move of change type.*/
-
+function PosToNum();
 
 constructor(Board)
 {
     Board = makeChessBoard();
 }
 
-export default function peiceOnPlace()
+export default function peiceOnPlace(place)
 {
-    
+    p = PosToNum(place);
+    return Board[p];
 }
 
 export default function movePeice(from, to)
@@ -30,6 +31,20 @@ export default function movePeice(from, to)
     Board[from] = null;
 
     return 0;
+}
+
+export default function swapPeice(position, peice)
+{
+    pos = PosToNum(position);
+    if(Board[pos].type = Pawn)
+    {
+        Board[pos] = peice;
+    }
+}
+
+export default function returnBoardState()
+{
+    return Board;
 }
 
 function PosToNum(position)
