@@ -1,8 +1,8 @@
-import Piece from '../';
+import Piece from '../Piece';
 
 export default class King extends Piece {
-	constructor(position) {
-		super(position);
+	constructor(position, player) {
+		super(position, player);
 	}
 
 	canMoveTo({row, col}) {
