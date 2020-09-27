@@ -66,11 +66,13 @@ class Piece {
 		const targetSquarePiece = this.boardState.getPiece([ toRow, toCol ])
 		if(targetSquarePiece === null) {
 			return true;
-		} else if(this.isWhite() && targetSquarePiece.isBlack()) {
+		}
+		// Piece capturing is going to be done in the future
+		/* else if(this.isWhite() && targetSquarePiece.isBlack()) {
 			return true;
 		} else if(this.isBlack() && targetSquarePiece.isWhite()) {
 			return true;
-		}
+		}*/
 
 		return false;
 	}
