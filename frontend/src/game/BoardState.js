@@ -16,12 +16,12 @@ board square values, and can change vaules if peices move of change type.*/
         Board = makeChessBoard();
     }
 
-    function getPeice(place)                 //Returns what peice is stored on each tile
+    function getPiece([row, col])                    //Returns what peice is stored on each tile
     {
-        return Board[place];                                    //return the array value from the position, CAN BE NULL
+        return Board[row][col];                                    //return the array value from the position, CAN BE NULL
     }
 
-    function movePeice([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"
+    function movePiece([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"
     {
         if (Board[to1][to2] != Null)
             Board[to1][to2].captured = true;                    //tell the to peice its been captured
@@ -41,7 +41,7 @@ board square values, and can change vaules if peices move of change type.*/
         return Board[pos];                                  //return array positon's new value
     }*/
 
-    function returnBoardState()                 //return the array containing the Board State
+    function returnBoardState()                 //return the array containing a copy of the Board State
     {
         CBoard = Board.map((x) => x);
         return CBoard;
