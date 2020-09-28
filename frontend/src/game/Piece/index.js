@@ -15,6 +15,5 @@ export {
 	Bishop,
 	King,
 	Knight,
-	Pawn,
-	Queen
+	Pawn
 };
