@@ -21,13 +21,14 @@ board square values, and can change vaules if peices move of change type.*/
         return Board[place];                                    //return the array value from the position, CAN BE NULL
     }
 
-    function movePeice(from, to)             //moves peices on the board, returns what was "taken"
+    function movePeice([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"
     {
-        store = Board[to._1][to._2];
-        Board[to._1][to._2] = Board[from._1][from._2];              //move the peice to its new tile in the memory array
-        Board[from._1][from._2] = null;                             //null the tile left
+        if (Board[to1][to2] != Null)
+            Board[to1][to2].captured = true;                    //tell the to peice its been captured
+        Board[to1][to2] = Board[from1][from2];                  //move the peice to its new tile in the memory array
+        Board[from1][from2] = null;                             //null the tile left
 
-        return store;                                       //return the "taken" peice
+        return true;
     }
 
     /*function swapPeice(position, peice)      //returns the peice in the given position after the trasformation to make shure it worked
