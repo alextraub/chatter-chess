@@ -1,6 +1,5 @@
 import BoardState, { mockGetPiece } from '../../../__mocks__/boardStateMock';
 import Piece from './';
-jest.mock('../../../__mocks__/boardStateMock');
 
 class DPiece extends Piece {
 	constructor(boardState, player) {
