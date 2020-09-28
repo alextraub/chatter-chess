@@ -22,20 +22,45 @@ export default class MoveInput extends React.Component {
 			return false;
 		}
 		const command = this.state.move.split(" ");
+		if (command.length !== 2) {
+			moveError = 'Invalid Move';
+		}
 		let from = command[0];
+		if (from.length !== 2) {
+			moveError = 'Invalid Move';
+		}
 		let to = command[1];
-		if (!((from.charAt(0)).match(/[1-8]/))) {
+		if (to.length !== 2) {
 			moveError = 'Invalid Move';
 		}
-		if (!((from.charAt(1)).match(/[A-H]/gi))) {
+		if (!((from.charAt(0)).match(/[A-H]/gi))) {
 			moveError = 'Invalid Move';
 		}
-		if (!((to.charAt(0)).match(/[1-8]/))) {
+		if ((from.charAt(0)).match(/[I-Z]/gi)) {
 			moveError = 'Invalid Move';
 		}
-		if (!((to.charAt(1)).match(/[A-H]/gi))) {
+		if (!((from.charAt(1)).match(/[1-8]/))) {
 			moveError = 'Invalid Move';
 		}
+		if (from.charAt(1).match(/[0]/) || from.charAt(1).match(/[9]/)) {
+			moveError = 'Invalid Move';
+		}
+		if (!((from.charAt(1)).match(/[1-8]/))) {
+			moveError = 'Invalid Move';
+		}
+		if (!((to.charAt(0)).match(/[A-H]/gi))) {
+			moveError = 'Invalid Move';
+		}
+		if ((to.charAt(0)).match(/[I-Z]/gi)) {
+			moveError = 'Invalid Move';
+		}
+		if (!((to.charAt(1)).match(/[1-8]/))) {
+			moveError = 'Invalid Move';
+		}
+		if (to.charAt(1).match(/[0]/) || to.charAt(1).match(/[9]/)) {
+			moveError = 'Invalid Move';
+		}
+
 		if (moveError) {
 			this.setState({moveError});
 			console.log(this.state);
