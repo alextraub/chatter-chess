@@ -62,7 +62,7 @@ class Piece {
 	 * @param {[number, number]} to the desired position to move the piece to
 	 * @returns {boolean} ture if the piece is able to move tfrom from to to
 	 */
-	canMoveTo([ fromRow, fromCol ], [ toRow, toCol ]) {
+	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
 		const targetSquarePiece = this.boardState.getPiece([ toRow, toCol ])
 		if(targetSquarePiece === null) {
 			return true;

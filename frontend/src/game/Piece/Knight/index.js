@@ -1,8 +1,8 @@
 import Piece from '../Piece';
 
 export default class Knight extends Piece {
-	canMoveTo([ fromRow, fromCol ], [ toRow, toCol ]) {
-		const validFinalPosition = super.canMoveTo([ fromRow, fromCol ], [ toRow, toCol ]);
+	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
+		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ]);
 		if(!validFinalPosition) {
 			return false;
 		}
