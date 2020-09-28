@@ -13,11 +13,11 @@ beforeEach(() => {
 })
 
 test('Piece class cannot be directly instatuated', () => {
-	expect(() => new Piece({row:0,col:0})).toThrow(TypeError);
+	expect(() => new Piece(new BoardState())).toThrow('Piece is abstract and cannot be instantiated');
 });
 
 test('Classes derived from Piece can be instantiated', () => {
-	expect(() => new DPiece({row: 0, col: 0}, 0)).not.toThrow(TypeError);
+	expect(() => new DPiece(new BoardState(), 0)).not.toThrow('Piece is abstract and cannot be instantiated');
 });
 
 test('Piece constructor throws an error if not provided a boardState argument', () => {
@@ -72,5 +72,5 @@ test('Piece canMoveTo checks the boardState', () => {
 	const piece = new DPiece(boardState, 1);
 
 	piece.canMoveTo([0, 0], [1, 1]);
-	expect(mockGetPiece).toHaveBeenCalled();
+	expect(mockGetPiece).toHaveBeenCalledWith([1, 1]);
 });
