@@ -55,7 +55,7 @@ test('White pieces are actually identified as white pieces', () => {
 	expect(whitePiece2.isBlack()).toBe(false);
 });
 
-test('The canMoveTo method must be passed 2 arguments', () => {
+test('The canMove method must be passed 2 arguments', () => {
 	expect(() => whitePiece1.canMove()).toThrow(TypeError);
 	expect(() => blackPiece.canMove([])).toThrow(TypeError);
 	expect(() => whitePiece2.canMove([], [])).not.toThrow(TypeError);
@@ -66,14 +66,14 @@ test('Piece canMove checks the boardState', () => {
 	expect(mockGetPiece).toHaveBeenCalled();
 });
 
-test('Pieces are allowed to be moved onto an enemy piece', () => {
+test('Pieces can move to a square occupied by an enemy Piece', () => {
 	mockGetPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece1);
 
 	expect(whitePiece1.canMove([0, 0], [0, 1])).toBe(true);
 	expect(blackPiece.canMove([0, 1], [0, 0])).toBe(true);
 });
 
-test('Pieces cannot move to a position where another of that player\'s pieces already is', () => {
+test('Pieces cannot move to a square occupied by another Piece belonging to the same player', () => {
 	mockGetPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece2);
 
 	expect(blackPiece.canMove([0, 0], [0, 1])).toBe(false);
