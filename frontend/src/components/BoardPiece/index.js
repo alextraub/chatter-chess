@@ -14,7 +14,7 @@ const BoardPiece = ({ piece }) => {
 	const classes = `piece ${color} ${pieceType}`;
 
 	return (
-		<span data-testid="board-piece" className={classes} />
+		<span data-testid="board-piece" className={classes}>{pieceType}</span>
 	);
 }
 
