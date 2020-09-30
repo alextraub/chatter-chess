@@ -1,4 +1,3 @@
-import React from 'react';
 import Bishop from './'
 import King from './'
 import Knight from './'
@@ -9,24 +8,24 @@ import Rook from './'
 /* This file stores the positions of all current peices on the board 
 and can return what piece is on a position on the board, all current 
 board square values, and can change vaules if peices move of change type.*/
-//class returnBoardState{
+class ReturnBoardState{
 
-    constructor(Board)                                      //create board
+    constructor(Board)                                         //create board
     {
-        Board = makeChessBoard();
+        this.board = makeChessBoard();
     }
 
-    function getPiece([row, col])                    //Returns what peice is stored on each tile
+    getPiece([row, col])                              //Returns what peice is stored on each tile
     {
-        return Board[row][col];                                    //return the array value from the position, CAN BE NULL
+        return this.board[row][col];                                //return the array value from the position, CAN BE NULL
     }
 
-    function movePiece([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"
+    movePiece([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"
     {
-        if (Board[to1][to2] != Null)
-            Board[to1][to2].captured = true;                    //tell the to peice its been captured
-        Board[to1][to2] = Board[from1][from2];                  //move the peice to its new tile in the memory array
-        Board[from1][from2] = null;                             //null the tile left
+        if (this.board[to1][to2] != Null)
+            this.board[to1][to2].captured = true;                    //tell the to peice its been captured
+        this.board[to1][to2] = this.board[from1][from2];                  //move the peice to its new tile in the memory array
+        this.board[from1][from2] = null;                             //null the tile left
 
         return true;
     }
@@ -41,13 +40,13 @@ board square values, and can change vaules if peices move of change type.*/
         return Board[pos];                                  //return array positon's new value
     }*/
 
-    function returnBoardState()                 //return the array containing a copy of the Board State
+    returnBoardState()                 //return the array containing a copy of the Board State
     {
-        CBoard = Board.map((x) => x);
+        CBoard = this.Board.map((x) => x);
         return CBoard;
     }
 
-//}
+}
 
 function makeChessBoard()                //This is the function to be called at the start of each game to create a borad set to its deafult
 {
