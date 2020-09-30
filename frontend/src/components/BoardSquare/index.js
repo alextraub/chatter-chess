@@ -2,12 +2,13 @@ import './BoardSquare.css';
 import React from "react";
 import PropTypes from "prop-types";
 import BoardPiece from '../BoardPiece';
+import Piece from '../../game/Piece';
 
 /**
  *
  * A single square on a chess board.
  *
- * @param {*} props { black: bool, piece: object } where black denotes if the square is black and piece has information about
+ * @param {{black: boolean; piece:null|Piece}} props
  * the piece located on the square, or undefined if there isn't any
  */
 const BoardSquare = ({ black, piece }) => {
@@ -15,11 +16,10 @@ const BoardSquare = ({ black, piece }) => {
 	const squareColor = black ? 'black' : 'white';
 
 	const renderPiece = () => {
-		if(piece === undefined) {
+		if(piece === null) {
 			return '';
 		} else {
-			const { type, black } = piece;
-			return <BoardPiece type={type} black={black}/>
+			return <BoardPiece piece={piece} />
 		}
 	}
 
@@ -32,10 +32,11 @@ const BoardSquare = ({ black, piece }) => {
 
 BoardSquare.propTypes = {
 	black: PropTypes.bool,
-	piece: PropTypes.shape({
-		black: PropTypes.bool,
-		type: PropTypes.string.isRequired
-	})
-}
+	piece: PropTypes.instanceOf(Piece)
+};
+
+BoardSquare.defaultProps = {
+	piece: null
+};
 
 export default BoardSquare;

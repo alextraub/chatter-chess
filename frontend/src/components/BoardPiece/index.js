@@ -3,30 +3,25 @@ import './BoardPiece.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Piece, { pieceName } from '../../game/Piece';
+
 /**
  *
- * @param {*} props - { black: bool, type: string } where black denotes if the piece is a black piece and
+ * @param {{piece: Piece}} props
  * type is the full lowercase name of the type of chess piece (i.e., rook, bishop, etc)
  */
-const BoardPiece = ({ black, type }) => {
-	const classes = `${black ? 'black' : 'white'} piece ${type}`;
+const BoardPiece = ({ piece }) => {
+	const color = piece.isBlack() ? 'black' : 'white';
+	const pieceType = pieceName(piece);
+	const classes = `piece ${color} ${pieceType}`;
 
 	return (
-		<span data-testid="board-piece" className={classes} />
+		<span data-testid="board-piece" className={classes}>{pieceType}</span>
 	);
 }
 
 BoardPiece.propTypes = {
-	black: PropTypes.bool,
-	type: PropTypes.oneOf([
-		'pawn',
-		'rook',
-		'bishop',
-		'knight',
-		'king',
-		'queen'
-	]).isRequired
+	piece: PropTypes.instanceOf(Piece)
 };
-
 
 export default BoardPiece;
