@@ -5,6 +5,7 @@
 class Piece {
 	#player;
 	boardState;
+	#captured = false;
 
 	/**
 	 *
@@ -51,6 +52,23 @@ class Piece {
 	 */
 	isWhite() {
 		return this.#player === 0;
+	}
+
+	/**
+	 * A boolean representing if this Piece is captured or not
+	 */
+	get captured() {
+		return this.#captured;
+	}
+
+	/**
+	 * Set the Piece captured field to true or false, if provided a non-boolean value, a TypeError will be thrown
+	 */
+	set captured(newCaptured) {
+		if(typeof(newCaptured) !== 'boolean') {
+			throw new TypeError(`Piece.captured must be a boolean but got ${newCaptured}`);
+		}
+		this.#captured = newCaptured;
 	}
 
 	/**
