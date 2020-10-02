@@ -12,7 +12,7 @@ export default class Queen extends Piece {
 		if (numRows > 0 && numCols > 0 && Math.abs(numRows) === Math.abs(numCols)) {
 			let currR = fromRow + 1;
 			let currC = fromCol + 1;
-			while (currR <= toRow && currC <= toCol) {
+			while (currR < toRow && currC < toCol) {
 				if (super.boardState.getPiece(currR, currC) !== null) {
 					return false;
 				}
@@ -25,7 +25,7 @@ export default class Queen extends Piece {
 		} else if (numRows > 0 && numCols < 0 && Math.abs(numRows) === Math.abs(numCols)) {
 			let currR = fromRow + 1;
 			let currC = fromCol - 1;
-			while (currR <= toRow && currC >= toCol) {
+			while (currR < toRow && currC > toCol) {
 				if (super.boardState.getPiece(currR, currC) !== null) {
 					return false;
 				}
@@ -38,7 +38,7 @@ export default class Queen extends Piece {
 		} else if (numRows < 0 && numCols > 0 && Math.abs(numRows) === Math.abs(numCols)) {
 			let currR = fromRow - 1;
 			let currC = fromCol + 1;
-			while (currR >= toRow && currC <= toCol) {
+			while (currR > toRow && currC < toCol) {
 				if (super.boardState.getPiece(currR, currC) !== null) {
 					return false;
 				}
@@ -51,7 +51,7 @@ export default class Queen extends Piece {
 		} else if (numRows < 0 && numCols < 0 && Math.abs(numRows) === Math.abs(numCols)) {
 			let currR = fromRow - 1;
 			let currC = fromCol - 1;
-			while (currR >= toRow && currC >= toCol) {
+			while (currR > toRow && currC > toCol) {
 				if (super.boardState.getPiece(currR, currC) !== null) {
 					return false;
 				}
@@ -63,7 +63,7 @@ export default class Queen extends Piece {
 		// up
 		} else if (numRows > 0 && numCols === 0) {
 			let currR = fromRow + 1;
-			while (currR <= toRow) {
+			while (currR < toRow) {
 				if (super.boardState.getPiece(currR, fromCol) !== null) {
 					return false;
 				}
@@ -74,7 +74,7 @@ export default class Queen extends Piece {
 		// down
 		} else if (numRows < 0 && numCols === 0) {
 			let currR = fromRow - 1;
-			while (currR >= toRow) {
+			while (currR > toRow) {
 				if (super.boardState.getPiece(currR, fromCol) !== null) {
 					return false;
 				}
@@ -85,7 +85,7 @@ export default class Queen extends Piece {
 		// right
 		}  else if (numRows === 0 && numCols > 0) {
 			let currC = fromCol + 1;
-			while (currC <= toCol) {
+			while (currC < toCol) {
 				if (super.boardState.getPiece(fromRow, currC) !== null) {
 					return false;
 				}
@@ -96,7 +96,7 @@ export default class Queen extends Piece {
 		// left
 		} else if (numRows === 0 && numCols < 0) {
 			let currC = fromCol - 1;
-			while (currC >= toCol) {
+			while (currC > toCol) {
 				if (super.boardState.getPiece(fromRow, currC) !== null) {
 					return false;
 				}
