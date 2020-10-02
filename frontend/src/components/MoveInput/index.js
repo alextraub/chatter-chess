@@ -21,6 +21,11 @@ export default class MoveInput extends React.Component {
 			console.log(this.state);
 			return false;
 		}
+		if (this.state.move.trim().length < 5) {
+			moveError = 'Invalid Move';
+			this.setState({moveError});
+			return false;
+		}
 		const command = this.state.move.split(" ");
 		if (command.length !== 2) {
 			moveError = 'Invalid Move';
