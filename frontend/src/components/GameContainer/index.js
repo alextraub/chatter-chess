@@ -11,8 +11,10 @@ export default class GameContainer extends React.Component {
 	constructor() {
 		super();
 
+		this.boardState = new BoardState();
+
 		this.state = {
-			boardState: new BoardState(),
+			board: this.boardState.returnBoardState(),
 			turn: 0 // Number of turns made in the game
 		}
 
@@ -47,7 +49,7 @@ export default class GameContainer extends React.Component {
 					currentPlayer={this.currentPlayer()}
 					onMoveSuccess={this.nextTurn}
 				/>
-				<BoardComponent />
+				<BoardComponent board={this.state.board}/>
 			</div>
 		);
 	}
