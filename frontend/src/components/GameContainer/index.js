@@ -19,8 +19,19 @@ export default class GameContainer extends React.Component {
 		}
 
 		/* Bind methods to 'this' */
+		this.handleSuccessfulMove = this.handleSuccessfulMove.bind(this);
 		this.nextTurn = this.nextTurn.bind(this);
 		this.currentPlayer = this.currentPlayer.bind(this);
+	}
+
+	handleSuccessfulMove(fromPos, toPos) {
+		this.boardState.movePiece(fromPos, toPos);
+		this.setState({
+			...this.state,
+			board: this.boardState.returnBoardState()
+		});
+
+		this.nextTurn();
 	}
 
 	/**
@@ -47,7 +58,7 @@ export default class GameContainer extends React.Component {
 			<div data-testid="game-container">
 				<MoveInput
 					currentPlayer={this.currentPlayer()}
-					onMoveSuccess={this.nextTurn}
+					onMoveSuccess={this.handleSuccessfulMove}
 				/>
 				<BoardComponent board={this.state.board}/>
 			</div>
