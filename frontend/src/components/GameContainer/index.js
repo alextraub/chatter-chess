@@ -24,6 +24,13 @@ export default class GameContainer extends React.Component {
 		this.currentPlayer = this.currentPlayer.bind(this);
 	}
 
+	/**
+	 *
+	 * Fired when a valid move has been received, and then performs that move.
+	 *
+	 * @param {[number, number]} fromPos the position the piece to be hoved is currently at
+	 * @param {[number, number]} toPos the position to move the piece to
+	 */
 	handleSuccessfulMove(fromPos, toPos) {
 		this.boardState.movePiece(fromPos, toPos);
 		this.setState({
@@ -35,7 +42,7 @@ export default class GameContainer extends React.Component {
 	}
 
 	/**
-	 * Called when a turn ends, and updates the state to reflect this
+	 * Updates the state to reflect the start of a new turn
 	 */
 	nextTurn() {
 		this.setState({
