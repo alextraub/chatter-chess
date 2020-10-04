@@ -65,7 +65,7 @@ export default class GameContainer extends React.Component {
 			<div data-testid="game-container">
 				<MoveInput
 					currentPlayer={this.currentPlayer()}
-					onMoveSuccess={this.handleSuccessfulMove}
+					onMoveSuccess={e => this.handleSuccessfulMove(e)}
 				/>
 				<BoardComponent board={this.state.board}/>
 			</div>
