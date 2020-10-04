@@ -42,7 +42,7 @@ export default class ReturnBoardState{
 
     returnBoardState()                 //return the array containing a copy of the Board State
     {
-        const CBoard = this.Board.map(x => x);
+        const CBoard = this.board.map(x => x);
         return CBoard;
     }
 
