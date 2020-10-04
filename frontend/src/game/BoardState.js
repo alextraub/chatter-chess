@@ -1,14 +1,14 @@
-import Bishop from './'
-import King from './'
-import Knight from './'
-import Pawn from './'
-import Queen from './'
-import Rook from './'
+import Bishop from './Piece/Bishop'
+import King from './Piece/King'
+import Knight from './Piece/Knight'
+import Pawn from './Piece/Pawn'
+import Queen from './Piece/Queen'
+import Rook from './Piece/Rook'
 
 /* This file stores the positions of all current peices on the board
 and can return what piece is on a position on the board, all current
 board square values, and can change vaules if peices move of change type.*/
-class ReturnBoardState{
+export default class ReturnBoardState{
 
     constructor(Board)                                         //create board
     {
@@ -22,7 +22,7 @@ class ReturnBoardState{
 
     movePiece([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"
     {
-        if (this.board[to1][to2] != Null)
+        if (this.board[to1][to2] != null)
             this.board[to1][to2].captured = true;                    //tell the to peice its been captured
         this.board[to1][to2] = this.board[from1][from2];                  //move the peice to its new tile in the memory array
         this.board[from1][from2] = null;                             //null the tile left
@@ -42,11 +42,7 @@ class ReturnBoardState{
 
     returnBoardState()                 //return the array containing a copy of the Board State
     {
-<<<<<<< HEAD
-        CBoard = Board.map(x => x);
-=======
-        CBoard = this.Board.map((x) => x);
->>>>>>> CC-90
+        const CBoard = this.Board.map(x => x);
         return CBoard;
     }
 

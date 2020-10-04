@@ -1,10 +1,5 @@
 import Piece from '../Piece';
 
-<<<<<<< HEAD
-export default class Rook extends Piece {
-
-}
-=======
 export default class Bishop extends Piece {
     canMove([fromRow, fromCol], [toRow, toCol])
     {
@@ -15,7 +10,5 @@ export default class Bishop extends Piece {
         const numRows = Math.abs(toRow - fromRow);                  //Row from compared to to
         const numCols = Math.abs(toCol - fromCol);                  //Col from compared to to
 
-        if 
-
     }
->>>>>>> CC-90
+}
