@@ -6,8 +6,8 @@ import Pawn from './'
 import Queen from './'
 import Rook from './'
 
-/* This file stores the positions of all current peices on the board 
-and can return what piece is on a position on the board, all current 
+/* This file stores the positions of all current peices on the board
+and can return what piece is on a position on the board, all current
 board square values, and can change vaules if peices move of change type.*/
 //class returnBoardState{
 
@@ -43,7 +43,7 @@ board square values, and can change vaules if peices move of change type.*/
 
     function returnBoardState()                 //return the array containing a copy of the Board State
     {
-        CBoard = Board.map((x) => x);
+        CBoard = Board.map(x => x);
         return CBoard;
     }
 

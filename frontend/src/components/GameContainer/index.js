@@ -1,5 +1,7 @@
 import React from 'react';
 import MoveInput from '../MoveInput';
+import BoardComponent from '../BoardComponent';
+import BoardState from '../../game/BoardState';
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
@@ -10,6 +12,7 @@ export default class GameContainer extends React.Component {
 		super();
 
 		this.state = {
+			boardState: new BoardState(),
 			turn: 0 // Number of turns made in the game
 		}
 
@@ -44,6 +47,7 @@ export default class GameContainer extends React.Component {
 					currentPlayer={this.currentPlayer()}
 					onMoveSuccess={this.nextTurn}
 				/>
+				<BoardComponent />
 			</div>
 		);
 	}
