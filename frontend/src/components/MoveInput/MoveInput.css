@@ -3,3 +3,6 @@ br {
 	content: ""; /* clears default height */
 	margin-top: 10px;
 }
+#inputContainer h1 {
+	text-decoration: underline;
+}

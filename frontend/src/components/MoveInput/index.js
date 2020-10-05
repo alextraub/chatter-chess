@@ -96,7 +96,7 @@ export default class MoveInput extends React.Component {
 	render() {
 		const {move} = this.state;
 		return (
-			<div>
+			<div id='inputContainer'>
 				<h1>Enter your move below</h1><br/>
 				<h2>Please enter your move in the form of "RowColumn RowColumn"!</h2><br/>
 				<h3>For example, if you want to move a knight from 1G to 3H, you would enter this in as "1G 3H".</h3><br/>
