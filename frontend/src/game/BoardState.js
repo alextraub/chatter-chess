@@ -50,32 +50,29 @@ class ReturnBoardState{
 
 function makeChessBoard()                //This is the function to be called at the start of each game to create a borad set to its deafult
 {
-    const squares = Array(8).fill(Array(8).fill(null));
+    const squares = new Array(8).fill(new Array(8).fill(null));
 
     for(let i = 0; i < 8; i++){
-        squares[1][i] = new Pawn(1);
-        squares[6][i] = new Pawn(0);
+        squares[1][i] = new Pawn(this.board, 1);
+        squares[6][i] = new Pawn(this.board, 0);
     }
-    squares[0][0] = new Rook(1);
-    squares[0][7] = new Rook(1);
-    squares[7][0] = new Rook(0);
-    squares[7][7] = new Rook(0);
+    squares[0][0] = new Rook(this.board, 1);
+    squares[0][1] = new Knight(this.board, 1);
+    squares[0][2] = new Bishop(this.board, 1);
+    squares[0][3] = new Queen(this.board, 1);
+    squares[0][4] = new King(this.board, 1);                            //black team
+    squares[0][5] = new Bishop(this.board, 1);
+    squares[0][6] = new Knight(this.board, 1);
+    squares[0][7] = new Rook(this.board, 1);
 
-    squares[0][1] = new Knight(1);
-    squares[0][6] = new Knight(1);
-    squares[7][1] = new Knight(0);
-    squares[7][6] = new Knight(0);
+    squares[7][0] = new Rook(this.board, 0);
+    squares[7][1] = new Knight(this.board, 0);
+    squares[7][2] = new Bishop(this.board, 0);
+    squares[7][3] = new King(this.board, 0);
+    squares[7][4] = new Queen(this.board, 0);                           //white team
+    squares[7][5] = new Bishop(this.board, 0);
+    squares[7][6] = new Knight(this.board, 0);
+    squares[7][7] = new Rook(this.board, 0);
 
-    squares[0][2] = new Bishop(1);
-    squares[0][5] = new Bishop(1);
-    squares[7][2] = new Bishop(0);
-    squares[7][5] = new Bishop(0);
-
-    squares[0][3] = new Queen(1);
-    squares[7][4] = new Queen(0);
-
-    squares[0][4] = new King(1);
-    squares[7][3] = new King(0);
-
-    return squares;
+    return squares;                                         //return
 }
