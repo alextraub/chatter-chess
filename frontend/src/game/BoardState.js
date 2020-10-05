@@ -42,7 +42,7 @@ class ReturnBoardState{
 
     returnBoardState()                 //return the array containing a copy of the Board State
     {
-        CBoard = this.Board.map((x) => x);
+        CBoard = this.board.map((x) => x);
         return CBoard;
     }
 
