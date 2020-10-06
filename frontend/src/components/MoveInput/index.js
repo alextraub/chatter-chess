@@ -1,16 +1,17 @@
 import React from 'react';
 
-const initialState = {
-	move: '',
-	moveError: '',
-	from: '',
-	to: ''
-};
-
 export default class MoveInput extends React.Component {
+
+	initialState = {
+		move: '',
+		moveError: '',
+		from: '',
+		to: ''
+	};
+
 	constructor(props) {
 		super(props);
-		this.state = initialState;
+		this.state = this.initialState;
 	}
 
 	validate = () => {
@@ -65,7 +66,6 @@ export default class MoveInput extends React.Component {
 		if (to.charAt(1).match(/[0]/) || to.charAt(1).match(/[9]/)) {
 			moveError = 'Invalid Move';
 		}
-
 		if (moveError) {
 			this.setState({moveError});
 			console.log(this.state);
@@ -81,8 +81,10 @@ export default class MoveInput extends React.Component {
 		const isValid = this.validate();
 		if (isValid) {
 			console.log(this.state);
+			this.props.onMoveSuccess(this.state.from, this.state.to);
 			//const data = this.state; // final data to be sent to backend service (not important right now)
-			this.setState(initialState); // clear form
+			this.setState(this.initialState); // clear form
+			console.log(this.state);
 		}
 	};
 
@@ -99,7 +101,14 @@ export default class MoveInput extends React.Component {
 			<div id='inputContainer'>
 				<h1>Enter your move below</h1><br/>
 				<h2>Please enter your move in the form of "RowColumn RowColumn"!</h2><br/>
-				<h3>For example, if you want to move a knight from 1G to 3H, you would enter this in as "1G 3H".</h3><br/>
+				<h3>For example, if you want to move a knight from G1 to H3, you would enter this in as "G1 H3".</h3><br/>
+				<p>
+					{this.props.currentPlayer ? (
+						<p>It is blacks turn</p>
+					) : (
+						<p>It is whites turn</p>
+					)}
+				</p>
 				<p>Current move is: {move}</p>
 				<form onSubmit={this.handleSubmit}>
 					<p><input data-testid="move" type="text" placeholder="Enter Move Here" name="move" onChange={this.handleInputChange}/></p>

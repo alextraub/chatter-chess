@@ -1,4 +1,5 @@
 import './index.css';
+import './components/MoveInput/MoveInput.css'
 
 import React from "react";
 import ReactDOM from "react-dom";
