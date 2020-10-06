@@ -3,57 +3,25 @@ import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import BoardPiece from './';
+import DPiece from '../../__mocks__/DPiece';
+import BoardState from '../../__mocks__/boardStateMock';
+
+beforeEach(() => {
+	BoardState.mockClear();
+});
 
 afterEach(cleanup);
 
-/*
-	Helper function to test that both black and white pieces of the same type have the correct piece class
- */
-function pieceClassTest(piece) {
-	const { getAllByTestId } = render(
-		<>
-			<BoardPiece type={piece} />
-			<BoardPiece type={piece} black />
-		</>
-	)
+const boardState = new BoardState();
 
-	getAllByTestId('board-piece').forEach(p => {
-		expect(p).toHaveClass(piece);
-	})
-}
-
-test('Pawn has correct css class', () => {
-	pieceClassTest('pawn');
-});
-
-test('Rook has correct css class', () => {
-	pieceClassTest('rook');
-});
-
-test('Bishop has correct css class', () => {
-	pieceClassTest('bishop');
-});
-
-test('Knight has correct css class', () => {
-	pieceClassTest('knight');
-});
-
-test('King has correct css class', () => {
-	pieceClassTest('king');
-});
-
-test('Queen has correct css class', () => {
-	pieceClassTest('queen');
-});
-
-test('Black pawn has correct color class', () => {
-	const { getByTestId } = render(<BoardPiece type="pawn" black />);
-
+test('Black pieces have correct css class', () => {
+	const piece = new DPiece(boardState, 1);
+	const { getByTestId } = render(<BoardPiece piece={piece}/>);
 	expect(getByTestId('board-piece')).toHaveClass('black');
 });
 
-test('White bishop has correct color class', () => {
-	const { getByTestId } = render(<BoardPiece type="bishop" />);
-
+test('White pieces have correct css class', () => {
+	const piece = new DPiece(boardState, 0);
+	const { getByTestId } = render(<BoardPiece piece={piece}/>);
 	expect(getByTestId('board-piece')).toHaveClass('white');
 });

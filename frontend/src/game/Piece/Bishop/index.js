@@ -21,7 +21,7 @@ export default class Bishop extends Piece {
             currC = fromCol + 1;
             while(currR < toRow && currC < toCol)                   //while that position is not the final position
             {
-                if (super.BoardState.getPiece(currR, currC) != Null)//if that position is not empty
+                if (super.BoardState.getPiece(currR, currC) != null)//if that position is not empty
                 {
                     return false;                                   //somtething is blocking us
                 }
@@ -36,7 +36,7 @@ export default class Bishop extends Piece {
             currC = fromCol - 1;
             while(currR < toRow && currC > toCol)
             {
-                if (super.BoardState.getPiece(currR, currC) != Null)//copy of up code but going down left
+                if (super.BoardState.getPiece(currR, currC) != null)//copy of up code but going down left
                 {
                     return false;
                 }
@@ -50,7 +50,7 @@ export default class Bishop extends Piece {
             currC = fromCol + 1;
             while(currR > toRow && currC < toCol)
             {
-                if (super.BoardState.getPiece(currR, currC) != Null)//copy of code but going up right
+                if (super.BoardState.getPiece(currR, currC) != null)//copy of code but going up right
                 {
                     return false;
                 }
@@ -64,7 +64,7 @@ export default class Bishop extends Piece {
             currC = fromCol - 1;
             while(currR > toRow && currC > toCol)
             {
-                if (super.BoardState.getPiece(currR, currC) != Null)//copy of code but going up left
+                if (super.BoardState.getPiece(currR, currC) != null)//copy of code but going up left
                 {
                     return false;
                 }
