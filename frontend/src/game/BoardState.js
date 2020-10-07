@@ -1,9 +1,4 @@
-import Bishop from './'
-import King from './'
-import Knight from './'
-import Pawn from './'
-import Queen from './'
-import Rook from './'
+import {Bishop, King, Knight, Pawn, Queen, Rook} from './Piece'
 
 /* This file stores the positions of all current peices on the board 
 and can return what piece is on a position on the board, all current 
