@@ -1,27 +1,39 @@
 import React from 'react';
-
-const initialState = {
-	move: '',
-	moveError: '',
-	from: '',
-	to: ''
-};
+import BoardState from "../../game/BoardState";
+import {pieceName} from "../../game/Piece";
 
 export default class MoveInput extends React.Component {
+
 	constructor(props) {
 		super(props);
-		this.state = initialState;
+		this.boardState = new BoardState();
+		this.state = {
+			move: '',
+			moveError: '',
+			from: '',
+			to: ''
+		}
 	}
 
 	validate = () => {
-		let moveError='';
+		let moveError = '';
 		if (!this.state.move) {
 			moveError = "You need to enter a move";
-			this.setState({moveError});
-			console.log(this.state);
+			this.setState({
+				...this.state,
+				moveError
+			}, () => console.log(this.state));
 			return false;
 		}
-		const command = this.state.move.split(" ");
+		if (this.state.move.trim().length < 5) {
+			moveError = 'Invalid Move';
+			this.setState({
+				...this.state,
+				moveError
+			}, () => console.log(this.state));
+			return false;
+		}
+		let command = this.state.move.split(" ");
 		if (command.length !== 2) {
 			moveError = 'Invalid Move';
 		}
@@ -60,14 +72,25 @@ export default class MoveInput extends React.Component {
 		if (to.charAt(1).match(/[0]/) || to.charAt(1).match(/[9]/)) {
 			moveError = 'Invalid Move';
 		}
-
+		const piece = this.boardState.getPiece([from.charAt(0), to.charAt(1)]);
+		if (!piece) {
+			moveError = 'Invalid Move';
+		}
+		if (piece !== this.props.currentPlayer) {
+			moveError = 'Invalid Move';
+		}
 		if (moveError) {
-			this.setState({moveError});
-			console.log(this.state);
+			this.setState({
+				...this.state,
+				moveError
+			}, () => console.log(this.state));
 			return false;
 		}
-		this.state.from = from;
-		this.state.to = to;
+		this.setState({
+			...this.state,
+			from,
+			to
+		}, () => console.log(this.state));
 		return true;
 	};
 
@@ -75,9 +98,15 @@ export default class MoveInput extends React.Component {
 		event.preventDefault();
 		const isValid = this.validate();
 		if (isValid) {
-			console.log(this.state);
+			this.props.onMoveSuccess(this.state.from, this.state.to);
 			//const data = this.state; // final data to be sent to backend service (not important right now)
-			this.setState(initialState); // clear form
+			this.setState({
+				...this.state,
+				move: '',
+				moveError: '',
+				from: '',
+				to: ''
+			}, () => console.log(this.state)); // clear form
 		}
 	};
 
@@ -85,16 +114,23 @@ export default class MoveInput extends React.Component {
 		event.preventDefault();
 		this.setState({
 			[event.target.name]: event.target.value
-		})
+		});
 	};
 
 	render() {
 		const {move} = this.state;
 		return (
-			<div>
+			<div id='inputContainer'>
 				<h1>Enter your move below</h1><br/>
 				<h2>Please enter your move in the form of "RowColumn RowColumn"!</h2><br/>
-				<h3>For example, if you want to move a knight from 1G to 3H, you would enter this in as "1G 3H".</h3><br/>
+				<h3>For example, if you want to move a knight from G1 to H3, you would enter this in as "G1 H3".</h3><br/>
+				<p>
+					{this.props.currentPlayer ? (
+						<p>It is blacks turn</p>
+					) : (
+						<p>It is whites turn</p>
+					)}
+				</p>
 				<p>Current move is: {move}</p>
 				<form onSubmit={this.handleSubmit}>
 					<p><input data-testid="move" type="text" placeholder="Enter Move Here" name="move" onChange={this.handleInputChange}/></p>
