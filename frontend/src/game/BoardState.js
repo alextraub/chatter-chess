@@ -50,7 +50,10 @@ export default class ReturnBoardState{
 
 function makeChessBoard()                //This is the function to be called at the start of each game to create a borad set to its deafult
 {
-    const squares = Array(8).fill(Array(8).fill(null));
+	const squares = new Array(8);
+	for(let r=0; r<8; r++) {
+		squares[r] = new Array(8).fill(null);
+	}
 
     for(let i = 0; i < 8; i++){
         squares[1][i] = new Pawn(1);
