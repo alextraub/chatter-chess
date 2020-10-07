@@ -5,8 +5,8 @@ export default class BoardComponent extends React.Component {
     render() {
         let squares = [];
         let count = 1;
-        for (let row = 0; row < 9; row++) {
-            for (let col = 0; col < 9; col++) {
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
                 if (row % 2 === 0) {
                     if (col % 2 === 0) {
                         squares.push(<BoardSquare black={false} />)

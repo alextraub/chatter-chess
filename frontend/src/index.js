@@ -1,4 +1,10 @@
 import './index.css';
+<<<<<<< HEAD
+=======
+import './components/BoardPiece/BoardPiece.css';
+import './components/BoardSquare/BoardSquare.css';
+import './components/MoveInput/MoveInput.css'
+>>>>>>> CC-65
 
 import React from "react";
 import ReactDOM from "react-dom";
