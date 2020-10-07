@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
@@ -22,6 +24,14 @@ export default class GameContainer extends React.Component {
 		this.handleSuccessfulMove = this.handleSuccessfulMove.bind(this);
 		this.nextTurn = this.nextTurn.bind(this);
 		this.currentPlayer = this.currentPlayer.bind(this);
+	}
+
+	static propTypes = {
+		playerView: PropTypes.oneOf([0, 1, 2])
+	}
+
+	static defaultProps = {
+		playerView: 2
 	}
 
 	/**
@@ -65,9 +75,13 @@ export default class GameContainer extends React.Component {
 			<div data-testid="game-container">
 				<MoveInput
 					currentPlayer={this.currentPlayer()}
+					getPiece={this.boardState.getPiece}
 					onMoveSuccess={this.handleSuccessfulMove}
 				/>
-				<BoardComponent board={this.state.board}/>
+				<BoardComponent
+					player={this.props.playerView === 2 ? this.currentPlayer() : this.props.playerView}
+					board={this.state.board}
+				/>
 			</div>
 		);
 	}

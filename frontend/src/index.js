@@ -1,4 +1,6 @@
 import './index.css';
+import './components/BoardPiece/BoardPiece.css';
+import './components/BoardSquare/BoardSquare.css';
 import './components/MoveInput/MoveInput.css'
 
 import React from "react";

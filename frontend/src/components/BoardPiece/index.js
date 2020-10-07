@@ -15,8 +15,18 @@ const BoardPiece = ({ piece }) => {
 	const pieceType = pieceName(piece);
 	const classes = `piece ${color} ${pieceType}`;
 
+	const typeMap = {
+		'pawn': 'p',
+		'rook': 'R',
+		'knight': 'Kn',
+		'bishop': 'B',
+		'king': 'K',
+		'Queen': 'Q',
+		'generic': 'error'
+	}
+
 	return (
-		<span data-testid="board-piece" className={classes}>{pieceType}</span>
+		<span data-testid="board-piece" className={classes}>{typeMap[pieceType]}</span>
 	);
 }
 
