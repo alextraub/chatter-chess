@@ -10,9 +10,9 @@ and can return what piece is on a position on the board, all current
 board square values, and can change vaules if peices move of change type.*/
 class ReturnBoardState{
 
-    constructor(Board)                                         //create board
+    constructor()                                         //create board
     {
-        this.board = makeChessBoard();
+        this.board = makeChessBoard(this);
     }
 
     getPiece([row, col])                              //Returns what peice is stored on each tile
@@ -48,31 +48,31 @@ class ReturnBoardState{
 
 }
 
-function makeChessBoard()                //This is the function to be called at the start of each game to create a borad set to its deafult
+function makeChessBoard(board)                //This is the function to be called at the start of each game to create a borad set to its deafult
 {
     const squares = new Array(8).fill(new Array(8).fill(null));
 
     for(let i = 0; i < 8; i++){
-        squares[1][i] = new Pawn(this.board, 1);
-        squares[6][i] = new Pawn(this.board, 0);
+        squares[1][i] = new Pawn(board, 1);
+        squares[6][i] = new Pawn(board, 0);
     }
-    squares[0][0] = new Rook(this.board, 1);
-    squares[0][1] = new Knight(this.board, 1);
-    squares[0][2] = new Bishop(this.board, 1);
-    squares[0][3] = new Queen(this.board, 1);
-    squares[0][4] = new King(this.board, 1);                            //black team
-    squares[0][5] = new Bishop(this.board, 1);
-    squares[0][6] = new Knight(this.board, 1);
-    squares[0][7] = new Rook(this.board, 1);
+    squares[0][0] = new Rook(board, 1);
+    squares[0][1] = new Knight(board, 1);
+    squares[0][2] = new Bishop(board, 1);
+    squares[0][3] = new Queen(board, 1);
+    squares[0][4] = new King(board, 1);                            //black team
+    squares[0][5] = new Bishop(board, 1);
+    squares[0][6] = new Knight(board, 1);
+    squares[0][7] = new Rook(board, 1);
 
-    squares[7][0] = new Rook(this.board, 0);
-    squares[7][1] = new Knight(this.board, 0);
-    squares[7][2] = new Bishop(this.board, 0);
-    squares[7][3] = new King(this.board, 0);
-    squares[7][4] = new Queen(this.board, 0);                           //white team
-    squares[7][5] = new Bishop(this.board, 0);
-    squares[7][6] = new Knight(this.board, 0);
-    squares[7][7] = new Rook(this.board, 0);
+    squares[7][0] = new Rook(board, 0);
+    squares[7][1] = new Knight(board, 0);
+    squares[7][2] = new Bishop(board, 0);
+    squares[7][3] = new King(board, 0);
+    squares[7][4] = new Queen(board, 0);                           //white team
+    squares[7][5] = new Bishop(board, 0);
+    squares[7][6] = new Knight(board, 0);
+    squares[7][7] = new Rook(board, 0);
 
     return squares;                                         //return
 }
