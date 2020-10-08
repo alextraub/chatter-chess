@@ -28,6 +28,8 @@ export default class BoardComponent extends React.Component {
                         squares.push(<BoardSquare key={`${row}-${col}`} black piece={piece} />)
 
                     }
+                    else
+                        squares.push(<BoardSquare key={`${row}-${col}`} piece={piece} />)
                 }
             }
         }
