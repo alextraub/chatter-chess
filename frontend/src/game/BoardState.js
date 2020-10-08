@@ -4,11 +4,13 @@ import { Pawn, Rook, Knight, Bishop, Queen, King } from './Piece'
 and can return what piece is on a position on the board, all current
 board square values, and can change vaules if peices move of change type.*/
 export default class ReturnBoardState{
-	board;
-
     constructor()                                         //create board
     {
 		this.board = makeChessBoard(this);
+
+		this.getPiece = this.getPiece.bind(this);
+		this.movePiece = this.movePiece.bind(this);
+		this.returnBoardState = this.returnBoardState.bind(this);
     }
 
     getPiece([row, col])                              //Returns what peice is stored on each tile
@@ -45,9 +47,12 @@ export default class ReturnBoardState{
 
 function makeChessBoard(boardState)                //This is the function to be called at the start of each game to create a borad set to its deafult
 {
-	const squares = [];
+	let squares = new Array(8);
 	for(let r=0; r<8; r++) {
-		squares.push(new Array(8).fill(null));
+		squares[r] = new Array(8);
+		for(let c=0; c<8; c++) {
+			squares[r][c] = null;
+		}
 	}
 
     for(let i = 0; i < 8; i++){

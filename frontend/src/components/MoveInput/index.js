@@ -4,11 +4,11 @@ export const convertPosition = pos => {
 	let pos1 = pos.charCodeAt(0) - 'A'.charCodeAt(0);
 	let pos2 = pos.charAt(1);
 	try {
-		pos2 = parseInt(pos2);
+		pos2 = parseInt(pos2) - 1;
 	} catch (error){
 		return -1;
 	}
-	if ((pos1 < 0 || pos1 > 7) && (pos2 < 0 || pos2 > 7)) {
+	if ((pos1 < 0 || pos1 > 7) || (pos2 < 0 || pos2 > 7)) {
 		return -1;
 	}
 	return [pos1, pos2];
@@ -43,7 +43,7 @@ export default class MoveInput extends React.Component {
 		if (!piece || piece.player !== this.props.currentPlayer) {
 			return false;
 		}
-		return piece.canMove(from, to);
+		return piece.canMove(fromPos, toPos);
 	}
 
 	handleSubmit(event) {
