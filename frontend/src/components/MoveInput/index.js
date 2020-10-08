@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const convertPosition = (pos) => {
+export const convertPosition = pos => {
 	let pos1 = pos.charCodeAt(0) - 'A'.charCodeAt(0);
 	let pos2 = pos.charAt(1);
 	try {
@@ -44,7 +44,7 @@ export default class MoveInput extends React.Component {
 			return false;
 		}
 		return piece.canMove(from, to);
-	};
+	}
 
 	handleSubmit(event) {
 		event.preventDefault();
@@ -63,7 +63,7 @@ export default class MoveInput extends React.Component {
 				move: '',
 				moveError: ''
 			}, () => console.log(this.state)); // clear form
-	};
+	}
 
 	handleInputChange(event) {
 		event.preventDefault();
@@ -71,14 +71,14 @@ export default class MoveInput extends React.Component {
 			...this.state,
 			move: event.target.value
 		});
-	};
+	}
 
 	render() {
 		return (
 			<div id='inputContainer'>
 				<h1>Enter your move below</h1><br/>
-				<h2>Please enter your move in the form of "RowColumn RowColumn"!</h2><br/>
-				<h3>For example, if you want to move a knight from G1 to H3, you would enter this in as "G1 H3".</h3><br/>
+				<h2>Please enter your move in the form of &quot;RowColumn RowColumn&quot;!</h2><br/>
+				<h3>For example, if you want to move a knight from G1 to H3, you would enter this in as &quot;G1 H3&quot;.</h3><br/>
 				<p>
 					{this.props.currentPlayer ? (
 						'It is blacks turn'
@@ -86,8 +86,8 @@ export default class MoveInput extends React.Component {
 						'It is whites turn'
 					)}
 				</p>
-				<form onSubmit={(event) => {this.handleSubmit(event)}}>
-					<input data-testid="move" type="text" placeholder="Enter Move Here" name="move" value={this.state.move} onChange={(event) => {this.handleInputChange(event)}}/>
+				<form onSubmit={event => {this.handleSubmit(event)}}>
+					<input data-testid="move" type="text" placeholder="Enter Move Here" name="move" value={this.state.move} onChange={event => {this.handleInputChange(event)}}/>
 					<div style={{color: "red"}}>{this.state.moveError}</div>
 					<input type='submit' value='Submit Move'/>
 				</form>

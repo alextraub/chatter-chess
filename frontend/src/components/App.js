@@ -1,7 +1,6 @@
 import React from "react";
 import GameContainer from './GameContainer';
 
-import Game from './Game';
 
 const App = () => (
     <div>

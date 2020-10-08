@@ -12,7 +12,6 @@ export default class BoardComponent extends React.Component {
 
     render() {
         let squares = [];
-        let count = 1;
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
 				const piece = this.props.board[row][col];
@@ -35,9 +34,8 @@ export default class BoardComponent extends React.Component {
                 }
             }
         }
-
         return (
-            <div className="board" > {squares}</div>
+            <div className="board" > {this.props.player === 0 ? squares : squares.reverse}</div>
         );
 
     }
