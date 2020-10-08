@@ -1,0 +1,22 @@
+.square {
+	border: 2px solid goldenrod;
+	float: left;
+	margin-right: -1px;
+	margin-top: -1px;
+	display: flex;
+	width: 12.5%;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+}
+.square:after {
+	content: ' ';
+	padding-top: 100%;
+	display: table;
+}
+.square.black {
+	background: black;
+}
+.square.white {
+	background: white;
+}

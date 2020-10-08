@@ -1,12 +1,11 @@
 import React from "react";
+import GameContainer from './GameContainer';
 
 import Game from './Game';
 
 const App = () => (
     <div>
-        <h1>Chatter Chess</h1>
-		<small>Play chess with your voice</small>
-		<Game />
+        <GameContainer />
     </div>
 );
 
