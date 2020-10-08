@@ -32,9 +32,12 @@ export default class BoardComponent extends React.Component {
                         squares.push(<BoardSquare key={`${row}-${col}`} piece={piece} />)
                 }
             }
-        }
+		}
+		if (this.props.player === 1) {
+			squares = squares.reverse();
+		}
         return (
-            <div className="board" > {this.props.player === 0 ? squares : squares.reverse}</div>
+            <div className="board" > {squares}</div>
         );
 
     }

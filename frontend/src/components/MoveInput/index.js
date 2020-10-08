@@ -57,12 +57,12 @@ export default class MoveInput extends React.Component {
 			});
 			return;
 		}
-			this.props.onMoveSuccess(convertPosition(command[0]), convertPosition(command[1]));
-			this.setState({
-				...this.state,
-				move: '',
-				moveError: ''
-			}, () => console.log(this.state)); // clear form
+		this.props.onMoveSuccess(convertPosition(command[0]), convertPosition(command[1]));
+		this.setState({
+			...this.state,
+			move: '',
+			moveError: ''
+		}); // clear form
 	}
 
 	handleInputChange(event) {

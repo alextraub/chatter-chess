@@ -1,18 +1,14 @@
-import Bishop from './Piece/Bishop'
-import King from './Piece/King'
-import Knight from './Piece/Knight'
-import Pawn from './Piece/Pawn'
-import Queen from './Piece/Queen'
-import Rook from './Piece/Rook'
+import { Pawn, Rook, Knight, Bishop, Queen, King } from './Piece'
 
 /* This file stores the positions of all current peices on the board
 and can return what piece is on a position on the board, all current
 board square values, and can change vaules if peices move of change type.*/
 export default class ReturnBoardState{
+	board;
 
     constructor()                                         //create board
     {
-        this.board = makeChessBoard(this);
+		this.board = makeChessBoard(this);
     }
 
     getPiece([row, col])                              //Returns what peice is stored on each tile
@@ -42,17 +38,16 @@ export default class ReturnBoardState{
 
     returnBoardState()                 //return the array containing a copy of the Board State
     {
-        const CBoard = this.board.map(x => x);
-        return CBoard;
+        return this.board;
     }
 
 }
 
 function makeChessBoard(boardState)                //This is the function to be called at the start of each game to create a borad set to its deafult
 {
-	const squares = new Array(8);
+	const squares = [];
 	for(let r=0; r<8; r++) {
-		squares[r] = new Array(8).fill(null);
+		squares.push(new Array(8).fill(null));
 	}
 
     for(let i = 0; i < 8; i++){
