@@ -1,4 +1,12 @@
+.board-container {
+	display: inline-block;
+	background-color: goldenrod;
+	border: 2px solid black;
+}
+
 .board {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	grid-template-rows: repeat(8, 1fr);
+	gap: 1px;
 }

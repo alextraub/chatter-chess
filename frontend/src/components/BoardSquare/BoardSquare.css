@@ -1,4 +1,4 @@
-.square {
+/* .square {
 	border: 2px solid goldenrod;
 	float: left;
 	margin-right: -1px;
@@ -13,4 +13,16 @@
 	content: ' ';
 	padding-top: 100%;
 	display: table;
+} */
+.square {
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	padding: 15px;
+}
+.square.white {
+	background-color: white;
+}
+.square.black {
+	background-color: black;
 }

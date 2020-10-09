@@ -72,16 +72,22 @@ export default class GameContainer extends React.Component {
 
 	render() {
 		return (
-			<div data-testid="game-container">
-				<MoveInput
-					currentPlayer={this.currentPlayer()}
-					getPiece={this.boardState.getPiece}
-					onMoveSuccess={this.handleSuccessfulMove}
-				/>
-				<BoardComponent
-					player={this.props.playerView === 2 ? this.currentPlayer() : this.props.playerView}
-					board={this.state.board}
-				/>
+			<div data-testid="game-container" className="row">
+				<div className="col">
+					<MoveInput
+						id="move-input"
+						currentPlayer={this.currentPlayer()}
+						getPiece={this.boardState.getPiece}
+						onMoveSuccess={this.handleSuccessfulMove}
+					/>
+				</div>
+				<div className="col">
+					<BoardComponent
+						id="board"
+						player={this.props.playerView === 2 ? this.currentPlayer() : this.props.playerView}
+						board={this.state.board}
+					/>
+				</div>
 			</div>
 		);
 	}

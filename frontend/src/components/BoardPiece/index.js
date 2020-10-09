@@ -21,7 +21,7 @@ const BoardPiece = ({ piece }) => {
 		'knight': 'Kn',
 		'bishop': 'B',
 		'king': 'K',
-		'Queen': 'Q',
+		'queen': 'Q',
 		'generic': 'error'
 	}
 
