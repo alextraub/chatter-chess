@@ -19,7 +19,7 @@ export default class Pawn extends Piece {
                     if (this.board.getPiece(currentR, fromCol) != null && (this.isWhite() || this.isBlack())) {
                         return false;
                     }
-                    return (numRows === 1 && numCols === 0)
+                    return this.board.getPiece(currentR, fromCol) === null;
                 }
             }
         }
@@ -32,81 +32,83 @@ export default class Pawn extends Piece {
                    
         */
         if ((fromRow == 0 && toRow == 0) && (fromCol === 0 && toCol === 0))
-            if (numRows === 2) {
-                if (numCols === 0) {
-                    let currentR = fromRow + 2;
-                    if (this.board.getPiece(currentR, fromCol) != null) { //if that position is not empty
-                        return false;
-                    }
-                    return (numRows === 2 && numCols === 0)
-                }
-            }
-
-
-        //   ******  pawn diagonal up left ************* \\
-        if (this.isBlack()) {
-            if (numRows === 1) {
-                if (numCols === -1) {
-                    let currentR = fromRow + 1;
-                    let currentC = fromCol - 1;
-                    if (this.board.getPiece(currentR, currentC) != null) {
-                        if (this.isWhite()) {
-                            return (numRows === 1 && numCols === -1)
-                        }
-                        return false;
-                    }
-                }
-            }
+            let currentR = fromRow + 2;
+        let currentCol = fromCol;
+        let thisRow = fromRow + 1;
+        let thisCol = fromCol;
+        if (this.board.getPiece(thisRow, thisCol) != null) { //if that position is not empty
+            return false;
         }
-
-        else if (this.isWhite()) {
-            if (numRows === 1) {
-                if (numCols === -1) {
-                    let currR = fromRow + 1;
-                    let currC = fromCol - 1;
-                    if (this.board.getPiece(currR, currC) != null) {
-                        if (this.isWhite()) {
-                            return false;
-                        }
-                        return (numRows === 1 && numCols === -1);
-                    }
-                }
-            }
+        if (this.board.getPiece(currentR, currentCol) != null) {
+            return false;
         }
+        return this.board.getPiece(currentR, currentCol) === null;
+    }
+}
 
 
-        //  *******************************************************************
-
-        //    Diagonal right:
-
-        if (this.isBlack()) {
-            if (numRows === 1) {
-                if (numCols === 1) {
-                    let currentR = fromRow + 1;
-                    let currentC = fromCol + 1;
-                    if (this.board.getPiece(currentR, currentC) != null) {
-                        if (this.isWhite()) {
-                            return (numRows === 1 && numCols === 1)
-                        }
-                        return false;
-                    }
+//   ******  pawn diagonal up left ************* \\
+if (this.isBlack()) {
+    if (numRows === 1) {
+        if (numCols === -1) {
+            let currentR = fromRow + 1;
+            let currentC = fromCol - 1;
+            if (this.board.getPiece(currentR, currentC) != null) {
+                if (this.isWhite()) {
+                    return this.board.getPiece(currentR, currentC) === null;
                 }
-            }
-        }
-
-        else if (this.isWhite()) {
-            if (numRows === 1) {
-                if (numCols === 1) {
-                    let currR = fromRow + 1;
-                    let currC = fromCol + 1;
-                    if (this.board.getPiece(currR, currC) != null) {
-                        if (this.isWhite()) {
-                            return false;
-                        }
-                        return (numRows === 1 && numCols === 1);
-                    }
-                }
+                return false;
             }
         }
     }
 }
+
+else if (this.isWhite()) {
+    if (numRows === 1) {
+        if (numCols === -1) {
+            let currR = fromRow + 1;
+            let currC = fromCol - 1;
+            if (this.board.getPiece(currR, currC) != null) {
+                if (this.isWhite()) {
+                    return false;
+                }
+                return super.boardState.getPiece(currR, currC) === null;
+            }
+        }
+    }
+}
+
+
+//  *******************************************************************
+
+//    Diagonal right:
+
+if (this.isBlack()) {
+    if (numRows === 1) {
+        if (numCols === 1) {
+            let currentR = fromRow + 1;
+            let currentC = fromCol + 1;
+            if (this.board.getPiece(currentR, currentC) != null) {
+                if (this.isWhite()) {
+                    return this.board.getPiece(currentR, currentC) === null;
+                }
+                return false;
+            }
+        }
+    }
+}
+
+else if (this.isWhite()) {
+    if (numRows === 1) {
+        if (numCols === 1) {
+            let currR = fromRow + 1;
+            let currC = fromCol + 1;
+            if (this.board.getPiece(currR, currC) != null) {
+                if (this.isWhite()) {
+                    return false;
+                }
+                return super.boardState.getPiece(currR, currC) === null;
+            }
+        }
+    }
+} 
