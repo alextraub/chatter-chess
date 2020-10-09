@@ -75,10 +75,10 @@ function makeChessBoard(boardState)                //This is the function to be 
 	squares[7][5] = new Bishop(boardState, 0);
 
 	squares[0][3] = new Queen(boardState, 1);
-	squares[7][4] = new Queen(boardState, 0);
+	squares[7][3] = new Queen(boardState, 0);
 
 	squares[0][4] = new King(boardState, 1);
-	squares[7][3] = new King(boardState, 0);
+	squares[7][4] = new King(boardState, 0);
 
 	return squares;
 }
