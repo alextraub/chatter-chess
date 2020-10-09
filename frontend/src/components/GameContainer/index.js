@@ -10,13 +10,16 @@ import BoardState from '../../game/BoardState';
  * as well as renders the top-level UI components for the game.
  */
 export default class GameContainer extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.boardState = new BoardState();
+		const board = this.boardState.returnBoardState();
 
 		this.state = {
-			board: this.boardState.returnBoardState(),
+			board,
+			capturedWhitePieces: [],
+			capturedBlackPieces: [],
 			turn: 0 // Number of turns made in the game
 		}
 
@@ -24,6 +27,8 @@ export default class GameContainer extends React.Component {
 		this.handleSuccessfulMove = this.handleSuccessfulMove.bind(this);
 		this.nextTurn = this.nextTurn.bind(this);
 		this.currentPlayer = this.currentPlayer.bind(this);
+		this.syncBoard = this.syncBoard.bind(this);
+		this.updateCapturedLists = this.updateCapturedLists.bind(this);
 	}
 
 	static propTypes = {
@@ -42,12 +47,12 @@ export default class GameContainer extends React.Component {
 	 * @param {[number, number]} toPos the position to move the piece to
 	 */
 	handleSuccessfulMove(fromPos, toPos) {
+		const capturedPiece = this.boardState.getPiece(toPos);
+		if(capturedPiece !== null) {
+			this.updateCapturedLists(capturedPiece);
+		}
 		this.boardState.movePiece(fromPos, toPos);
-		this.setState({
-			...this.state,
-			board: this.boardState.returnBoardState()
-		});
-
+		this.syncBoard();
 		this.nextTurn();
 	}
 
@@ -59,6 +64,41 @@ export default class GameContainer extends React.Component {
 			...this.state,
 			turn: this.state.turn + 1 // Adds 1 to the turn counter
 		});
+	}
+
+	/**
+	 * Updates the component to reflect the current BoardState
+	 */
+	syncBoard() {
+		this.setState({
+			...this.state,
+			board: this.boardState.returnBoardState()
+		});
+	}
+
+	/**
+	 *
+	 * Adds a piece to a list of captured pieces, belonging to the same player
+	 *
+	 * @param {Piece} piece - a non-null Piece instance
+	 */
+	updateCapturedLists(piece) {
+		if(piece.isWhite()) {
+			const capturedWhitePieces = this.state.capturedWhitePieces;
+			capturedWhitePieces.push(piece);
+
+			this.setState({
+				...this.state,
+				capturedWhitePieces
+			});
+		} else {
+			const capturedBlackPieces = this.state.capturedBlackPieces;
+			capturedBlackPieces.push(piece);
+			this.setState({
+				...this.state,
+				capturedBlackPieces
+			});
+		}
 	}
 
 	/**
@@ -80,6 +120,11 @@ export default class GameContainer extends React.Component {
 						getPiece={this.boardState.getPiece}
 						onMoveSuccess={this.handleSuccessfulMove}
 					/>
+				</div>
+				<div className="col">
+					Captured White Pieces: {this.state.capturedWhitePieces.length}
+					<br/>
+					Captured Black Pieces: {this.state.capturedBlackPieces.length}
 				</div>
 				<div className="col">
 					<BoardComponent
