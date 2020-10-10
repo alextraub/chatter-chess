@@ -19,7 +19,7 @@ export default class Pawn extends Piece {
                     if (this.board.getPiece(currentR, fromCol) != null && (this.isWhite() || this.isBlack())) {
                         return false;
                     }
-                    return this.board.getPiece(currentR, fromCol) === null;
+                    return (currentR && fromCol);
                 }
             }
         }
@@ -36,13 +36,13 @@ export default class Pawn extends Piece {
         let currentCol = fromCol;
         let thisRow = fromRow + 1;
         let thisCol = fromCol;
-        if (this.board.getPiece(thisRow, thisCol) != null) { //if that position is not empty
+        if (this.board.getPiece(thisRow, thisCol) != null) { //if that 1 up position is not empty
             return false;
         }
-        if (this.board.getPiece(currentR, currentCol) != null) {
+        if (this.board.getPiece(currentR, currentCol) != null) { // if that 2nd up position isn't empty 
             return false;
         }
-        return this.board.getPiece(currentR, currentCol) === null;
+        return (currentR && currentCol); // 
     }
 }
 
@@ -55,7 +55,7 @@ if (this.isBlack()) {
             let currentC = fromCol - 1;
             if (this.board.getPiece(currentR, currentC) != null) {
                 if (this.isWhite()) {
-                    return this.board.getPiece(currentR, currentC) === null;
+                    return (currentR && currentC);
                 }
                 return false;
             }
@@ -72,7 +72,7 @@ else if (this.isWhite()) {
                 if (this.isWhite()) {
                     return false;
                 }
-                return super.boardState.getPiece(currR, currC) === null;
+                return (currR && currC);
             }
         }
     }
@@ -90,7 +90,7 @@ if (this.isBlack()) {
             let currentC = fromCol + 1;
             if (this.board.getPiece(currentR, currentC) != null) {
                 if (this.isWhite()) {
-                    return this.board.getPiece(currentR, currentC) === null;
+                    return (currentR && currentC);
                 }
                 return false;
             }
@@ -107,7 +107,7 @@ else if (this.isWhite()) {
                 if (this.isWhite()) {
                     return false;
                 }
-                return super.boardState.getPiece(currR, currC) === null;
+                return (currR && currC);
             }
         }
     }
