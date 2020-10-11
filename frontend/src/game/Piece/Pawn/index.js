@@ -14,12 +14,11 @@ export default class Pawn extends Piece {
         if (this.Piece.isWhite() || this.Piece.isBlack()) {
             if (numRows === 1) {
                 if (numCols === 0) {
-                    let currentR = fromRow + 1;
                     //if that position is not empty and if the piece is white piece or black piece
-                    if (this.board.getPiece(currentR, fromCol) != null && (this.isWhite() || this.isBlack())) {
+                    if (this.board.getPiece(numRows, numCols) != null && (this.isWhite() || this.isBlack())) {
                         return false;
                     }
-                    return (currentR && fromCol);
+                    return (numRows === 1 && numCols === 0);
                 }
             }
         }
@@ -51,11 +50,10 @@ export default class Pawn extends Piece {
 if (this.isBlack()) {
     if (numRows === 1) {
         if (numCols === -1) {
-            let currentR = fromRow + 1;
-            let currentC = fromCol - 1;
-            if (this.board.getPiece(currentR, currentC) != null) {
+
+            if (this.board.getPiece(numRows, numCols) != null) {
                 if (this.isWhite()) {
-                    return (currentR && currentC);
+                    return (numRows === 1 && numCols === -1);
                 }
                 return false;
             }
@@ -66,13 +64,11 @@ if (this.isBlack()) {
 else if (this.isWhite()) {
     if (numRows === 1) {
         if (numCols === -1) {
-            let currR = fromRow + 1;
-            let currC = fromCol - 1;
-            if (this.board.getPiece(currR, currC) != null) {
+            if (this.board.getPiece(numRows, numCols) != null) {
                 if (this.isWhite()) {
                     return false;
                 }
-                return (currR && currC);
+                return (numRows === 1 && numCols === -1)
             }
         }
     }
@@ -86,11 +82,9 @@ else if (this.isWhite()) {
 if (this.isBlack()) {
     if (numRows === 1) {
         if (numCols === 1) {
-            let currentR = fromRow + 1;
-            let currentC = fromCol + 1;
-            if (this.board.getPiece(currentR, currentC) != null) {
+            if (this.board.getPiece(numRows, numCols) != null) {
                 if (this.isWhite()) {
-                    return (currentR && currentC);
+                    return (numRows === 1 && numCols === 1);
                 }
                 return false;
             }
@@ -101,13 +95,11 @@ if (this.isBlack()) {
 else if (this.isWhite()) {
     if (numRows === 1) {
         if (numCols === 1) {
-            let currR = fromRow + 1;
-            let currC = fromCol + 1;
-            if (this.board.getPiece(currR, currC) != null) {
+            if (this.board.getPiece(numRows, numCols) != null) {
                 if (this.isWhite()) {
                     return false;
                 }
-                return (currR && currC);
+                return (numRows === 1 && numCols === 1);
             }
         }
     }
