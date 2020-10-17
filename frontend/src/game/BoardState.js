@@ -3,11 +3,24 @@ import { Pawn, Rook, Knight, Bishop, Queen, King } from './Piece'
 /* This file stores the positions of all current peices on the board
 and can return what piece is on a position on the board, all current
 board square values, and can change vaules if peices move of change type.*/
-export default class ReturnBoardState{
+export default class BoardState {
+	board
+
 	constructor()                                         //create board
 	{
-		this.board = makeChessBoard(this);
-
+		this.board = [
+			[new Rook(this, 1), new Knight(this, 1), new Bishop(this, 1), new Queen(this, 1), new King(this, 1), new Bishop(this, 1), new Knight(this, 1), new Rook(this, 1)],
+			// [new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1)],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			// [new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
+			[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
+		];
+		console.log(this.board);
 		this.getPiece = this.getPiece.bind(this);
 		this.movePiece = this.movePiece.bind(this);
 		this.returnBoardState = this.returnBoardState.bind(this);
@@ -15,7 +28,7 @@ export default class ReturnBoardState{
 
 	getPiece([row, col])                              //Returns what peice is stored on each tile
 	{
-		return this.board[row][col];                                //return the array value from the position, CAN BE NULL
+		return this.board[row][col];
 	}
 
 	movePiece([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"
@@ -45,15 +58,15 @@ export default class ReturnBoardState{
 
 }
 
-function makeChessBoard(boardState)                //This is the function to be called at the start of each game to create a borad set to its deafult
-{
-	let squares = new Array(8);
+const makeChessBoard = boardState => {             //This is the function to be called at the start of each game to create a borad set to its deafult
+	let squares = [];
 	for(let r=0; r<8; r++) {
-		squares[r] = new Array(8);
+		squares.push([]);
 		for(let c=0; c<8; c++) {
-			squares[r][c] = null;
+			squares[r].push(null);
 		}
 	}
+	console.log(squares);
 
 	for(let i = 0; i < 8; i++){
 		squares[1][i] = new Pawn(boardState, 1);
@@ -79,6 +92,5 @@ function makeChessBoard(boardState)                //This is the function to be 
 
 	squares[0][4] = new King(boardState, 1);
 	squares[7][4] = new King(boardState, 0);
-
 	return squares;
 }

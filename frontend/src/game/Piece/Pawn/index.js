@@ -41,5 +41,8 @@ export default class Pawn extends Piece {
 			}
 			return (this.boardState.getPiece([numRows, numCols]) != null);
 		}
+
+		return false;
 	}
+
 }
