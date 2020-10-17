@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
+import CapturedPieces from "../CapturedPieces";
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
@@ -119,13 +120,18 @@ export default class GameContainer extends React.Component {
 						currentPlayer={this.currentPlayer()}
 						getPiece={this.boardState.getPiece}
 						onMoveSuccess={this.handleSuccessfulMove}
+					/><br/>
+					<CapturedPieces
+						id="captured-pieces"
+						whitePieces={this.state.capturedWhitePieces}
+						blackPieces={this.state.capturedBlackPieces}
 					/>
 				</div>
-				<div className="col">
-					Captured White Pieces: {this.state.capturedWhitePieces.length}
-					<br/>
-					Captured Black Pieces: {this.state.capturedBlackPieces.length}
-				</div>
+				{/*<div className="col">*/}
+				{/*	Captured White Pieces: {this.state.capturedWhitePieces.length}*/}
+				{/*	<br/>*/}
+				{/*	Captured Black Pieces: {this.state.capturedBlackPieces.length}*/}
+				{/*</div>*/}
 				<div className="col">
 					<BoardComponent
 						id="board"
