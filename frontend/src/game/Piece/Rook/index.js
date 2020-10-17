@@ -10,19 +10,19 @@ export default class Bishop extends Piece {
         const numRows = toRow - fromRow;                              //Row from compared to to
         const numCols = toCol - fromCol;                              //Col from compared to to
 
-        if(numRows != 0 && numCols != 0)                              //if we are traveling both rows and cols
+        if(numRows !== 0 && numCols !== 0)                              //if we are traveling both rows and cols
         {
             return false;                                           //we are not moving in a stright line
         }
 
-        if(numRows != 0)                                            //if we're moving up or down
+        if(numRows !== 0)                                            //if we're moving up or down
         {
             if(numRows > 0)                                         //if were moving down
             {
                 let currR = fromRow + 1;
                 while(currR < toRow)
                 {
-                    if (super.BoardState.getPiece(currR, fromCol) != null)//if that position is not empty
+                    if (this.BoardState.getPiece(currR, fromCol) != null)//if that position is not empty
                     {
                         return false;                                   //something is blocking us
                     }
@@ -34,7 +34,7 @@ export default class Bishop extends Piece {
                 let currR = fromRow - 1;
                 while(currR > toRow)
                 {
-                    if (super.BoardState.getPiece(currR, fromCol) != null)//if that position is not empty
+                    if (this.BoardState.getPiece(currR, fromCol) != null)//if that position is not empty
                     {
                         return false;                                   //something is blocking us
                     }
@@ -49,7 +49,7 @@ export default class Bishop extends Piece {
                 let currC = fromCol + 1;
                 while(currC < toCol)
                 {
-                    if (super.BoardState.getPiece(fromRow, currC) != null)//if that position is not empty
+                    if (this.BoardState.getPiece(fromRow, currC) != null)//if that position is not empty
                     {
                         return false;                                   //something is blocking us
                     }
@@ -61,7 +61,7 @@ export default class Bishop extends Piece {
                 let currC = fromCol - 1;
                 while(currC > toCol)
                 {
-                    if (super.BoardState.getPiece(fromRow, currC) != null)//if that position is not empty
+                    if (this.BoardState.getPiece(fromRow, currC) != null)//if that position is not empty
                     {
                         return false;                                   //something is blocking us
                     }
