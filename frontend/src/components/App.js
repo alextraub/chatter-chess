@@ -3,9 +3,9 @@ import GameContainer from './GameContainer';
 
 
 const App = () => (
-    <div>
-        <GameContainer />
-    </div>
+	<div>
+		<GameContainer />
+	</div>
 );
 
 export default App;
