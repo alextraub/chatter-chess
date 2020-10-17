@@ -10,7 +10,7 @@ export default class Bishop extends Piece {
         const numRows = toRow - fromRow;                            //Row from compared to to
         const numCols = toCol - fromCol;                            //Col from compared to to
 
-        if (Math.abs(numRows) != Math.abs(numCol))                  //if the number of rows crossed != the number of cols crossed
+        if (Math.abs(numRows) !== Math.abs(numCols))                  //if the number of rows crossed != the number of cols crossed
         {
             return false;                                           //its not a diagonal path
         }
@@ -21,7 +21,7 @@ export default class Bishop extends Piece {
             let currC = fromCol + 1;
             while(currR < toRow && currC < toCol)                   //while that position is not the final position
             {
-                if (super.BoardState.getPiece(currR, currC) != null)//if that position is not empty
+                if (this.BoardState.getPiece(currR, currC) != null)//if that position is not empty
                 {
                     return false;                                   //something is blocking us
                 }
@@ -36,7 +36,7 @@ export default class Bishop extends Piece {
             let currC = fromCol - 1;
             while(currR < toRow && currC > toCol)
             {
-                if (super.BoardState.getPiece(currR, currC) != null)//copy of up code but going down left
+                if (this.BoardState.getPiece(currR, currC) != null)//copy of up code but going down left
                 {
                     return false;
                 }
@@ -50,7 +50,7 @@ export default class Bishop extends Piece {
             let currC = fromCol + 1;
             while(currR > toRow && currC < toCol)
             {
-                if (super.BoardState.getPiece(currR, currC) != null)//copy of code but going up right
+                if (this.BoardState.getPiece(currR, currC) != null)//copy of code but going up right
                 {
                     return false;
                 }
@@ -64,7 +64,7 @@ export default class Bishop extends Piece {
             let currC = fromCol - 1;
             while(currR > toRow && currC > toCol)
             {
-                if (super.BoardState.getPiece(currR, currC) != null)//copy of code but going up left
+                if (this.BoardState.getPiece(currR, currC) != null)//copy of code but going up left
                 {
                     return false;
                 }
