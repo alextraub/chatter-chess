@@ -20,18 +20,18 @@ export default class Pawn extends Piece {
 			}
 			if (Math.abs(numRows) === 2) {
 				if (fromRow === 1 && this.isWhite()) {
-					if (this.boardState.getPiece(fromRow - 1, fromCol) !== null) {
+					if (this.boardState.getPiece([fromRow - 1, fromCol]) !== null) {
 						return false;
 					}
 				}
 				if (fromRow === 6 && this.isBlack()) {
-					if (this.boardState.getPiece(fromRow + 1, fromCol) !== null) {
+					if (this.boardState.getPiece([fromRow + 1, fromCol]) !== null) {
 						return false;
 					}
 				}
 			}
 			//if the to position is empty, return true
-			return this.boardState.getPiece(numRows, numCols) == null;
+			return this.boardState.getPiece([numRows, numCols]) == null;
 		}
 		if (Math.abs(numCols) === 1) {
 			if (numRows === -1 && this.isBlack()) {
@@ -39,7 +39,7 @@ export default class Pawn extends Piece {
 			} else if (numRows === 1 && this.isWhite()) {
 				return false;
 			}
-			return (this.boardState.getPiece(numRows, numCols) != null);
+			return (this.boardState.getPiece([numRows, numCols]) != null);
 		}
 	}
 }
