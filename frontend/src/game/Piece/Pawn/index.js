@@ -20,18 +20,18 @@ export default class Pawn extends Piece {
 			}
 			if (Math.abs(numRows) === 2) {
 				if (fromRow === 1 && this.isWhite()) {
-					if (this.board.getPiece(fromRow - 1, fromCol) !== null) {
+					if (this.boardState.getPiece(fromRow - 1, fromCol) !== null) {
 						return false;
 					}
 				}
 				if (fromRow === 6 && this.isBlack()) {
-					if (this.board.getPiece(fromRow + 1, fromCol) !== null) {
+					if (this.boardState.getPiece(fromRow + 1, fromCol) !== null) {
 						return false;
 					}
 				}
 			}
 			//if the to position is empty, return true
-			return this.board.getPiece(numRows, numCols) == null;
+			return this.boardState.getPiece(numRows, numCols) == null;
 		}
 		if (Math.abs(numCols) === 1) {
 			if (numRows === -1 && this.isBlack()) {
