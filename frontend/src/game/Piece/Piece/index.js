@@ -1,3 +1,5 @@
+import BoardState from '../../BoardState';
+
 /**
  * A single chess piece with unknown type.
  * This class should be treated as abstract and never instantiated itself, but rather extended for derived classes.
@@ -20,6 +22,9 @@ class Piece {
 	constructor(boardState, player=0) {
 		if(new.target === Piece) {
 			throw new TypeError('Piece is abstract and cannot be instantiated');
+		}
+		if(boardState === undefined || !(boardState instanceof BoardState)) {
+			throw new TypeError(`Piece constructor expected to be passed a BoardState but got ${boardState}`);
 		}
 		if(player !== 0 && player !== 1) {
 			throw new TypeError('Piece\'s constructor was pased a value for player that was not 0 or 1');
@@ -68,8 +73,6 @@ class Piece {
 		if(typeof(newCaptured) !== 'boolean') {
 			throw new TypeError(`Piece.captured must be a boolean but got ${newCaptured}`);
 		}
-
-		this.canMove = this.canMove.bind(this);
 
 		this.#captured = newCaptured;
 	}
