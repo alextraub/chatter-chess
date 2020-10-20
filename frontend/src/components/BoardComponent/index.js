@@ -1,6 +1,6 @@
+import './BoardComponent.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import './BoardComponent.css';
 
 import BoardSquare from '../BoardSquare';
 import Piece from '../../game/Piece/Piece';
