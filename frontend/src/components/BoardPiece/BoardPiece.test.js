@@ -4,7 +4,8 @@ import '@testing-library/jest-dom/extend-expect';
 
 import BoardPiece from './';
 import DPiece from '../../__mocks__/DPiece';
-import BoardState from '../../__mocks__/boardStateMock';
+import BoardState from '../../game/BoardState';
+jest.mock('../../game/BoardState.js');
 
 beforeEach(() => {
 	BoardState.mockClear();
