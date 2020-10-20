@@ -10,14 +10,12 @@ export default class BoardState {
 	{
 		this.board = [
 			[new Rook(this, 1), new Knight(this, 1), new Bishop(this, 1), new Queen(this, 1), new King(this, 1), new Bishop(this, 1), new Knight(this, 1), new Rook(this, 1)],
-			// [new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1)],
+			[new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1)],
 			[null, null, null, null, null, null, null, null],
 			[null, null, null, null, null, null, null, null],
 			[null, null, null, null, null, null, null, null],
 			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			// [new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
+			[new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
 			[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
 		];
 		console.log(this.board);
@@ -28,7 +26,8 @@ export default class BoardState {
 
 	getPiece([row, col])                              //Returns what peice is stored on each tile
 	{
-		return this.board[row][col];
+		const piece = this.board[row][col];
+		return piece;
 	}
 
 	movePiece([from1, from2], [to1, to2])             //moves peices on the board, returns what was "taken"

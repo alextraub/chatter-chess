@@ -31,7 +31,7 @@ export default class Pawn extends Piece {
 				}
 			}
 			//if the to position is empty, return true
-			return this.boardState.getPiece([numRows, numCols]) == null;
+			return this.boardState.getPiece([toRow, toCol]) == null;
 		}
 		if (Math.abs(numCols) === 1) {
 			if (numRows === -1 && this.isBlack()) {
@@ -39,7 +39,7 @@ export default class Pawn extends Piece {
 			} else if (numRows === 1 && this.isWhite()) {
 				return false;
 			}
-			return (this.boardState.getPiece([numRows, numCols]) != null);
+			return (this.boardState.getPiece([toRow, toCol]) != null);
 		}
 
 		return false;
