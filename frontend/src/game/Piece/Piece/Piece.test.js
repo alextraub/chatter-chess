@@ -79,9 +79,13 @@ test('Piece.captured can be changed', () => {
 
 /* Piece.canMove method unit tests */
 test('The canMove method must be passed 2 arguments', () => {
+	const piece = new DPiece(boardState);
+
+	mockGetPiece.mockReturnValue(piece);
 	expect(() => whitePiece1.canMove()).toThrow(TypeError);
 	expect(() => blackPiece.canMove([])).toThrow(TypeError);
 	expect(() => whitePiece2.canMove([], [])).not.toThrow(TypeError);
+
 });
 test('Piece canMove checks the boardState', () => {
 	blackPiece.canMove([0, 0], [1, 1]);

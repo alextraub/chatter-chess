@@ -1,3 +1,4 @@
+import './MoveInput.css';
 import React from 'react';
 
 export const convertPosition = pos => {

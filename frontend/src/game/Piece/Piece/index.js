@@ -68,6 +68,9 @@ class Piece {
 		if(typeof(newCaptured) !== 'boolean') {
 			throw new TypeError(`Piece.captured must be a boolean but got ${newCaptured}`);
 		}
+
+		this.canMove = this.canMove.bind(this);
+
 		this.#captured = newCaptured;
 	}
 

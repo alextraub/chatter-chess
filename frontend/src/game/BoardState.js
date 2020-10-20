@@ -18,7 +18,7 @@ export default class BoardState {
 			[new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
 			[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
 		];
-		console.log(this.board);
+
 		this.getPiece = this.getPiece.bind(this);
 		this.movePiece = this.movePiece.bind(this);
 		this.returnBoardState = this.returnBoardState.bind(this);

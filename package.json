@@ -11,7 +11,7 @@
 		},
 		"jest": {
 				"moduleNameMapper": {
-					"\\.(css|less)$": "identity-obj-proxy"
+						"\\.(css|less)$": "identity-obj-proxy"
 				}
 		},
 		"dependencies": {
