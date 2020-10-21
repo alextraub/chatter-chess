@@ -3,7 +3,8 @@ import DPiece from '../../../__mocks__/DPiece';
 import BoardState from '../../BoardState';
 jest.mock('../../BoardState');
 
-beforeEach(() => {
+beforeEach(() => 
+{
 	BoardState.mockClear();
 });
 

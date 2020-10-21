@@ -9,10 +9,10 @@ beforeEach(() =>
 });
 
 const boardState = new BoardState();
-const whiteRook = new Rook(BoardState, 0);
-const blackRook = new Rook(BoardState, 1);
-const whitePiece = new DPiece(BoardState);
-const blackPiece = new DPiece(BoardState, 1);
+const whiteRook = new Rook(boardState, 0);
+const blackRook = new Rook(boardState, 1);
+const whitePiece = new DPiece(boardState);
+const blackPiece = new DPiece(boardState, 1);
 
 const moveToEmptySquare = () => 
 {
@@ -74,7 +74,7 @@ test('Rook can NOT move to the same space it is on', () =>
     expect(whiteRook.canMove([1, 1], [1, 1])).toBe(false);
 });
 
-test('Rook can NOT move OVer pieces', () =>
+test('Rook can NOT move Over pieces', () =>
 {
     boardState.getPiece.mockReturnValue(blackPiece);
 
