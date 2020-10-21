@@ -1,0 +1,12 @@
+#capturedContainer {
+	border: solid black;
+	color: white;
+	width: 75%;
+	border-radius: 25px;
+	background-image: url(https://vignette.wikia.nocookie.net/papamicheal/images/5/54/The_Shadow_Realm.jpg/revision/latest?cb=20190922104216)
+}
+
+#capturedContainer h1{
+	font-family: "Creepster Caps";
+	text-decoration: underline;
+}
