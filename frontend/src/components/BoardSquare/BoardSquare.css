@@ -1,28 +1,25 @@
-/* .square {
-	border: 2px solid goldenrod;
-	float: left;
-	margin-right: -1px;
-	margin-top: -1px;
-	display: flex;
-	width: 12.5%;
-	justify-content: center;
-	align-items: center;
-	box-sizing: border-box;
+.square-container {
+	align-self: center;
+	padding: 20px 25px;
 }
-.square:after {
-	content: ' ';
-	padding-top: 100%;
-	display: table;
-} */
+
 .square {
 	justify-content: center;
 	align-items: center;
-	display: flex;
-	padding: 15px;
 }
+
 .square.white {
 	background-color: white;
 }
 .square.black {
 	background-color: black;
+}
+
+.label-position {
+	background-color: #cc6;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+	float: right;
+	position: relative;
 }

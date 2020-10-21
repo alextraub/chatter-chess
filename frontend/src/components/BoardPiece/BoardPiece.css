@@ -1,7 +1,6 @@
 .piece {
 	font-size: 3rem;
 	height: 66%;
-	padding: 5px;
 }
 .piece.black {
 	background: black;

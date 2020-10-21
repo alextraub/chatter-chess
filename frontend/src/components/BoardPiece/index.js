@@ -16,9 +16,9 @@ const BoardPiece = ({ piece }) => {
 	const classes = `piece ${color} ${pieceType}`;
 
 	const typeMap = {
-		'pawn': 'p',
+		'pawn': 'P',
 		'rook': 'R',
-		'knight': 'Kn',
+		'knight': 'k',
 		'bishop': 'B',
 		'king': 'K',
 		'queen': 'Q',
