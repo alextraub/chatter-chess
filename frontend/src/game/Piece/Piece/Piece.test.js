@@ -84,7 +84,6 @@ test('The canMove method must be passed 2 arguments', () => {
 	expect(() => whitePiece1.canMove()).toThrow(TypeError);
 	expect(() => blackPiece.canMove([])).toThrow(TypeError);
 	expect(() => whitePiece2.canMove([], [])).not.toThrow(TypeError);
-
 });
 test('Piece canMove checks the boardState', () => {
 	blackPiece.canMove([0, 0], [1, 1]);
@@ -107,4 +106,8 @@ test('Pieces can move to empty squares on the board', () => {
 
 	expect(whitePiece2.canMove([0, 0], [0, 1])).toBe(true);
 	expect(blackPiece.canMove([0, 0], [6, 1])).toBe(true);
+});
+test('Pieces can\'t move to the same position it\'s already on', () => {
+	expect(whitePiece1.canMove([0, 0], [0, 0])).toBe(false);
+	expect(blackPiece.canMove([3, 2], [3, 2])).toBe(false);
 });
