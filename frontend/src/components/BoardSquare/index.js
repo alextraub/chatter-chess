@@ -34,7 +34,7 @@ const BoardSquare = ({ black, piece, position }) => {
 	return (
 		<div data-testid="board-square" className={`square ${squareColor}`}>
 			{renderPositionLabel()}
-			<div className="square-container">
+			<div data-testid="piece-container" className="square-container">
 				{renderPiece()}
 			</div>
 		</div>

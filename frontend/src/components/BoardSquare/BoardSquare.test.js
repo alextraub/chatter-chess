@@ -29,12 +29,12 @@ test('Empty black square has white class', () => {
 
 test('Empty white square does not have a piece', () => {
 	const { getByTestId } = render(<BoardSquare />);
-	expect(getByTestId('board-square')).toBeEmptyDOMElement();
+	expect(getByTestId('piece-container')).toBeEmptyDOMElement();
 });
 
 test('Empty black square does not have a piece', () => {
 	const { getByTestId } = render(<BoardSquare black />);
-	expect(getByTestId('board-square')).toBeEmptyDOMElement();
+	expect(getByTestId('piece-container')).toBeEmptyDOMElement();
 });
 
 test('White square with piece has child DOM element(s)', () => {
