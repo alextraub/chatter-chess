@@ -22,3 +22,9 @@ test('pawn can move up 1 square', () => {
     expect(whitePawn.canMove([0, 2], [1, 2])).toBe(true);
     expect(blackPawn.canMove([3, 4], [4, 4])).toBe(true);
 });
+
+test('pawn can move up 2 square', () => {
+    moveToEmptySquare();
+    expect(whitePawn.canMove([0, 2], [2, 2])).toBe(true);
+    expect(blackPawn.canMove([3, 4], [5, 5])).toBe(true);
+} 
