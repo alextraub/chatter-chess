@@ -25,7 +25,7 @@ const BoardSquare = ({ black, piece, position }) => {
 
 	const renderPositionLabel = () => {
 		if(position) {
-			return <span className="label-position">{position}</span>
+			return <span data-testid="position-label" className="label-position">{position}</span>
 		} else {
 			return '';
 		}
@@ -34,7 +34,7 @@ const BoardSquare = ({ black, piece, position }) => {
 	return (
 		<div data-testid="board-square" className={`square ${squareColor}`}>
 			{renderPositionLabel()}
-			<div data-testid="piece-container" className="square-container">
+			<div data-testid="piece-container" className="piece-container">
 				{renderPiece()}
 			</div>
 		</div>
