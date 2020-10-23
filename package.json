@@ -11,8 +11,7 @@
 		},
 		"jest": {
 				"moduleNameMapper": {
-					"\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "frontend/src/__mocks__/fileMock.js",
-					"\\.(css|less)$": "identity-obj-proxy"
+						"\\.(css|jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "identity-obj-proxy"
 				}
 		},
 		"dependencies": {
@@ -23,6 +22,7 @@
 				"autoprefixer": "^9.8.6",
 				"babel-loader": "^8.1.0",
 				"css-loader": "^4.3.0",
+				"file-loader": "^6.1.1",
 				"nan": "^2.14.1",
 				"postcss-loader": "^4.0.1",
 				"precss": "^4.0.0",

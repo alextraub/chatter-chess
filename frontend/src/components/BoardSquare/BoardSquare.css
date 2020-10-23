@@ -1,6 +1,6 @@
 .piece-container {
 	align-self: center;
-	padding: 20px 25px;
+	padding: 20px;
 }
 
 .square {
@@ -9,10 +9,10 @@
 }
 
 .square.white {
-	background-color: white;
+	background-color: #eee;
 }
 .square.black {
-	background-color: black;
+	background-color: #444;
 }
 
 .label-position {
@@ -22,4 +22,7 @@
 	margin: 0;
 	float: right;
 	position: relative;
+	padding: 1px;
+	border-left: 2px inset #aa4;
+	border-bottom: 2px inset #ee8;
 }

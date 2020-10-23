@@ -1,0 +1,14 @@
+.piece {
+	font-size: 3rem;
+}
+
+.piece-container .piece {
+	padding: 0 3px;
+}
+
+.piece.black {
+	color: white;
+}
+.piece.white {
+	color: black;
+}

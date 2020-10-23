@@ -1,8 +1,8 @@
 import './BoardSquare.css';
 import React from "react";
 import PropTypes from "prop-types";
-import BoardPiece from '../BoardPiece';
-import Piece from '../../game/Piece';
+import ChessPiece from '../ChessPiece';
+import Piece, { pieceName } from '../../game/Piece';
 
 /**
  *
@@ -19,7 +19,7 @@ const BoardSquare = ({ black, piece, position }) => {
 		if(piece === null) {
 			return '';
 		} else {
-			return <BoardPiece piece={piece} />
+			return <ChessPiece black={piece.isBlack()}  type={pieceName(piece)}/>
 		}
 	}
 
