@@ -90,6 +90,10 @@ class Piece {
 	 * @throws {TypeError} throws error when missing arguments or invalid parameter types are passed
 	 */
 	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
+		if(fromRow === toRow && fromCol === toCol) { // check that the from and to positions are different
+			return false;
+		}
+
 		const targetSquare = this.boardState.getPiece([ toRow, toCol ])
 		if(targetSquare === null) {
 			return true;

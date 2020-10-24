@@ -1,28 +1,28 @@
-/* .square {
-	border: 2px solid goldenrod;
-	float: left;
-	margin-right: -1px;
-	margin-top: -1px;
-	display: flex;
-	width: 12.5%;
-	justify-content: center;
-	align-items: center;
-	box-sizing: border-box;
+.piece-container {
+	align-self: center;
+	padding: 20px;
 }
-.square:after {
-	content: ' ';
-	padding-top: 100%;
-	display: table;
-} */
+
 .square {
 	justify-content: center;
 	align-items: center;
-	display: flex;
-	padding: 15px;
 }
+
 .square.white {
-	background-color: white;
+	background-color: #eee;
 }
 .square.black {
-	background-color: black;
+	background-color: #444;
+}
+
+.label-position {
+	background-color: #cc6;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+	float: right;
+	position: relative;
+	padding: 1px;
+	border-left: 2px inset #aa4;
+	border-bottom: 2px inset #ee8;
 }
