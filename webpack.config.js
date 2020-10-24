@@ -9,7 +9,7 @@ const config = {
 			{
 				test: /\.(png|jpg)$/,
 				use: {
-					loader: 'file-loader'
+					loader: 'url-loader'
 				}
 			},
 			{
