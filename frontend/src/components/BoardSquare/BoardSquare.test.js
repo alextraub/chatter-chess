@@ -40,7 +40,7 @@ test('Empty black square does not have a piece', () => {
 test('White square with piece has child DOM element(s)', () => {
 	const { getByTestId } = render(<BoardSquare piece={new DPiece(new BoardState())}/>);
 	const boardSquare = getByTestId('board-square');
-	const boardPiece = getByTestId('board-piece');
+	const boardPiece = getByTestId('chess-piece');
 	expect(boardSquare).toContainElement(boardPiece);
 });
 

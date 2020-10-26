@@ -10,6 +10,9 @@
 				"dev-server": "cross-env DJANGO_SETTINGS_MODULE=\"chatter_chess.settings.dev_server\" concurrently \"cross-env-shell npx webpack-dev-server\" \"python manage.py runserver\""
 		},
 		"jest": {
+				"transform": {
+						".*": "babel-jest"
+				},
 				"moduleNameMapper": {
 						"\\.(css|jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "identity-obj-proxy"
 				}
@@ -40,6 +43,7 @@
 				"@testing-library/react": "^11.0.4",
 				"babel-eslint": "^10.1.0",
 				"babel-jest": "^26.3.0",
+				"babel-polyfill": "^6.26.0",
 				"concurrently": "^5.3.0",
 				"cross-env": "^7.0.2",
 				"eslint": "^7.10.0",
