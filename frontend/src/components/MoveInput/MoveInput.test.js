@@ -2,6 +2,12 @@ import React from 'react';
 import { render, cleanup, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import MoveInput from "./";
+import BoardState from '../../game/BoardState';
+jest.mock('../../game/BoardState.js');
+
+beforeEach(() => {
+	BoardState.mockClear();
+});
 
 afterEach(cleanup);
 

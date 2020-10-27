@@ -33,8 +33,8 @@
 				"url-loader": "^4.1.1",
 				"webpack": "^4.44.1",
 				"webpack-cli": "^3.3.12",
-          "@testing-library/dom": "latest"
-        },
+				"@testing-library/dom": "latest"
+		},
 		"devDependencies": {
 				"@babel/plugin-proposal-class-properties": "^7.10.4",
 				"@testing-library/jest-dom": "^5.11.4",
