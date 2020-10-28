@@ -37,7 +37,6 @@ test('pawn can move to a square with an enemy piece diagonal', () => {
 
 test('Pawn cannot move to a square with a piece belonging to the same player', () => {
     boardState.getPiece.mockReturnValueOnce(whitePiece).mockReturnValue(blackPiece);
-
     expect(whitePawn.canMove([2, 1], [3, 1])).toBe(false);
     expect(blackPawn.canMove([2, 1], [3, 1])).toBe(false);
 });
@@ -51,4 +50,10 @@ test('pawn cannot move horizontally', () => {
 test('Pawn cannot move to the same position', () => {
     moveToEmptySquare();
     expect(whitePawn.canMove([0, 0], [0, 0])).toBe(false);
+});
+
+test('Pawn cannot move backwards vertically', () => {
+    moveToEmptySquare();
+    expect(whitePawn.canMove([3, 1], [2, 1])).toBe(false);
+    expect(blackPawn.canMove([4, 2], [3, 2])).toBe(false);
 });
