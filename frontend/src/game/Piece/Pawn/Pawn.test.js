@@ -57,3 +57,10 @@ test('Pawn cannot move backwards vertically', () => {
     expect(whitePawn.canMove([3, 1], [2, 1])).toBe(false);
     expect(blackPawn.canMove([4, 2], [3, 2])).toBe(false);
 });
+
+test('Pawn cannot move backwards diagonally', () => {
+    moveToEmptySquare();
+    expect(whitePawn.canMove([3, 1], [2, 1])).toBe(false);
+    expect(blackPawn.canMove([4, 2], [3, 2])).toBe(false);
+});
+
