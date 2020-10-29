@@ -89,9 +89,9 @@ class Piece {
 	 * @returns {boolean} ture if the piece is able to move tfrom from to to
 	 * @throws {TypeError} throws error when missing arguments or invalid parameter types are passed
 	 */
-	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
+	canMove([ fromRow, fromCol ], [ toRow, toCol ], returnErrors=false) {
 		if(fromRow === toRow && fromCol === toCol) { // check that the from and to positions are different
-			return false;
+			return returnErrors ? 'You can\'t move a piece to where it already is' : false;
 		}
 
 		const targetSquare = this.boardState.getPiece([ toRow, toCol ])
@@ -103,7 +103,7 @@ class Piece {
 			return true;
 		}
 
-		return false;
+		return returnErrors ? 'Pieces can\'t move onto a square where you already have another piece' : false;
 	}
 }
 
