@@ -14,7 +14,7 @@ export default class Check
                 {
                     if (search[r][c].canMove([r, c], [Row, Col]))   //we check if it can move to our square
                     {
-                        return true;               //if it can we return true, we are in check
+                        return true;                //if it can we return true, we are in check
                     }
                 }
             }
