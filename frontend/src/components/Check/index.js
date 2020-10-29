@@ -6,9 +6,9 @@ export default class Check
     inCheck([Row, Col], boardstate, team)
     {
         search = boardstate.returnBoardState();     //search is the current board state
-        for (r = 0, r < 8, ++r)                     //for every row
+        for(let r=0; r<8; r++)                      //for every row
         {
-            for (c = 0, c < 8, ++c)                 //for every coleum
+            for(let c=0; c<8; c++)                  //for every coleum
             {
                 if (search[r][c].player != team)    //if the peice there is an enemy
                 {
