@@ -5,12 +5,11 @@ import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
-import { Pawn } from '../../game/Piece';
 
-const capturedPieceObj = boardState => ({
+const capturedPieceObj = () => ({
 	count: 0,
 	pieces: {
-		pawn: [new Pawn(boardState)],
+		pawn: [],
 		rook: [],
 		knight: [],
 		bishop: [],
@@ -30,8 +29,8 @@ export default class GameContainer extends React.Component {
 		super(props);
 
 		this.boardState = new BoardState();
-		this.capturedWhitePieces = capturedPieceObj(this.boardState);
-		this.capturedBlackPieces = capturedPieceObj(this.boardState);
+		this.capturedWhitePieces = capturedPieceObj();
+		this.capturedBlackPieces = capturedPieceObj();
 		const board = this.boardState.returnBoardState();
 
 		this.state = {
