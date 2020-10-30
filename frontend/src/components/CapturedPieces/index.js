@@ -1,47 +1,46 @@
+import './CapturedPieces.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Piece, { pieceName } from '../../game/Piece';
+import Piece, { Pawn, Rook, Knight, Bishop, Queen, King } from '../../game/Piece';
 import ChessPiece from '../ChessPiece';
 
 export default class CapturedPieces extends React.Component {
-	constructor(props) {
-		super(props);
-		// this.state = {
-		// 	pieceCounts: {'rook': 0}
-		// };
-	}
-
 	static propTypes = {
-		whitePieces: PropTypes.arrayOf(PropTypes.instanceOf(Piece)),
-		blackPieces: PropTypes.arrayOf(PropTypes.instanceOf(Piece))
+		pieces: PropTypes.shape({
+			count: PropTypes.number,
+			pieces: PropTypes.shape({
+				pawn: PropTypes.arrayOf(PropTypes.instanceOf(Pawn)),
+				rook: PropTypes.arrayOf(PropTypes.instanceOf(Rook)),
+				knight: PropTypes.arrayOf(PropTypes.instanceOf(Knight)),
+				bishop: PropTypes.arrayOf(PropTypes.instanceOf(Bishop)),
+				queen: PropTypes.arrayOf(PropTypes.instanceOf(Queen)),
+				king: PropTypes.arrayOf(PropTypes.instanceOf(King)),
+				generic: PropTypes.arrayOf(PropTypes.instanceOf(Piece))
+			})
+		}).isRequired,
+		black: PropTypes.bool
 	}
 
-	// renderPieces(black) {
-	// 	return this.state.pieceCounts.entries().map([key, value] => (
-	// 		<div key={key}>
-	// 			<ChessPiece type={key} black={black}/>
-	// 			{value}
-	// 		</div>
-	// 	));
-	// }
+	static defaultProps = {
+		black: false
+	}
 
 	render() {
-		return (
-			<div id='capturedContainer'>
-				{/* <h1>Shadow Realm</h1><br/> */}
-				<div>
-					<h2>Captured White Pieces: {this.props.whitePieces.length}</h2><br/>
-					{this.props.whitePieces.map((piece, index) => {
-						return <ChessPiece type={pieceName(piece)} key={index}/>
-					})}
-				</div>
+		const { black, pieces } = this.props;
 
-				<div>
-					<h2>Captured Black Pieces: {this.props.blackPieces.length}</h2><br/>
-					{this.props.blackPieces.map((piece, index) => {
-						return <ChessPiece black type={pieceName(piece)} key={index}/>
-					})}
-				</div>
+		return (
+			<div className="captured-container" data-testid="capturedContainer">
+				<h2>Captured ({pieces.count})</h2><br/>
+				<ul>
+					{Object.entries(pieces.pieces)
+						.filter(entry => entry[1].length > 0)
+						.map(([type, pieceArray]) => (
+							<li data-testid="captured-graphic" key={`${type}s`} className="captured-graphic">
+								<ChessPiece type={type} black={black}/>
+								<span className="captured-count">x{pieceArray.length}</span>
+							</li>
+						))}
+				</ul>
 			</div>
 		);
 	}

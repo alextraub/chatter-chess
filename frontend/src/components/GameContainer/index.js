@@ -5,22 +5,39 @@ import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
+import { Pawn } from '../../game/Piece';
+
+const capturedPieceObj = boardState => ({
+	count: 0,
+	pieces: {
+		pawn: [new Pawn(boardState)],
+		rook: [],
+		knight: [],
+		bishop: [],
+		queen: [],
+		king: [],
+		generic: []
+	}
+});
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
  * as well as renders the top-level UI components for the game.
  */
 export default class GameContainer extends React.Component {
+
 	constructor(props) {
 		super(props);
 
 		this.boardState = new BoardState();
+		this.capturedWhitePieces = capturedPieceObj(this.boardState);
+		this.capturedBlackPieces = capturedPieceObj(this.boardState);
 		const board = this.boardState.returnBoardState();
 
 		this.state = {
 			board,
-			capturedWhitePieces: [],
-			capturedBlackPieces: [],
+			capturedWhitePieces: {...this.capturedWhitePieces},
+			capturedBlackPieces: {...this.capturedBlackPieces},
 			turn: 0 // Number of turns made in the game
 		}
 
@@ -73,7 +90,9 @@ export default class GameContainer extends React.Component {
 	syncBoard() {
 		this.setState({
 			...this.state,
-			board: this.boardState.returnBoardState()
+			board: this.boardState.returnBoardState(),
+			capturedWhitePieces: this.capturedWhitePieces,
+			capturedBlackPieces: this.capturedBlackPieces
 		});
 	}
 
@@ -85,20 +104,11 @@ export default class GameContainer extends React.Component {
 	 */
 	updateCapturedLists(piece) {
 		if(piece.isWhite()) {
-			const capturedWhitePieces = this.state.capturedWhitePieces;
-			capturedWhitePieces.push(piece);
-
-			this.setState({
-				...this.state,
-				capturedWhitePieces
-			});
+			this.capturedWhitePieces.count++;
+			this.capturedWhitePieces.pieces[piece.type].push(piece);
 		} else {
-			const capturedBlackPieces = this.state.capturedBlackPieces;
-			capturedBlackPieces.push(piece);
-			this.setState({
-				...this.state,
-				capturedBlackPieces
-			});
+			this.capturedBlackPieces.count++;
+			this.capturedBlackPieces.pieces[piece.type].push(piece);
 		}
 	}
 
@@ -113,31 +123,40 @@ export default class GameContainer extends React.Component {
 
 	render() {
 		return (
-			<div data-testid="game-container" className="row">
-				<div className="col">
-					<MoveInput
-						id="move-input"
-						currentPlayer={this.currentPlayer()}
-						getPiece={this.boardState.getPiece}
-						onMoveSuccess={this.handleSuccessfulMove}
-					/><br/>
-					<CapturedPieces
-						id="captured-pieces"
-						whitePieces={this.state.capturedWhitePieces}
-						blackPieces={this.state.capturedBlackPieces}
-					/>
-				</div>
-				{/*<div className="col">*/}
-				{/*	Captured White Pieces: {this.state.capturedWhitePieces.length}*/}
-				{/*	<br/>*/}
-				{/*	Captured Black Pieces: {this.state.capturedBlackPieces.length}*/}
-				{/*</div>*/}
-				<div className="col">
-					<BoardComponent
-						id="board"
-						player={this.props.playerView === 2 ? this.currentPlayer() : this.props.playerView}
-						board={this.state.board}
-					/>
+			<div data-testid="game-container" className="container">
+				<MoveInput
+					id="move-input"
+					currentPlayer={this.currentPlayer()}
+					getPiece={this.boardState.getPiece}
+					onMoveSuccess={this.handleSuccessfulMove}
+				/>
+
+				<div className="row">
+					<div className="col">
+						<CapturedPieces
+							black={this.currentPlayer() === 1}
+							pieces={this.currentPlayer() === 1 ?
+								this.state.capturedBlackPieces :
+								this.state.capturedWhitePieces}
+						/>
+					</div>
+
+					<div className="col">
+						<BoardComponent
+							id="board"
+							player={this.props.playerView === 2 ? this.currentPlayer() : this.props.playerView}
+							board={this.state.board}
+						/>
+					</div>
+
+					<div className="col">
+						<CapturedPieces
+							black={this.currentPlayer() !== 1}
+							pieces={this.currentPlayer() !== 1 ?
+								this.state.capturedBlackPieces :
+								this.state.capturedWhitePieces}
+						/>
+					</div>
 				</div>
 			</div>
 		);

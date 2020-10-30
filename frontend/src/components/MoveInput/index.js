@@ -64,16 +64,6 @@ export default class MoveInput extends React.Component {
 	render() {
 		return (
 			<div id='inputContainer'>
-				<h1>Enter your move below</h1><br/>
-				<h2>Please enter your move in the form of &quot;RowColumn RowColumn&quot;!</h2><br/>
-				<h3>For example, if you want to move a knight from G1 to H3, you would enter this in as &quot;G1 H3&quot;.</h3><br/>
-				<p>
-					{this.props.currentPlayer ? (
-						'It is blacks turn'
-					) : (
-						'It is whites turn'
-					)}
-				</p>
 				<form onSubmit={event => {this.handleSubmit(event)}}>
 					<input data-testid="move" type="text" placeholder="Enter Move Here" name="move" value={this.state.move} onChange={event => {this.handleInputChange(event)}}/>
 					<div data-testid="error" style={{color: "red"}}>{this.state.moveError}</div>

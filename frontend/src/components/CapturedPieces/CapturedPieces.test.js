@@ -1,49 +1,78 @@
 import React from 'react';
-import {cleanup, render} from "@testing-library/react";
-import CapturedPieces from "../CapturedPieces";
+import {cleanup, render, screen} from "@testing-library/react";
+import CapturedPieces from "./";
 import '@testing-library/jest-dom/extend-expect';
-import DPiece from '../../__mocks__/DPiece';
 import {Bishop, Pawn, Rook} from "../../game/Piece";
 import BoardState from "../../game/BoardState";
+
+jest.mock('../../game/BoardState.js');
+jest.mock('../ChessPiece/pieceImages.js');
 
 afterEach(cleanup);
 
 const boardState = new BoardState();
-const whitePawn = new DPiece(boardState, 0) instanceof Pawn;
-const whiteRook = new DPiece(boardState, 0) instanceof Rook;
-const whiteBishop = new DPiece(boardState, 0) instanceof Bishop;
-const blackPawn = new DPiece(boardState, 1) instanceof Pawn;
-const blackRook = new DPiece(boardState, 1) instanceof Rook;
-const blackBishop = new DPiece(boardState, 1) instanceof Bishop;
-const whitePieces = [whitePawn, whiteRook, whiteBishop];
-const blackPieces = [blackPawn, blackRook, blackBishop];
+const whitePawn = new Pawn(boardState, 0);
+const whiteRook = new Rook(boardState, 0);
+const whiteBishop = new Bishop(boardState, 0);
+const blackPawn = new Pawn(boardState, 1);
+const blackRook = new Rook(boardState, 1);
+const blackBishop = new Bishop(boardState, 1);
+const whitePieces = {
+	count: 3,
+	pieces: {
+		pawn: [whitePawn],
+		rook: [whiteRook],
+		knight: [],
+		bishop: [whiteBishop],
+		queen: [],
+		king: [],
+		generic: []
+	}
+};
+const blackPieces = {
+	count: 4,
+	pieces: {
+		pawn: [blackPawn, blackPawn],
+		rook: [blackRook],
+		knight: [],
+		bishop: [blackBishop],
+		queen: [],
+		king: [],
+		generic: []
+	}
+};
 
-
-const renderCapturedPieces = () => (
-	render(<CapturedPieces whitePieces={whitePieces} blackPieces={blackPieces}/>)
-);
 
 test('Component renders', () => {
-	renderCapturedPieces();
+	const { getByTestId, rerender } = render(<CapturedPieces pieces={whitePieces}/>);
+	expect(getByTestId('capturedContainer')).toBeInTheDocument();
+
+	rerender(<CapturedPieces black pieces={blackPieces}/>);
+	expect(getByTestId('capturedContainer')).toBeInTheDocument();
+
+	rerender(<CapturedPieces pieces={blackPieces}/>)
+	expect(getByTestId('capturedContainer')).toBeInTheDocument();
+
+	rerender(<CapturedPieces black pieces={whitePieces}/>)
+	expect(getByTestId('capturedContainer')).toBeInTheDocument();
 });
 
 test('Component displays correct amount of captured white pieces', () => {
-	const { getByText } = renderCapturedPieces();
+	const { getByText } = render(<CapturedPieces pieces={whitePieces}/>);
 	expect(getByText('Captured White Pieces: 3')).toBeTruthy();
 });
 
 test('Component displays correct amount of captured black pieces', () => {
-	const { getByText } = renderCapturedPieces();
-	expect(getByText('Captured Black Pieces: 3')).toBeTruthy();
+	const { getByText } = render(<CapturedPieces black pieces={blackPieces}/>);
+	expect(getByText('Captured Black Pieces: 4')).toBeTruthy();
 });
 
 test('Component displays captured white pieces', () => {
-	const { getAllByTestId } = renderCapturedPieces();
-	expect(getAllByTestId('chess-piece')).toHaveLength(3);
+	const { getAllByTestId } = render(<CapturedPieces pieces={whitePieces}/>);
+	expect(getAllByTestId('captured-graphic')).toHaveLength(3);
 });
 
-
-
-
-
-
+test('Component displays captured black pieces', () => {
+	render(<CapturedPieces black pieces={blackPieces}/>);
+	expect(screen.getAllByTestId('captured-graphic')).toHaveLength(3);
+});

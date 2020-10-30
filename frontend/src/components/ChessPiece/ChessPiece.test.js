@@ -1,8 +1,8 @@
 import React from 'react';
 jest.mock('./pieceImages.js');
-import { render as rtRender } from 'react-test-renderer';
-import { render, screen, cleanup, waitForElement } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+
 
 import ChessPiece from './';
 

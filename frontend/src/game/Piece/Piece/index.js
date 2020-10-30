@@ -38,7 +38,7 @@ class Piece {
 	 * @returns {string} the full length, lowercase word for what type of piece this is, like rook, bishop, etc
 	 */
 	get type() {
-		return 'generic piece'
+		return 'generic';
 	}
 
 	/**

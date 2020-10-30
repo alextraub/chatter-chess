@@ -112,7 +112,7 @@ test('Pieces can\'t move to the same position it\'s already on', () => {
 	expect(blackPiece.canMove([3, 2], [3, 2])).toBe(false);
 });
 
-test('Pieces have type of "generic piece"', () => {
-	expect(whitePiece1.type).toBe('generic piece');
-	expect(blackPiece.type).toBe('generic piece');
+test('Pieces have type of "generic"', () => {
+	expect(whitePiece1.type).toBe('generic');
+	expect(blackPiece.type).toBe('generic');
 });
