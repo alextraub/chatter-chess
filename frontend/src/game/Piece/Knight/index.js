@@ -1,8 +1,12 @@
 import Piece from '../Piece';
 
 export default class Knight extends Piece {
-	canMove([ fromRow, fromCol ], [ toRow, toCol ], returnErrors=false) {
-		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ], returnErrors);
+	get type() {
+		return 'knight';
+	}
+
+	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
+		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ]);
 		if(!validFinalPosition) {
 			return false;
 		}
@@ -13,6 +17,6 @@ export default class Knight extends Piece {
 			return true;
 		}
 
-		return returnErrors ? 'Knights can\'t move that way' : false;
+		return false;
 	}
 }

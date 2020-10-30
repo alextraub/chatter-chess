@@ -1,6 +1,10 @@
 import Piece from '../Piece';
 
 export default class Queen extends Piece {
+	get type() {
+		return 'queen';
+	}
+
 	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
 		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ]);
 		if(!validFinalPosition) {

@@ -1,6 +1,10 @@
 import Piece from '../Piece';
 
 export default class Bishop extends Piece {
+	get type() {
+		return 'bishop';
+	}
+
 	canMove([fromRow, fromCol], [toRow, toCol])
 	{
 		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol]);   //call the super method to see if the move passes basic validation

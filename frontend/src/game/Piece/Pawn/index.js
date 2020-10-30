@@ -1,6 +1,10 @@
 import Piece from '../Piece';
 
 export default class Pawn extends Piece {
+	get type() {
+		return 'pawn';
+	}
+
 	canMove([fromRow, fromCol], [toRow, toCol]) {
 		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol]);
 		if (!validFinalPosition) {

@@ -35,6 +35,13 @@ class Piece {
 	}
 
 	/**
+	 * @returns {string} the full length, lowercase word for what type of piece this is, like rook, bishop, etc
+	 */
+	get type() {
+		return 'generic piece'
+	}
+
+	/**
 	 * Get the player this piece belongs to, 0 for white, 1 for black
 	 */
 	get player() {
@@ -89,9 +96,9 @@ class Piece {
 	 * @returns {boolean} ture if the piece is able to move tfrom from to to
 	 * @throws {TypeError} throws error when missing arguments or invalid parameter types are passed
 	 */
-	canMove([ fromRow, fromCol ], [ toRow, toCol ], returnErrors=false) {
+	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
 		if(fromRow === toRow && fromCol === toCol) { // check that the from and to positions are different
-			return returnErrors ? 'You can\'t move a piece to where it already is' : false;
+			return false;
 		}
 
 		const targetSquare = this.boardState.getPiece([ toRow, toCol ])
@@ -103,7 +110,7 @@ class Piece {
 			return true;
 		}
 
-		return returnErrors ? 'Pieces can\'t move onto a square where you already have another piece' : false;
+		return false;
 	}
 }
 

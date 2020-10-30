@@ -1,6 +1,10 @@
 import Piece from '../Piece';
 
 export default class Rook extends Piece {
+	get type() {
+		return 'rook';
+	}
+
 	canMove([fromRow, fromCol], [toRow, toCol])
 	{
 		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol]);   //call the super method to see if the move passes basic validation
