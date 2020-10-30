@@ -1,10 +1,12 @@
 import Queen from './';
-import BoardState, { mockGetPiece } from '../../../__mocks__/boardStateMock';
+import BoardState from '../../BoardState';
 import DPiece from '../../../__mocks__/DPiece';
+
+jest.mock('../../BoardState.js');
 
 beforeEach(() => {
 	BoardState.mockClear();
-	mockGetPiece.mockClear();
+	BoardState.mockClear();
 });
 
 const boardState = new BoardState();
@@ -14,7 +16,7 @@ const whitePiece = new DPiece(boardState);
 const blackPiece = new DPiece(boardState, 1);
 
 const moveToEmptySquare = () => {
-	mockGetPiece.mockReturnValue(null);
+	boardState.getPiece.mockReturnValue(null);
 };
 
 test('Queen can move up more than one space', () => {
@@ -132,13 +134,13 @@ test('Queen cannot move like a Knight #3', () => {
 });
 
 test('Queen can move to a square with an enemy piece', () => {
-	mockGetPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece);
-	expect(whiteQueen.canMove([0, 4], [3, 4])).toBe(true);
-	expect(blackQueen.canMove([0, 4], [3, 4])).toBe(true);
+	boardState.getPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece);
+	expect(whiteQueen.canMove([0, 4], [1, 4])).toBe(true);
+	expect(blackQueen.canMove([0, 4], [1, 4])).toBe(true);
 });
 
 test('Queens cannot move to a square with a piece belonging to the same player', () => {
-	mockGetPiece.mockReturnValueOnce(whitePiece).mockReturnValue(blackPiece);
+	boardState.getPiece.mockReturnValueOnce(whitePiece).mockReturnValue(blackPiece);
 	expect(whiteQueen.canMove([0, 4], [3, 4])).toBe(false);
 	expect(blackQueen.canMove([0, 4], [3, 4])).toBe(false);
 });
