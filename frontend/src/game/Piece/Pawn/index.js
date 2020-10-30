@@ -2,7 +2,7 @@ import Piece from '../Piece';
 
 export default class Pawn extends Piece {
 	canMove([fromRow, fromCol], [toRow, toCol]) {
-		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ]);
+		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol]);
 		if (!validFinalPosition) {
 			return false;
 		}
@@ -23,15 +23,22 @@ export default class Pawn extends Piece {
 					if (this.boardState.getPiece([fromRow - 1, fromCol]) !== null) {
 						return false;
 					}
+
 				}
 				if (fromRow === 6 && this.isBlack()) {
 					if (this.boardState.getPiece([fromRow + 1, fromCol]) !== null) {
 						return false;
 					}
+
 				}
+
 			}
+			if (!((Math.abs(fromRow) === 1) || (Math.abs(fromRow) === 6)))
+				if (Math.abs(numRows) === 2)
+					return false;
 			//if the to position is empty, return true
-			return this.boardState.getPiece([toRow, toCol]) == null;
+			return this.boardState.getPiece([toRow, toCol]) === null
+
 		}
 		if (Math.abs(numCols) === 1) {
 			if (numRows === -1 && this.isBlack()) {
