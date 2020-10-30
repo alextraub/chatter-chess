@@ -1,19 +1,6 @@
 import './MoveInput.css';
 import React from 'react';
-
-export const convertPosition = pos => {
-	let pos1 = pos.charCodeAt(0) - 'A'.charCodeAt(0);
-	let pos2 = pos.charAt(1);
-	try {
-		pos2 = parseInt(pos2) - 1;
-	} catch (error){
-		return -1;
-	}
-	if ((pos1 < 0 || pos1 > 7) || (pos2 < 0 || pos2 > 7)) {
-		return -1;
-	}
-	return [pos1, pos2];
-};
+import {boardPositionToTuple, isValidBoardPositionString} from '../../game/utils/boardPosition'
 
 export default class MoveInput extends React.Component {
 
@@ -29,16 +16,16 @@ export default class MoveInput extends React.Component {
 	}
 
 	validate(from, to) {
-		if (from.length !== 2) {
-			return false;
+		if (!isValidBoardPositionString(from) || !isValidBoardPositionString(to)) {
+			return false
 		}
-		if (to.length !== 2) {
-			return false;
-		}
-		const fromPos = convertPosition(from);
-		const toPos = convertPosition(to);
-		if (fromPos === -1 || toPos === -1) {
-			return false;
+		let fromPos;
+		let toPos;
+		try {
+			fromPos = boardPositionToTuple(from);
+			toPos = boardPositionToTuple(to);
+		} catch (error){
+			return false
 		}
 		const piece = this.props.getPiece(fromPos);
 		if (!piece || piece.player !== this.props.currentPlayer) {
@@ -58,7 +45,7 @@ export default class MoveInput extends React.Component {
 			});
 			return;
 		}
-		this.props.onMoveSuccess(convertPosition(command[0]), convertPosition(command[1]));
+		this.props.onMoveSuccess(boardPositionToTuple(command[0]), boardPositionToTuple(command[1]));
 		this.setState({
 			...this.state,
 			move: '',
@@ -89,8 +76,8 @@ export default class MoveInput extends React.Component {
 				</p>
 				<form onSubmit={event => {this.handleSubmit(event)}}>
 					<input data-testid="move" type="text" placeholder="Enter Move Here" name="move" value={this.state.move} onChange={event => {this.handleInputChange(event)}}/>
-					<div style={{color: "red"}}>{this.state.moveError}</div>
-					<input type='submit' value='Submit Move'/>
+					<div data-testid="error" style={{color: "red"}}>{this.state.moveError}</div>
+					<input data-testid="button" type='submit' value='Submit Move'/>
 				</form>
 			</div>
 		);
