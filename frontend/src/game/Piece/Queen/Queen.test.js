@@ -149,3 +149,8 @@ test('Queens cannot move to the same position', () => {
 	moveToEmptySquare();
 	expect(whiteQueen.canMove([0, 4], [0, 4])).toBe(false);
 });
+
+test('Queens have type of "queen"', () => {
+	expect(whiteQueen.type).toBe('queen');
+	expect(blackQueen.type).toBe('queen');
+});

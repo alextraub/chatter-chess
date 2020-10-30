@@ -113,3 +113,8 @@ test('Knights cannot move diagonally', () => {
 	expect(blackKnight.canMove([0,0], [7,7])).toBe(false);
 	expect(whiteKnight.canMove([7,7], [0,0])).toBe(false);
 });
+
+test('Knights have type of "knight"', () => {
+	expect(whiteKnight.type).toBe('knight');
+	expect(blackKnight.type).toBe('knight');
+});

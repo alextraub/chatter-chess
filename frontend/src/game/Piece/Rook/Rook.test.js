@@ -3,9 +3,9 @@ import DPiece from '../../../__mocks__/DPiece';
 import BoardState from '../../BoardState';
 jest.mock('../../BoardState');
 
-beforeEach(() => 
+beforeEach(() =>
 {
-    BoardState.mockClear();
+	BoardState.mockClear();
 });
 
 const boardState = new BoardState();
@@ -14,73 +14,78 @@ const blackRook = new Rook(boardState, 1);
 const whitePiece = new DPiece(boardState);
 const blackPiece = new DPiece(boardState, 1);
 
-const moveToEmptySquare = () => 
+const moveToEmptySquare = () =>
 {
-    boardState.getPiece.mockReturnValue(null);
+	boardState.getPiece.mockReturnValue(null);
 }
 
-test('Rook can move right', () => 
+test('Rook can move right', () =>
 {
-    moveToEmptySquare();
+	moveToEmptySquare();
 
-    expect(whiteRook.canMove([0, 0], [0, 1])).toBe(true);
-    expect(blackRook.canMove([1, 0], [1, 1])).toBe(true);
+	expect(whiteRook.canMove([0, 0], [0, 1])).toBe(true);
+	expect(blackRook.canMove([1, 0], [1, 1])).toBe(true);
 });
 
 test('Rook can move down', () =>
 {
-    moveToEmptySquare();
+	moveToEmptySquare();
 
-    expect(whiteRook.canMove([0, 0], [1, 0])).toBe(true);
-    expect(blackRook.canMove([0, 1], [1, 1])).toBe(true);
+	expect(whiteRook.canMove([0, 0], [1, 0])).toBe(true);
+	expect(blackRook.canMove([0, 1], [1, 1])).toBe(true);
 });
 
 test('Rook and move left', () =>
 {
-    moveToEmptySquare();
+	moveToEmptySquare();
 
-    expect(whiteRook.canMove([0, 1], [0, 0])).toBe(true);
-    expect(blackRook.canMove([1, 1], [1, 0])).toBe(true);
+	expect(whiteRook.canMove([0, 1], [0, 0])).toBe(true);
+	expect(blackRook.canMove([1, 1], [1, 0])).toBe(true);
 });
 
 test('Rook can move up', () =>
 {
-    moveToEmptySquare();
+	moveToEmptySquare();
 
-    expect(whiteRook.canMove([1, 0], [0, 0])).toBe(true);
-    expect(blackRook.canMove([1, 1], [1, 0])).toBe(true);
+	expect(whiteRook.canMove([1, 0], [0, 0])).toBe(true);
+	expect(blackRook.canMove([1, 1], [1, 0])).toBe(true);
 });
 
 test('Rook can move to a square with a enemy piece', () =>
 {
-    boardState.getPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece);
+	boardState.getPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece);
 
-    expect(whiteRook.canMove([0, 0], [0, 1])).toBe(true);
-    expect(blackRook.canMove([0, 0], [0, 1])).toBe(true);
+	expect(whiteRook.canMove([0, 0], [0, 1])).toBe(true);
+	expect(blackRook.canMove([0, 0], [0, 1])).toBe(true);
 });
 
 test('Rook can NOT move to a square with an allied piece', () =>
 {
-    boardState.getPiece.mockReturnValueOnce(whitePiece).mockReturnValue(blackPiece);
+	boardState.getPiece.mockReturnValueOnce(whitePiece).mockReturnValue(blackPiece);
 
-    expect(whiteRook.canMove([0, 0], [0, 1])).toBe(false);
-    expect(blackRook.canMove([0, 0], [0, 1])).toBe(false);
+	expect(whiteRook.canMove([0, 0], [0, 1])).toBe(false);
+	expect(blackRook.canMove([0, 0], [0, 1])).toBe(false);
 });
 
 test('Rook can NOT move to the same space it is on', () =>
 {
-    moveToEmptySquare();
+	moveToEmptySquare();
 
-    expect(whiteRook.canMove([1, 1], [1, 1])).toBe(false);
+	expect(whiteRook.canMove([1, 1], [1, 1])).toBe(false);
 });
 
 test('Rook can NOT move Over pieces', () =>
 {
-    boardState.getPiece.mockReturnValue(blackPiece);
+	boardState.getPiece.mockReturnValue(blackPiece);
 
-    expect(whiteRook.canMove([0, 0], [0, 2])).toBe(false);
+	expect(whiteRook.canMove([0, 0], [0, 2])).toBe(false);
 
-    boardState.getPiece.mockReturnValue(whitePiece);
+	boardState.getPiece.mockReturnValue(whitePiece);
 
-    expect(blackRook.canMove([0, 0], [0, 2])).toBe(false);
+	expect(blackRook.canMove([0, 0], [0, 2])).toBe(false);
+});
+
+test('Rooks have type of "rook"', () => {
+	expect(whiteRook.type).toBe('rook');
+	expect(blackRook.type).toBe('rook');
 });

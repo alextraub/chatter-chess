@@ -63,3 +63,8 @@ test('Pawn cannot move backwards diagonally', () => {
 	expect(whitePawn.canMove([2, 0], [3, 1])).toBe(false);
 	expect(blackPawn.canMove([4, 2], [3, 1])).toBe(false);
 });
+
+test('Pawns have type of "pawn"', () => {
+	expect(whitePawn.type).toBe('pawn');
+	expect(blackPawn.type).toBe('pawn');
+});

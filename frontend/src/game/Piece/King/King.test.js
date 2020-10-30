@@ -130,3 +130,8 @@ test('Kings cannot move to the same position', () => {
 	moveToEmptySquare();
 	expect(whiteKing.canMove([0, 3], [0, 3])).toBe(false);
 });
+
+test('Kings have type of "king"', () => {
+	expect(whiteKing.type).toBe('king');
+	expect(blackKing.type).toBe('king');
+});
