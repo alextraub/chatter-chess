@@ -1,4 +1,5 @@
 import Piece from '../Piece';
+import { boardPositionToString } from '../../utils/boardPosition';
 
 export default class Bishop extends Piece {
 	get type() {
@@ -16,7 +17,8 @@ export default class Bishop extends Piece {
 
 		if (Math.abs(numRows) !== Math.abs(numCols))                  //if the number of rows crossed != the number of cols crossed
 		{
-			return false;                                           //its not a diagonal path
+			return mode === 0 ?
+				false : `A ${this.type} can only move diagonally`;                                           //its not a diagonal path
 		}
 
 		if (numRows > 0 && numCols > 0)                             //rows and cols are going up, meaning we are going down right the board
@@ -27,7 +29,8 @@ export default class Bishop extends Piece {
 			{
 				if (this.boardState.getPiece([currR, currC]) != null)//if that position is not empty
 				{
-					return false;                                   //something is blocking us
+					return mode === 0 ?
+						false : `There is a piece at ${boardPositionToString([currR, currC])} blocking your ${this.type}'s path`;                                   //something is blocking us
 				}
 				currR++;                                            //move pointer down right
 				currC++;

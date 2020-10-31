@@ -17,7 +17,7 @@ export default class King extends Piece {
 			return true;
 		} else {
 			return mode === 0 ?
-				false: 'A king can only move 1 square in any direction';
+				false: `A ${this.type} can only move 1 square in any direction`;
 		}
 	}
 }

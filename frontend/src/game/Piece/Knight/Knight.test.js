@@ -98,7 +98,7 @@ test('Knights cannot move horizontally', () => {
 
 	expect(blackKnight.canMove([0,0], [0, 2])).toBe(false);
 	expect(whiteKnight.canMove([0,5], [0,1])).toBe(false);
-	expect(whiteKnight.canMove([0,5], [0,1], 1)).toEqual('A knight may only may 2 spaces vertically and 1 horizontally or 1 vertically and 2 horizontally');
+	expect(whiteKnight.canMove([0,5], [0,1], 1)).toEqual(`A knight can only move 2 spaces vertically and 1 horizontally or 1 vertically and 2 horizontally`);
 });
 
 test('Knights cannot move vertically', () => {
@@ -106,7 +106,7 @@ test('Knights cannot move vertically', () => {
 
 	expect(blackKnight.canMove([0,0], [1,0])).toBe(false);
 	expect(whiteKnight.canMove([6, 4], [1, 4])).toBe(false);
-	expect(blackKnight.canMove([0,0], [1,0], 1)).toEqual('A knight may only may 2 spaces vertically and 1 horizontally or 1 vertically and 2 horizontally');
+	expect(blackKnight.canMove([0,0], [1,0], 1)).toEqual(`A knight can only move 2 spaces vertically and 1 horizontally or 1 vertically and 2 horizontally`);
 });
 
 test('Knights cannot move diagonally', () => {
@@ -114,7 +114,7 @@ test('Knights cannot move diagonally', () => {
 
 	expect(blackKnight.canMove([0,0], [7,7])).toBe(false);
 	expect(whiteKnight.canMove([7,7], [0,0])).toBe(false);
-	expect(whiteKnight.canMove([7,7], [1,0], 1)).toEqual('A knight may only may 2 spaces vertically and 1 horizontally or 1 vertically and 2 horizontally');
+	expect(whiteKnight.canMove([7,7], [1,0], 1)).toEqual(`A knight can only move 2 spaces vertically and 1 horizontally or 1 vertically and 2 horizontally`);
 });
 
 test('Knights have type of "knight"', () => {
