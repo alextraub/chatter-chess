@@ -120,6 +120,13 @@ test('King cannot move diagonal left down more than one space', () => {
 	expect(blackKing.canMove([5, 4], [7, 6], 0)).toBe(false);
 });
 
+test('King cannot move to a square with a piece belonging to the same player', () => {
+	boardState.getPiece.mockReturnValueOnce(whitePiece).mockReturnValue(blackPiece);
+
+	expect(whiteKing.canMove([2,3], [2,4])).toBe(false);
+	expect(blackKing.canMove([2,3], [2,4])).toBe(false);
+});
+
 test('King can move to a square with an enemy piece', () => {
 	boardState.getPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece);
 	expect(whiteKing.canMove([0, 3], [1, 3], 1)).toBe(true);

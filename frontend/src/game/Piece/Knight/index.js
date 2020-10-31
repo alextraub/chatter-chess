@@ -17,6 +17,7 @@ export default class Knight extends Piece {
 			return true;
 		}
 
-		return false;
+		return mode === 0 ?
+			false : 'A knight may only may 2 spaces vertically and 1 horizontally or 1 vertically and 2 horizontally';
 	}
 }
