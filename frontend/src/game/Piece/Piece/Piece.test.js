@@ -3,6 +3,9 @@ import DPiece from '../../../__mocks__/DPiece';
 import BoardState from '../../BoardState';
 jest.mock('../../BoardState.js')
 
+const positionUtils = require('../../utils/boardPosition');
+jest.mock('../../utils/boardPosition');
+
 beforeEach(() => {
 	BoardState.mockClear();
 });
@@ -93,26 +96,44 @@ test('Pieces can move to a square occupied by an enemy Piece', () => {
 	boardState.getPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece1);
 
 	expect(whitePiece1.canMove([0, 0], [0, 1])).toBe(true);
-	expect(blackPiece.canMove([0, 1], [0, 0])).toBe(true);
+	expect(blackPiece.canMove([0, 1], [0, 0], 0)).toBe(true);
+	expect(blackPiece.canMove([0, 1], [3, 2], 1)).toBe(true);
 });
 test('Pieces cannot move to a square occupied by another Piece belonging to the same player', () => {
-	boardState.getPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece2);
+	boardState.getPiece.mockReturnValue(blackPiece);
+	positionUtils.boardPositionToString.mockReturnValueOnce('A2').mockReturnValue('A1');
+	expect(blackPiece.canMove([0, 0], [0, 1], 0)).toBe(false);
+	expect(blackPiece.canMove([0, 0], [0, 1], 1)).toBe('You already have a piece at A2');
 
-	expect(blackPiece.canMove([0, 0], [0, 1])).toBe(false);
-	expect(whitePiece1.canMove([0, 1], [0, 0])).toBe(false);
+	boardState.getPiece.mockReturnValue(new DPiece(boardState));
+	expect(whitePiece2.canMove([0, 1], [0, 0])).toBe(false);
+	expect(whitePiece1.canMove([0, 1], [0, 0], 1)).toEqual('You already have a piece at A1');
 });
 test('Pieces can move to empty squares on the board', () => {
 	boardState.getPiece.mockReturnValue(null);
 
 	expect(whitePiece2.canMove([0, 0], [0, 1])).toBe(true);
-	expect(blackPiece.canMove([0, 0], [6, 1])).toBe(true);
+	expect(blackPiece.canMove([0, 0], [6, 1], 0)).toBe(true);
+	expect(whitePiece1.canMove([0, 0], [6, 1], 1)).toBe(true);
 });
 test('Pieces can\'t move to the same position it\'s already on', () => {
-	expect(whitePiece1.canMove([0, 0], [0, 0])).toBe(false);
+	expect(whitePiece1.canMove([0, 0], [0, 0], 0)).toBe(false);
 	expect(blackPiece.canMove([3, 2], [3, 2])).toBe(false);
+	expect(whitePiece2.canMove([4, 7], [4, 7], 1)).toEqual('You must move a piece to a new position');
 });
 
+/* misc */
 test('Pieces have type of "generic"', () => {
 	expect(whitePiece1.type).toBe('generic');
 	expect(blackPiece.type).toBe('generic');
+});
+
+test('mode parameter to canMove is properly type checked', () => {
+	expect(() => whitePiece1.canMove([0,1], [2,3], 0)).not.toThrow();
+	expect(() => blackPiece.canMove([0,1], [2,3], 0)).not.toThrow();
+	expect(() => whitePiece2.canMove([0,1], [2,3])).not.toThrow();
+
+	expect(() => whitePiece1.canMove([0,1], [2,3], 2)).toThrow(TypeError);
+	expect(() => blackPiece.canMove([0,1], [2,3], '1')).toThrow(TypeError);
+	expect(() => whitePiece2.canMove([0,1], [2,3], true)).toThrow(TypeError);
 });

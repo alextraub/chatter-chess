@@ -5,9 +5,9 @@ export default class Bishop extends Piece {
 		return 'bishop';
 	}
 
-	canMove([fromRow, fromCol], [toRow, toCol])
+	canMove([fromRow, fromCol], [toRow, toCol], mode=0)
 	{
-		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol]);   //call the super method to see if the move passes basic validation
+		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol], mode);   //call the super method to see if the move passes basic validation
 		if(!validFinalPosition) {                                    //if the lading place is not valid
 			return false;                                           //return false, the move can not be done
 		}

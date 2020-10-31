@@ -5,8 +5,8 @@ export default class Pawn extends Piece {
 		return 'pawn';
 	}
 
-	canMove([fromRow, fromCol], [toRow, toCol]) {
-		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol]);
+	canMove([fromRow, fromCol], [toRow, toCol], mode=0) {
+		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol], mode);
 		if (!validFinalPosition) {
 			return false;
 		}
