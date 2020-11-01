@@ -3,6 +3,9 @@ import DPiece from '../../../__mocks__/DPiece';
 import BoardState from '../../BoardState';
 jest.mock('../../BoardState');
 
+const positionUtils = require('../../utils/boardPosition');
+jest.mock('../../utils/boardPosition.js');
+
 beforeEach(() =>
 {
 	BoardState.mockClear();
@@ -24,14 +27,14 @@ test('Rook can move right', () =>
 	moveToEmptySquare();
 
 	expect(whiteRook.canMove([0, 0], [0, 1])).toBe(true);
-	expect(blackRook.canMove([1, 0], [1, 1])).toBe(true);
+	expect(blackRook.canMove([1, 0], [1, 1], 1)).toBe(true);
 });
 
 test('Rook can move down', () =>
 {
 	moveToEmptySquare();
 
-	expect(whiteRook.canMove([0, 0], [1, 0])).toBe(true);
+	expect(whiteRook.canMove([0, 0], [1, 0], 1)).toBe(true);
 	expect(blackRook.canMove([0, 1], [1, 1])).toBe(true);
 });
 
@@ -39,7 +42,7 @@ test('Rook and move left', () =>
 {
 	moveToEmptySquare();
 
-	expect(whiteRook.canMove([0, 1], [0, 0])).toBe(true);
+	expect(whiteRook.canMove([0, 1], [0, 0], 0)).toBe(true);
 	expect(blackRook.canMove([1, 1], [1, 0])).toBe(true);
 });
 
@@ -48,7 +51,7 @@ test('Rook can move up', () =>
 	moveToEmptySquare();
 
 	expect(whiteRook.canMove([1, 0], [0, 0])).toBe(true);
-	expect(blackRook.canMove([1, 1], [1, 0])).toBe(true);
+	expect(blackRook.canMove([1, 1], [1, 0], 0)).toBe(true);
 });
 
 test('Rook can move to a square with a enemy piece', () =>
@@ -77,12 +80,45 @@ test('Rook can NOT move to the same space it is on', () =>
 test('Rook can NOT move Over pieces', () =>
 {
 	boardState.getPiece.mockReturnValue(blackPiece);
-
 	expect(whiteRook.canMove([0, 0], [0, 2])).toBe(false);
 
 	boardState.getPiece.mockReturnValue(whitePiece);
-
 	expect(blackRook.canMove([0, 0], [0, 2])).toBe(false);
+
+	positionUtils.boardPositionToString.mockReturnValue('A1');
+	expect(blackRook.canMove([0, 0], [0, 2], 1)).toBe('There is a piece at A2 blocking your rook\'s path');
+});
+
+test('Rookcs can NOT move diagonally up and right', () =>
+{
+	moveToEmptySquare();
+
+	expect(whiteRook.canMove([0,1], [2,3])).toBe(false);
+	expect(blackRook.canMove([0,1], [2,3], 1)).toEqual('A rook can only move vertically or horizontally');
+});
+
+test('Rookcs can NOT move diagonally up and left', () =>
+{
+	moveToEmptySquare();
+
+	expect(whiteRook.canMove([0,1], [2,0], 1)).toEqual('A rook can only move vertically or horizontally');
+	expect(blackRook.canMove([0,1], [2,0])).toBe(false);
+});
+
+test('Rookcs can NOT move diagonally down and right', () =>
+{
+	moveToEmptySquare();
+
+	expect(whiteRook.canMove([2,1], [1,2])).toBe(false);
+	expect(blackRook.canMove([2,1], [1,2], 1)).toEqual('A rook can only move vertically or horizontally');
+});
+
+test('Rookcs can NOT move diagonally down and left', () =>
+{
+	moveToEmptySquare();
+
+	expect(whiteRook.canMove([2,2], [0,0], 1)).toEqual('A rook can only move vertically or horizontally');
+	expect(blackPiece.canMove([2,2], [0,0])).toBe(false);
 });
 
 test('Rooks have type of "rook"', () => {

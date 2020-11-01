@@ -7,8 +7,8 @@ export default class King extends Piece {
 
 	canMove([ fromRow, fromCol ], [ toRow, toCol ], mode=0) {
 		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ], mode);
-		if(!validFinalPosition) {
-			return false;
+		if(!validFinalPosition || typeof(validFinalPosition) === 'string') {
+			return validFinalPosition;
 		}
 		const numRows = Math.abs(toRow - fromRow);
 		const numCols = Math.abs(toCol - fromCol);

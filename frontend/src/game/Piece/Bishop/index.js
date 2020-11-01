@@ -9,8 +9,8 @@ export default class Bishop extends Piece {
 	canMove([fromRow, fromCol], [toRow, toCol], mode=0)
 	{
 		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol], mode);   //call the super method to see if the move passes basic validation
-		if(!validFinalPosition) {                                    //if the lading place is not valid
-			return false;                                           //return false, the move can not be done
+		if(!validFinalPosition || typeof(validFinalPosition) === 'string') {                                    //if the lading place is not valid
+			return validFinalPosition;                                           //return false, the move can not be done
 		}
 		const numRows = toRow - fromRow;                            //Row from compared to to
 		const numCols = toCol - fromCol;                            //Col from compared to to
