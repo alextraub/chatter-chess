@@ -1,39 +1,62 @@
+import './SwapPieces.css';
 import React from 'react';
-import { pieceName } from '../../game/Piece';
-import '../ChessPiece';
-import {whitePieceImages} from "../ChessPiece/pieceImages";
+import PropTypes from 'prop-types';
+import Piece, { Pawn, Rook, Knight, Bishop, Queen, King } from '../../game/Piece';
+import ChessPiece from '../ChessPiece';
 
-export default class CapturedPieces extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+export default class SwapPieces extends React.Component {
+	static propTypes = {
+		// pieces: PropTypes.shape({
+		// 	count: PropTypes.number,
+		// 	pieces: PropTypes.shape({
+		// 		pawn: PropTypes.arrayOf(PropTypes.instanceOf(Pawn)),
+		// 		rook: PropTypes.arrayOf(PropTypes.instanceOf(Rook)),
+		// 		knight: PropTypes.arrayOf(PropTypes.instanceOf(Knight)),
+		// 		bishop: PropTypes.arrayOf(PropTypes.instanceOf(Bishop)),
+		// 		queen: PropTypes.arrayOf(PropTypes.instanceOf(Queen)),
+		// 		king: PropTypes.arrayOf(PropTypes.instanceOf(King)),
+		// 		generic: PropTypes.arrayOf(PropTypes.instanceOf(Piece))
+		// 	})
+		// }).isRequired,
+		black: PropTypes.bool
+	};
+
+	static defaultProps = {
+		black: false
+	};
 
 	render() {
+		const { black } = this.props;
+
 		return (
-			<div id='capturedContainer'>
-				<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Creepster+Caps" />
-				<h1>Shadow Realm</h1><br/>
-				<h2>Captured White Pieces: {this.props.whitePieces.length}</h2><br/>
+			<div className="swap-container" data-testid="swap-container">
+				<h2>Would you like to promote your pawn?</h2><br/>
 				<ul>
-					{this.props.whitePieces.map((piece) => {
-						if (pieceName(piece) !== "pawn")
-						return (
-							<li>{whitePieceImages.piece}
-								<input data-testid="button" type='submit' value='Swap Piece'/>
-							</li>
-						)
-					})}
-				</ul>
-				<h2>Captured Black Pieces: {this.props.blackPieces.length}</h2><br/>
-				<ul>
-					{this.props.blackPieces.map((piece) => {
-						if (pieceName(piece) !== "pawn")
-						return (
-							<li>{pieceName(piece)}
-								<input data-testid="button" type='submit' value='Swap Piece'/>
-							</li>
-						)
-					})}
+					<li data-testid="swap-bishop" className="swap-graphic">
+						<ChessPiece type='bishop' black={black}/>
+						<input type='submit' value='Promote to Bishop'/>
+					</li>
+					<li data-testid="swap-knight" className="swap-graphic">
+						<ChessPiece type='knight' black={black}/>
+						<input type='submit' value='Promote to Knight'/>
+					</li>
+					<li data-testid="swap-rook" className="swap-graphic">
+						<ChessPiece type='rook' black={black}/>
+						<input type='submit' value='Promote to Rook'/>
+					</li>
+					<li data-testid="swap-queen" className="swap-graphic">
+						<ChessPiece type='queen' black={black}/>
+						<input type='submit' value='Promote to Queen'/>
+					</li>
+					{/*{Object.entries(pieces.pieces)*/}
+					{/*	.filter(entry => entry[1].length > 0)*/}
+					{/*	.map(([type, pieceArray]) => (*/}
+					{/*		<li data-testid="swap-graphic" key={`${type}s`} className="swap-graphic">*/}
+					{/*			<ChessPiece type={type} black={black}/>*/}
+					{/*			<span className="swap-count">x{pieceArray.length}</span>*/}
+					{/*			<input type='submit' value='Swap Piece'/>*/}
+					{/*		</li>*/}
+					{/*	))}*/}
 				</ul>
 			</div>
 		);

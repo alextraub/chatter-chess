@@ -5,6 +5,7 @@ import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
+import SwapPieces from "../SwapPieces";
 
 const capturedPieceObj = () => ({
 	count: 0,
@@ -38,6 +39,7 @@ export default class GameContainer extends React.Component {
 			capturedWhitePieces: {...this.capturedWhitePieces},
 			capturedBlackPieces: {...this.capturedBlackPieces},
 			turn: 0 // Number of turns made in the game
+			// showSwap: false
 		}
 
 		/* Bind methods to 'this' */
@@ -46,6 +48,7 @@ export default class GameContainer extends React.Component {
 		this.currentPlayer = this.currentPlayer.bind(this);
 		this.syncBoard = this.syncBoard.bind(this);
 		this.updateCapturedLists = this.updateCapturedLists.bind(this);
+		this.toggleSwap = this.toggleSwap.bind(this);
 	}
 
 	static propTypes = {
@@ -70,6 +73,8 @@ export default class GameContainer extends React.Component {
 		}
 		this.boardState.movePiece(fromPos, toPos);
 		this.syncBoard();
+		// Is an action needed... yes handle it here.  Such as pawn promotion, check, etc.
+		// performAction();
 		this.nextTurn();
 	}
 
@@ -120,6 +125,33 @@ export default class GameContainer extends React.Component {
 		return this.state.turn % 2;
 	}
 
+	/**
+	 * Toggles the display of the swap pieces component
+	 *
+	 *
+	 */
+	toggleSwap() {
+		for (let i = 0; i < 8; i++) {
+			const wP = this.boardState.getPiece([0, i]);
+			const bP = this.boardState.getPiece([7, i]);
+			if (wP.type === 'pawn' || bP.type === 'pawn') {
+				// this.setState({
+				// 	...this.state,
+				// 	showSwap: !this.state.showSwap
+				// });
+				return true;
+			}
+		}
+		return false;
+
+	}
+	//
+	// myPopup(myURL, title, myWidth, myHeight) {
+	// 	const left = (screen.width - myWidth) / 2;
+	// 	const top = (screen.height - myHeight) / 4;
+	// 	const myWindow = window.open(myURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + myWidth + ', height=' + myHeight + ', top=' + top + ', left=' + left);
+	// }
+
 	render() {
 		return (
 			<div data-testid="game-container" className="container">
@@ -146,6 +178,15 @@ export default class GameContainer extends React.Component {
 							player={this.props.playerView === 2 ? this.currentPlayer() : this.props.playerView}
 							board={this.state.board}
 						/>
+						{this.toggleSwap() ?
+							<SwapPieces
+								black={!(this.currentPlayer())}
+								// pieces={!(this.currentPlayer()) ?
+								// 	this.state.capturedBlackPieces :
+								// 	this.state.capturedWhitePieces}
+							/> :
+							null
+						}
 					</div>
 
 					<div className="col">
