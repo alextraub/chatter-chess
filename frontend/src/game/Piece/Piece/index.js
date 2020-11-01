@@ -86,6 +86,21 @@ class Piece {
 	}
 
 	/**
+	 * Helper method for validating a move along a path between the from and to positions
+	 * @param {[number, number]} position a valid board position
+	 * @param {0|1?} mode 0 by default, returns only booleans, while mode 1 will return an error message if false
+	 */
+	isNextSquareInPathEmpty([row, col], mode=0) {
+		if(this.boardState.getPiece([row, col]) === null) {
+			return true;
+		} else if(mode === 0) {
+			return false;
+		} else {
+			return `There is a piece at ${boardPositionToString([row, col])} blocking your ${this.type}'s path`;
+		}
+	}
+
+	/**
 	 * Determine if a piece can move from a given position to a target position
 	 * Arguments are assumed to be valid positions on teh board.
 	 *

@@ -28,11 +28,12 @@ export default class Rook extends Piece {
 				let currR = fromRow + 1;
 				while(currR < toRow)
 				{
-					if (this.boardState.getPiece([currR, fromCol]) != null)//if that position is not empty
+					const squareCheck = this.isNextSquareInPathEmpty([currR, fromCol], mode);
+					if(squareCheck !== true)//if that position is not empty
 					{
-						return mode === 0 ?
-							false : `There is a piece at ${boardPositionToString([currR, fromCol])} blocking your ${this.type}'s path`;                                   //something is blocking us
+						return squareCheck; //something is blocking us
 					}
+
 					currR = currR + 1;
 				}
 				return true;
@@ -41,10 +42,10 @@ export default class Rook extends Piece {
 				let currR = fromRow - 1;
 				while(currR > toRow)
 				{
-					if (this.boardState.getPiece([currR, fromCol]) != null)//if that position is not empty
+					const squareCheck = this.isNextSquareInPathEmpty([currR, fromCol], mode);
+					if (squareCheck !== true)//if that position is not empty
 					{
-						return mode === 0 ?
-							false : `There is a piece at ${boardPositionToString([currR, fromCol])} blocking your ${this.type}'s path`;                                   //something is blocking us
+						return squareCheck;                                  //something is blocking us
 					}
 					currR = currR - 1;
 				}
@@ -57,10 +58,10 @@ export default class Rook extends Piece {
 				let currC = fromCol + 1;
 				while(currC < toCol)
 				{
-					if (this.boardState.getPiece([fromRow, currC]) != null)//if that position is not empty
+					const squareCheck = this.isNextSquareInPathEmpty([fromRow, currC], mode);
+					if (squareCheck !== true)//if that position is not empty
 					{
-						return mode === 0 ?
-							false : `There is a piece at ${boardPositionToString([fromRow, currC])} blocking your ${this.type}'s path`;                                   //something is blocking us
+						return squareCheck; //something is blocking us
 					}
 					currC = currC + 1;
 				}
@@ -70,10 +71,10 @@ export default class Rook extends Piece {
 				let currC = fromCol - 1;
 				while(currC > toCol)
 				{
-					if (this.boardState.getPiece([fromRow, currC]) != null)//if that position is not empty
+					const squareCheck = this.isNextSquareInPathEmpty([fromRow, currC], mode);
+					if (squareCheck !== true)//if that position is not empty
 					{
-						return mode === 0 ?
-							false : `There is a piece at ${boardPositionToString([fromRow, currC])} blocking your ${this.type}'s path`;                                   //something is blocking us
+						return squareCheck;                                   //something is blocking us
 					}
 					currC = currC - 1;
 				}

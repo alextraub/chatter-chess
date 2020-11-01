@@ -27,10 +27,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol + 1;
 			while(currR < toRow && currC < toCol)                   //while that position is not the final position
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//if that position is not empty
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if (squareCheck !== true)//if that position is not empty
 				{
-					return mode === 0 ?
-						false : `There is a piece at ${boardPositionToString([currR, currC])} blocking your ${this.type}'s path`;                                   //something is blocking us
+					return squareCheck;                                   //something is blocking us
 				}
 				currR++;                                            //move pointer down right
 				currC++;
@@ -43,9 +43,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol - 1;
 			while(currR < toRow && currC > toCol)
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//copy of up code but going down left
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true)//copy of up code but going down left
 				{
-					return false;
+					return squareCheck;
 				}
 				currR++;
 				currC--;
@@ -57,9 +58,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol + 1;
 			while(currR > toRow && currC < toCol)
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//copy of code but going up right
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true)//copy of code but going up right
 				{
-					return false;
+					return squareCheck;
 				}
 				currR--;
 				currC++;
@@ -71,9 +73,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol - 1;
 			while(currR > toRow && currC > toCol)
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//copy of code but going up left
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if (squareCheck !== true)//copy of code but going up left
 				{
-					return false;
+					return squareCheck;
 				}
 				currR--;
 				currC--;

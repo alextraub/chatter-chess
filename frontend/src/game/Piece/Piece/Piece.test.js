@@ -137,3 +137,21 @@ test('mode parameter to canMove is properly type checked', () => {
 	expect(() => blackPiece.canMove([0,1], [2,3], '1')).toThrow(TypeError);
 	expect(() => whitePiece2.canMove([0,1], [2,3], true)).toThrow(TypeError);
 });
+
+test('isNextSquareInPathEmpty returns correct values when provided position is empty', () => {
+	boardState.getPiece.mockReturnValue(null);
+
+	expect(whitePiece1.isNextSquareInPathEmpty([0,2])).toBe(true);
+	expect(whitePiece2.isNextSquareInPathEmpty([0,2], 0)).toBe(true);
+	expect(blackPiece.isNextSquareInPathEmpty([0,2], 1)).toBe(true);
+});
+
+test('isNextSquareInPathEmpty returns correct values when provided position is not empty', () => {
+	boardState.getPiece.mockReturnValue(new DPiece(boardState));
+
+	expect(whitePiece1.isNextSquareInPathEmpty([0,2])).toBe(false);
+	expect(whitePiece2.isNextSquareInPathEmpty([3,2], 0)).toBe(false);
+
+	positionUtils.boardPositionToString.mockReturnValue('E4');
+	expect(blackPiece.isNextSquareInPathEmpty([4,5], 1)).toEqual('There is a piece at E4 blocking your generic\'s path');
+});
