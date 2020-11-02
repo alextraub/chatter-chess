@@ -25,8 +25,13 @@ const mockValidMove = fromPiece => {
 	positionUtils.boardPositionToTuple.mockReturnValueOnce([0, 0]).mockReturnValue([0, 1]);
 };
 
-const renderMoveInput = (currentPlayer=0) => {
-	render(<MoveInput currentPlayer={currentPlayer} getPiece={boardState.getPiece} performMove={jest.fn()}/>)
+const renderMoveInput = (currentPlayer=0, disabled=false) => {
+	render(<MoveInput
+		currentPlayer={currentPlayer}
+		getPiece={boardState.getPiece}
+		performMove={jest.fn()}
+		disabled={disabled}
+	/>);
 };
 
 const updateInputValue = value => {
@@ -216,4 +221,24 @@ test('Displays piece specific error messages', () => {
 	boardState.getPiece.mockReturnValue(piece);
 	fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).toHaveTextContent('Error');
+});
+
+test('Move input is disabled if it has disabled prop', () => {
+	renderMoveInput(0, true);
+	expect(screen.getByTestId('move')).toBeDisabled();
+});
+
+test('Move input is enabled if it has disabled=false prop', () => {
+	renderMoveInput(1);
+	expect(screen.getByTestId('move')).not.toBeDisabled();
+});
+
+test('Move submit button is disabled if it has disabled prop', () => {
+	renderMoveInput(1, true);
+	expect(screen.getByTestId('button')).toBeDisabled();
+});
+
+test('Move submit button is enabled if it has disabled=false prop', () => {
+	renderMoveInput();
+	expect(screen.getByTestId('button')).not.toBeDisabled();
 });

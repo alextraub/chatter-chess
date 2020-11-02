@@ -37,7 +37,7 @@ export default class GameContainer extends React.Component {
 			board,
 			capturedWhitePieces: {...this.capturedWhitePieces},
 			capturedBlackPieces: {...this.capturedBlackPieces},
-			swapping: false, // If waiting for a piece swap
+			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
 			swapList: [], // Possible types of pieces to swap
 			turn: 0 // Number of turns made in the game
 		}
@@ -74,8 +74,9 @@ export default class GameContainer extends React.Component {
 		}
 		this.boardState.movePiece(from, to);
 		this.syncBoard();
-		// TODO
-		this.nextTurn();
+		if(!this.beginSwap()) {
+			this.nextTurn();
+		}
 	}
 
 	/**
@@ -145,7 +146,7 @@ export default class GameContainer extends React.Component {
 				if(pieceTypes.length > 0) { // Only move forward in the swap procedure if there are pieces that can be swapped in
 					this.setState({ // Set state to be in the middle of swapping a piece
 						...this.state,
-						swapping: true,
+						swapping: to,
 						swapList: pieceTypes
 					});
 					return true;
@@ -176,7 +177,49 @@ export default class GameContainer extends React.Component {
 	}
 
 	/**
+	 * Perform a swap with a specified piece type. This should only be called after beginSwap is called and returns true
+	 *
+	 * @todo supply this as an event handler to the swap component
+	 * @param {string} type the type value of a piece class
+	 */
+	performSwap(type) {
+		const { swapping } = this.state;
+		const { count, pieces } = this.currentPlayer() === 0 ?
+			this.state.capturedWhitePieces :
+			this.state.capturedBlackPieces;
+		const piece = this.boardState.getPiece(swapping); // The piece being swapped out
+		const newPiece = pieces[type].pop(); // Get the next piece of type that can be swapped in
+		newPiece.captured = false; // New piece no longer is captured
+		// Replace the piece
+		this.boardState.returnBoardState()[swapping[0]][swapping[1]] = newPiece;
+		piece.boardState = null; // Remove old piece from the game
+
+		if(this.currentPlayer() === 0) {
+			this.setState({
+				...this.state,
+				capturedWhitePieces: {
+					count: count - 1,
+					pieces
+				}
+			})
+		} else {
+			this.setState({
+				...this.state,
+				capturedBlackPieces: {
+					count: count - 1,
+					pieces
+				}
+			});
+		}
+
+		// Go to next turn
+		this.syncBoard();
+		this.nextTurn();
+	}
+
+	/**
 	 * Returns the rendered out swap UI
+	 * @todo
 	 */
 	renderSwapUI() {
 		return <p>TODO</p>;
@@ -184,6 +227,7 @@ export default class GameContainer extends React.Component {
 
 	/**
 	 * Returns all the UI elements that never are hidden
+	 * @todo disable move input during a piece swap
 	 */
 	renderStandardUI() {
 		return (

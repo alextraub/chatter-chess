@@ -20,7 +20,8 @@ export default class MoveInput extends React.Component {
 	static propTypes = {
 		currentPlayer: PropTypes.oneOf([0, 1]).isRequired,
 		getPiece: PropTypes.func.isRequired,
-		performMove: PropTypes.func.isRequired
+		performMove: PropTypes.func.isRequired,
+		disabled: PropTypes.bool
 	}
 
 	validateInput(move) {
@@ -110,9 +111,21 @@ export default class MoveInput extends React.Component {
 		return (
 			<div id='inputContainer' data-testid="move-input">
 				<form onSubmit={event => {this.handleSubmit(event)}}>
-					<input data-testid="move" type="text" placeholder="Enter Move Here" name="move" value={this.state.move} onChange={event => {this.handleInputChange(event)}}/>
+					<input
+						data-testid="move"
+						type="text"
+						placeholder="Enter Move Here"
+						name="move"
+						value={this.state.move}
+						disabled={this.props.disabled}
+						onChange={event => {this.handleInputChange(event)}}
+					/>
 					<div data-testid="error" style={{color: "red"}}>{this.state.moveError}</div>
-					<input data-testid="button" type='submit' value='Submit Move'/>
+					<input
+						data-testid="button"
+						disabled={this.props.disabled}
+						type='submit'
+						value='Submit Move' />
 				</form>
 			</div>
 		);
