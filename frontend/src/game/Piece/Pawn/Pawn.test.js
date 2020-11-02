@@ -144,3 +144,14 @@ test('Pawns cannot move like a knight', () => {
 	+ '2. 2 squares forward if it hasn\'t moved yet\n'
 	+ '3. 1 square forward');
 });
+
+
+test('Pawns can be swapped out', () => {
+	expect(whitePawn.canSwapOut).toBe(true);
+	expect(blackPawn.canSwapOut).toBe(true);
+});
+
+test('Pawns cannot be swapped in', () => {
+	expect(whitePawn.canSwapIn).toBe(false);
+	expect(blackPawn.canSwapIn).toBe(false);
+});

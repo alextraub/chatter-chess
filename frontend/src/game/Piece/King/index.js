@@ -5,6 +5,10 @@ export default class King extends Piece {
 		return 'king';
 	}
 
+	get canSwapIn() {
+		return false;
+	}
+
 	canMove([ fromRow, fromCol ], [ toRow, toCol ], mode=0) {
 		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ], mode);
 		if(!validFinalPosition || typeof(validFinalPosition) === 'string') {

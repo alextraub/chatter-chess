@@ -125,3 +125,13 @@ test('Rooks have type of "rook"', () => {
 	expect(whiteRook.type).toBe('rook');
 	expect(blackRook.type).toBe('rook');
 });
+
+test('Rooks cannot be swapped out', () => {
+	expect(whiteRook.canSwapOut).toBe(false);
+	expect(blackRook.canSwapOut).toBe(false);
+});
+
+test('Rooks can be swapped in', () => {
+	expect(whiteRook.canSwapIn).toBe(true);
+	expect(blackRook.canSwapIn).toBe(true);
+});

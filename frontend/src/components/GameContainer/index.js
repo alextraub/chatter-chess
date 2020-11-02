@@ -120,6 +120,17 @@ export default class GameContainer extends React.Component {
 		return this.state.turn % 2;
 	}
 
+	handleSwapRequest(piece, position) {
+
+	}
+
+	shouldSwapPiece() {
+		const { count, pieces } = this.currentPlayer() === 0 ?
+			this.state.capturedWhitePieces :
+			this.state.capturedBlackPieces;
+		return count > pieces.pawn.length;
+	}
+
 	render() {
 		return (
 			<div data-testid="game-container" className="container">

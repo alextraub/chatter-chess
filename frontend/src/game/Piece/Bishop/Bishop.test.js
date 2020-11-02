@@ -108,3 +108,13 @@ test('Bishops have type of "bishop"', () => {
 	expect(whiteBishop.type).toBe('bishop');
 	expect(blackBishop.type).toBe('bishop');
 });
+
+test('Bishops cannot be swapped out', () => {
+	expect(whiteBishop.canSwapOut).toBe(false);
+	expect(blackBishop.canSwapOut).toBe(false);
+});
+
+test('Bishops can be swapped in', () => {
+	expect(whiteBishop.canSwapIn).toBe(true);
+	expect(blackBishop.canSwapIn).toBe(true);
+});

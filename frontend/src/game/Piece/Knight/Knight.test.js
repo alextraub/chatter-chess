@@ -121,3 +121,13 @@ test('Knights have type of "knight"', () => {
 	expect(whiteKnight.type).toBe('knight');
 	expect(blackKnight.type).toBe('knight');
 });
+
+test('Knights cannot be swapped out', () => {
+	expect(whiteKnight.canSwapOut).toBe(false);
+	expect(blackKnight.canSwapOut).toBe(false);
+});
+
+test('Knights can be swapped in', () => {
+	expect(whiteKnight.canSwapIn).toBe(true);
+	expect(blackKnight.canSwapIn).toBe(true);
+});

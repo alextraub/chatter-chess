@@ -43,6 +43,20 @@ class Piece {
 	}
 
 	/**
+	 * If the piece can swap with a swappable piece
+	 */
+	get canSwapOut() {
+		return false;
+	}
+
+	/**
+	 * If you can swap a piece for this piece
+	 */
+	get canSwapIn() {
+		return true;
+	}
+
+	/**
 	 * Get the player this piece belongs to, 0 for white, 1 for black
 	 */
 	get player() {
