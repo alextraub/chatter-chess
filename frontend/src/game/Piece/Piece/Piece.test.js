@@ -166,3 +166,8 @@ test('By default pieces can be swapped in', () => {
 	expect(whitePiece1.canSwapIn).toBe(true);
 	expect(blackPiece.canSwapIn).toBe(true);
 });
+
+test('Pieces throw an error if checking their swapRow property, by default', () => {
+	expect(() => whitePiece2.swapRow).toThrow(EvalError);
+	expect(() => blackPiece.swapRow).toThrow(EvalError);
+});

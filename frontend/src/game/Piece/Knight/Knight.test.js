@@ -131,3 +131,8 @@ test('Knights can be swapped in', () => {
 	expect(whiteKnight.canSwapIn).toBe(true);
 	expect(blackKnight.canSwapIn).toBe(true);
 });
+
+test('Knights throw an error if checking their swapRow property', () => {
+	expect(() => whiteKnight.swapRow).toThrow(EvalError);
+	expect(() => blackKnight.swapRow).toThrow(EvalError);
+});

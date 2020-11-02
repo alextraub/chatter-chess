@@ -207,3 +207,8 @@ test('Queens can be swapped in', () => {
 	expect(whiteQueen.canSwapIn).toBe(true);
 	expect(blackQueen.canSwapIn).toBe(true);
 });
+
+test('Queens throw an error if checking their swapRow property', () => {
+	expect(() => whiteQueen.swapRow).toThrow(EvalError);
+	expect(() => blackQueen.swapRow).toThrow(EvalError);
+});

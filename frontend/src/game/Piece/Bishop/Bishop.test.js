@@ -118,3 +118,8 @@ test('Bishops can be swapped in', () => {
 	expect(whiteBishop.canSwapIn).toBe(true);
 	expect(blackBishop.canSwapIn).toBe(true);
 });
+
+test('Bishops throw an error if checking their swapRow property', () => {
+	expect(() => whiteBishop.swapRow).toThrow(EvalError);
+	expect(() => blackBishop.swapRow).toThrow(EvalError);
+});

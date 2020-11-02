@@ -37,11 +37,15 @@ export default class GameContainer extends React.Component {
 			board,
 			capturedWhitePieces: {...this.capturedWhitePieces},
 			capturedBlackPieces: {...this.capturedBlackPieces},
+			swapping: false, // If waiting for a piece swap
+			swapList: [], // Possible types of pieces to swap
 			turn: 0 // Number of turns made in the game
 		}
 
 		/* Bind methods to 'this' */
 		this.performMove = this.performMove.bind(this);
+		this.beginSwap = this.beginSwap.bind(this);
+		this.getPossibleSwapArray = this.getPossibleSwapArray.bind(this);
 		this.nextTurn = this.nextTurn.bind(this);
 		this.currentPlayer = this.currentPlayer.bind(this);
 		this.syncBoard = this.syncBoard.bind(this);
@@ -70,6 +74,7 @@ export default class GameContainer extends React.Component {
 		}
 		this.boardState.movePiece(from, to);
 		this.syncBoard();
+		// TODO
 		this.nextTurn();
 	}
 
@@ -79,6 +84,8 @@ export default class GameContainer extends React.Component {
 	nextTurn() {
 		this.setState({
 			...this.state,
+			swapping: false,
+			swapList: [],
 			turn: this.state.turn + 1 // Adds 1 to the turn counter
 		});
 	}
@@ -120,20 +127,67 @@ export default class GameContainer extends React.Component {
 		return this.state.turn % 2;
 	}
 
-	handleSwapRequest(piece, position) {
+	/**
+	 * Begins the piece swap sequence of events, if the conditions for a swap are met
+	 *
+	 * @param {[number, number]} to board position of piece attempting to be swapped
+	 * @returns {boolean} True if a swap has been started or false otherwise
+	 */
+	beginSwap(to) {
+		const piece = this.boardState.getPiece(to);
+		if(piece.canSwapOut && to[0] === piece.swapRow) { // Piece is swappable and at a swappble position
+			const { count, pieces } = piece.player === 0 ?
+				this.state.capturedWhitePieces :
+				this.state.capturedBlackPieces;
 
+			if(count > 0) { // If the player has pieces that have been captured
+				const pieceTypes = this.getPossibleSwapArray(pieces); // All possible types of pieces that can be swapped in
+				if(pieceTypes.length > 0) { // Only move forward in the swap procedure if there are pieces that can be swapped in
+					this.setState({ // Set state to be in the middle of swapping a piece
+						...this.state,
+						swapping: true,
+						swapList: pieceTypes
+					});
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
-	shouldSwapPiece() {
-		const { count, pieces } = this.currentPlayer() === 0 ?
-			this.state.capturedWhitePieces :
-			this.state.capturedBlackPieces;
-		return count > pieces.pawn.length;
+	/**
+	 *
+	 * This method is a helper for getting possible swap piece types
+	 *
+	 * @param {*} pieces an object of piece types and an array of all the pieces that have been captured of that type
+	 * @returns {{type: string; black: boolean;}[]} array of piece types that are currently able to be swapped in
+	 */
+	getPossibleSwapArray(pieces) {
+		return Object.values(pieces)
+			// Filter out any piece type with no captured pieces and then any that cannot be swapped in
+			.filter(pieceArr => pieceArr.length > 0 && pieceArr[0].canSwapIn)
+			.map(pieceArr => { // For the remaing piece arrays, map each to an object denoting what type of pieces it has and if they are black or not
+				return {
+					black: pieceArr[0].isBlack(),
+					type: pieceArr[0].type
+				}
+			});
 	}
 
-	render() {
+	/**
+	 * Returns the rendered out swap UI
+	 */
+	renderSwapUI() {
+		return <p>TODO</p>;
+	}
+
+	/**
+	 * Returns all the UI elements that never are hidden
+	 */
+	renderStandardUI() {
 		return (
-			<div data-testid="game-container" className="container">
+			<>
 				<MoveInput
 					id="move-input"
 					currentPlayer={this.currentPlayer()}
@@ -168,6 +222,27 @@ export default class GameContainer extends React.Component {
 						/>
 					</div>
 				</div>
+			</>
+		);
+	}
+
+	render() {
+		const renderUI = () => {
+			if(this.state.swapping) {
+				return (
+					<>
+						{this.renderStandardUI()}
+						{this.renderStandardUI()}
+					</>
+				)
+			} else {
+				return <>{this.renderStandardUI()}</>;
+			}
+		}
+
+		return (
+			<div data-testid="game-container" className="container">
+				{renderUI()}
 			</div>
 		);
 	}

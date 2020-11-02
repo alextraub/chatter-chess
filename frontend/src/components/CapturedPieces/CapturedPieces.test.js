@@ -44,35 +44,35 @@ const blackPieces = {
 
 
 test('Component renders', () => {
-	const { getByTestId, rerender } = render(<CapturedPieces pieces={whitePieces}/>);
+	const { getByTestId, rerender } = render(<CapturedPieces pieces={whitePieces} />);
 	expect(getByTestId('capturedContainer')).toBeInTheDocument();
 
-	rerender(<CapturedPieces black pieces={blackPieces}/>);
+	rerender(<CapturedPieces black pieces={blackPieces} />);
 	expect(getByTestId('capturedContainer')).toBeInTheDocument();
 
-	rerender(<CapturedPieces pieces={blackPieces}/>)
+	rerender(<CapturedPieces pieces={blackPieces} />)
 	expect(getByTestId('capturedContainer')).toBeInTheDocument();
 
-	rerender(<CapturedPieces black pieces={whitePieces}/>)
+	rerender(<CapturedPieces black pieces={whitePieces} />)
 	expect(getByTestId('capturedContainer')).toBeInTheDocument();
 });
 
 test('Component displays correct amount of captured white pieces', () => {
-	const { getByText } = render(<CapturedPieces pieces={whitePieces}/>);
-	expect(getByText('Captured White Pieces: 3')).toBeTruthy();
+	const { getByTestId } = render(<CapturedPieces pieces={whitePieces} />);
+	expect(getByTestId('capturedContainer')).toHaveTextContent('Captured (3)');
 });
 
 test('Component displays correct amount of captured black pieces', () => {
-	const { getByText } = render(<CapturedPieces black pieces={blackPieces}/>);
-	expect(getByText('Captured Black Pieces: 4')).toBeTruthy();
+	const { getByTestId } = render(<CapturedPieces black pieces={blackPieces} />);
+	expect(getByTestId('capturedContainer')).toHaveTextContent('Captured (4)');
 });
 
 test('Component displays captured white pieces', () => {
-	const { getAllByTestId } = render(<CapturedPieces pieces={whitePieces}/>);
+	const { getAllByTestId } = render(<CapturedPieces pieces={whitePieces} />);
 	expect(getAllByTestId('captured-graphic')).toHaveLength(3);
 });
 
 test('Component displays captured black pieces', () => {
-	render(<CapturedPieces black pieces={blackPieces}/>);
+	render(<CapturedPieces black pieces={blackPieces} />);
 	expect(screen.getAllByTestId('captured-graphic')).toHaveLength(3);
 });

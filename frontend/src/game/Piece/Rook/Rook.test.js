@@ -135,3 +135,8 @@ test('Rooks can be swapped in', () => {
 	expect(whiteRook.canSwapIn).toBe(true);
 	expect(blackRook.canSwapIn).toBe(true);
 });
+
+test('Rooks throw an error if checking their swapRow property', () => {
+	expect(() => whiteRook.swapRow).toThrow(EvalError);
+	expect(() => blackRook.swapRow).toThrow(EvalError);
+});

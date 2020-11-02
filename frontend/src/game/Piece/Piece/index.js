@@ -56,6 +56,13 @@ class Piece {
 		return true;
 	}
 
+	get swapRow() {
+		if(!this.canSwapOut) {
+			throw EvalError(`A ${this.type} cannot swap out, so there shouldn't be any reason to check their swapRow property`);
+		}
+		return this.player === 0 ? 0 : 7;
+	}
+
 	/**
 	 * Get the player this piece belongs to, 0 for white, 1 for black
 	 */

@@ -155,3 +155,13 @@ test('Pawns cannot be swapped in', () => {
 	expect(whitePawn.canSwapIn).toBe(false);
 	expect(blackPawn.canSwapIn).toBe(false);
 });
+
+test('White pawns have a swapRow of 0', () => {
+	expect(() => whitePawn.swapRow).not.toThrow();
+	expect(whitePawn.swapRow).toBe(0);
+});
+
+test('Black pawns have a swapRow of 7', () => {
+	expect(() => blackPawn.swapRow).not.toThrow();
+	expect(blackPawn.swapRow).toBe(7);
+});
