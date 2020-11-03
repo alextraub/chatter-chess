@@ -19,6 +19,17 @@ export default class BoardState {
 			[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
 		];
 
+		/*this.board = [
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+		];*/
+
 		this.getPiece = this.getPiece.bind(this);
 		this.movePiece = this.movePiece.bind(this);
 		this.returnBoardState = this.returnBoardState.bind(this);
@@ -38,6 +49,12 @@ export default class BoardState {
 		this.board[from1][from2] = null;                             //null the tile left
 
 		return true;
+	}
+
+	placePiece(piece, [row, col])						//put a piece in a spicific position
+	{
+		this.board[row][col] = piece;
+		return 0;
 	}
 
 	/*function swapPeice(position, peice)      //returns the peice in the given position after the trasformation to make shure it worked
