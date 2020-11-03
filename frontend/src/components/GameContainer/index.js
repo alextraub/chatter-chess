@@ -36,8 +36,8 @@ export default class GameContainer extends React.Component {
 
 		this.state = {
 			board,
-			capturedWhitePieces: {...this.capturedWhitePieces},
-			capturedBlackPieces: {...this.capturedBlackPieces},
+			capturedWhitePieces: { ...this.capturedWhitePieces },
+			capturedBlackPieces: { ...this.capturedBlackPieces },
 			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
 			swapList: [], // Possible types of pieces to swap
 			turn: 0 // Number of turns made in the game
@@ -70,12 +70,12 @@ export default class GameContainer extends React.Component {
 	 */
 	performMove(from, to) {
 		const capturedPiece = this.boardState.getPiece(to);
-		if(capturedPiece !== null) {
+		if (capturedPiece !== null) {
 			this.updateCapturedLists(capturedPiece);
 		}
 		this.boardState.movePiece(from, to);
 		this.syncBoard();
-		if(!this.beginSwap()) {
+		if (!this.beginSwap()) {
 			this.nextTurn();
 		}
 	}
@@ -111,7 +111,7 @@ export default class GameContainer extends React.Component {
 	 * @param {Piece} piece - a non-null Piece instance
 	 */
 	updateCapturedLists(piece) {
-		if(piece.isWhite()) {
+		if (piece.isWhite()) {
 			this.capturedWhitePieces.count++;
 			this.capturedWhitePieces.pieces[piece.type].push(piece);
 		} else {
@@ -137,14 +137,14 @@ export default class GameContainer extends React.Component {
 	 */
 	beginSwap(to) {
 		const piece = this.boardState.getPiece(to);
-		if(piece.canSwapOut && to[0] === piece.swapRow) { // Piece is swappable and at a swappble position
+		if (piece.canSwapOut && to[0] === piece.swapRow) { // Piece is swappable and at a swappble position
 			const { count, pieces } = piece.player === 0 ?
 				this.state.capturedWhitePieces :
 				this.state.capturedBlackPieces;
 
-			if(count > 0) { // If the player has pieces that have been captured
+			if (count > 0) { // If the player has pieces that have been captured
 				const pieceTypes = this.getPossibleSwapArray(pieces); // All possible types of pieces that can be swapped in
-				if(pieceTypes.length > 0) { // Only move forward in the swap procedure if there are pieces that can be swapped in
+				if (pieceTypes.length > 0) { // Only move forward in the swap procedure if there are pieces that can be swapped in
 					this.setState({ // Set state to be in the middle of swapping a piece
 						...this.state,
 						swapping: to,
@@ -195,7 +195,7 @@ export default class GameContainer extends React.Component {
 		this.boardState.returnBoardState()[swapping[0]][swapping[1]] = newPiece;
 		piece.boardState = null; // Remove old piece from the game
 
-		if(this.currentPlayer() === 0) {
+		if (this.currentPlayer() === 0) {
 			this.setState({
 				...this.state,
 				capturedWhitePieces: {
@@ -220,16 +220,10 @@ export default class GameContainer extends React.Component {
 
 	/**
 	 * Returns the rendered out swap UI
-	 * @todo
 	 */
 	renderSwapUI() {
 		return (
-			<>
-				<SwapPieces
-					swapList={this.state.swapList}
-					performSwap={this.performSwap}
-				/>
-			</>
+			<SwapPieces SwapList={this.state.swapList} performSwap={this.performSwap} />
 		);
 	}
 
@@ -280,7 +274,7 @@ export default class GameContainer extends React.Component {
 
 	render() {
 		const renderUI = () => {
-			if(this.state.swapping) {
+			if (this.state.swapping) {
 				return (
 					<>
 						{this.renderStandardUI()}
