@@ -5,6 +5,7 @@ import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
+import SwapPieces from "../SwapPieces";
 
 const capturedPieceObj = () => ({
 	count: 0,
@@ -222,7 +223,14 @@ export default class GameContainer extends React.Component {
 	 * @todo
 	 */
 	renderSwapUI() {
-		return <p>TODO</p>;
+		return (
+			<>
+				<SwapPieces
+					swapList={this.state.swapList}
+					performSwap={this.performSwap}
+				/>
+			</>
+		);
 	}
 
 	/**
@@ -276,7 +284,7 @@ export default class GameContainer extends React.Component {
 				return (
 					<>
 						{this.renderStandardUI()}
-						{this.renderStandardUI()}
+						{this.renderSwapUI()}
 					</>
 				)
 			} else {
