@@ -225,9 +225,6 @@ export default class GameContainer extends React.Component {
 
 		return (
 			<SwapPieces SwapList={this.state.swapList} performSwap={this.performSwap} />
-
-
-
 		);
 
 
@@ -284,7 +281,7 @@ export default class GameContainer extends React.Component {
 				return (
 					<>
 						{this.renderStandardUI()}
-						{this.renderStandardUI()}
+						{this.renderSwapUI()}
 					</>
 				)
 			} else {
