@@ -20,11 +20,11 @@ class Piece {
 	 * @throws {ReferenceError} boardState cannot be null or anything other than a BoardState instance
 	 * @throws {TypeError} throws an error if player is anything other than 0 or 1
 	 */
-	constructor(boardState, player=0) {
+	constructor(boardState=null, player=0) {
 		if(new.target === Piece) {
 			throw new TypeError('Piece is abstract and cannot be instantiated');
 		}
-		if(boardState === undefined || !(boardState instanceof BoardState)) {
+		if(boardState !== null && !(boardState instanceof BoardState)) {
 			throw new TypeError(`Piece constructor expected to be passed a BoardState but got ${boardState}`);
 		}
 		if(player !== 0 && player !== 1) {
@@ -91,6 +91,9 @@ class Piece {
 	 * @param {0|1?} mode 0 by default, returns only booleans, while mode 1 will return an error message if false
 	 */
 	isNextSquareInPathEmpty([row, col], mode=0) {
+		if(this.boardState === null) {
+			throw new EvalError();
+		}
 		if(this.boardState.getPiece([row, col]) === null) {
 			return true;
 		} else if(mode === 0) {
@@ -114,6 +117,10 @@ class Piece {
 	 * @throws {TypeError} throws error when missing arguments or invalid parameter types are passed
 	 */
 	canMove([ fromRow, fromCol ], [ toRow, toCol ], mode=0) {
+		if(this.boardState === null) {
+			throw EvalError();
+		}
+
 		if(mode !== 0 && mode !== 1) {
 			throw TypeError(`canMove can only have a mode paremeter of 0 or 1 but got ${mode}`);
 		}

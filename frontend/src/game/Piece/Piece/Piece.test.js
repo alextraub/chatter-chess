@@ -21,10 +21,10 @@ test('Classes derived from Piece can be instantiated', () => {
 });
 
 /* Constructor arguments */
-test('Piece constructor throws an error if not provided a boardState argument', () => {
-	expect(() => new DPiece()).toThrow(TypeError);
+test('Piece constructor throws an error if provided a first argument that is not a boardState or null', () => {
+	expect(() => new DPiece()).not.toThrow(TypeError);
 	expect(() => new DPiece(1)).toThrow(TypeError);
-	expect(() => new DPiece(null)).toThrow(TypeError);
+	expect(() => new DPiece(null)).not.toThrow(TypeError);
 	expect(() => new DPiece(boardState)).not.toThrow();
 	expect(() => new DPiece(boardState, 0)).not.toThrow();
 	expect(() => new DPiece(boardState, 1)).not.toThrow();
@@ -34,6 +34,14 @@ test('Constructor throws error if passed a 2nd argument that is not 0 or 1', () 
 	expect(() => new DPiece(boardState, [0])).toThrow(TypeError);
 	expect(() => new DPiece(boardState, true)).toThrow(TypeError);
 	expect(() => new DPiece(boardState, 1)).not.toThrow(TypeError);
+});
+
+test('Calling canMove on a piece with no boardState throws an error', () => {
+	expect(() => new DPiece().canMove([0,0], [0,1])).toThrow(EvalError);
+});
+
+test('Calling canMove on a piece with a boardState does not throw an eval error', () => {
+	expect(() => new DPiece(boardState).canMove([0,0], [0,1])).not.toThrow(EvalError);
 });
 
 const whitePiece1 = new DPiece(boardState);
