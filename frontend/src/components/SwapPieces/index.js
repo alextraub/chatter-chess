@@ -1,39 +1,25 @@
+import './SwapPieces.css';
 import React from 'react';
-import { pieceName } from '../../game/Piece';
-import '../ChessPiece';
-import {whitePieceImages} from "../ChessPiece/pieceImages";
+import ChessPiece from '../ChessPiece';
 
-export default class CapturedPieces extends React.Component {
+export default class SwapPieces extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
 		return (
-			<div id='capturedContainer'>
-				<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Creepster+Caps" />
-				<h1>Shadow Realm</h1><br/>
-				<h2>Captured White Pieces: {this.props.whitePieces.length}</h2><br/>
+			<div className="swap-container" data-testid="swap-container">
+				<h2>Promote Your Pawn</h2><br/>
+				<p>Click the piece you wish to promote your pawn to</p>
 				<ul>
-					{this.props.whitePieces.map((piece) => {
-						if (pieceName(piece) !== "pawn")
-						return (
-							<li>{whitePieceImages.piece}
-								<input data-testid="button" type='submit' value='Swap Piece'/>
-							</li>
-						)
-					})}
-				</ul>
-				<h2>Captured Black Pieces: {this.props.blackPieces.length}</h2><br/>
-				<ul>
-					{this.props.blackPieces.map((piece) => {
-						if (pieceName(piece) !== "pawn")
-						return (
-							<li>{pieceName(piece)}
-								<input data-testid="button" type='submit' value='Swap Piece'/>
-							</li>
-						)
-					})}
+					{this.props.swapList.map((data, index) => (
+						<li data-testid="swap-graphic" key={index} className="swap-graphic">
+							<a href={this.props.performSwap(data.type)}>
+								<ChessPiece type={data.type} black={data.black}/>
+							</a>
+						</li>
+					))}
 				</ul>
 			</div>
 		);

@@ -8,6 +8,7 @@ export default class BoardState {
 
 	constructor()                                         //create board
 	{
+		// replace!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
 		this.board = [
 			[new Rook(this, 1), new Knight(this, 1), new Bishop(this, 1), new Queen(this, 1), new King(this, 1), new Bishop(this, 1), new Knight(this, 1), new Rook(this, 1)],
 			[new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1)],
@@ -18,6 +19,16 @@ export default class BoardState {
 			[new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
 			[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
 		];
+		// this.board = [
+		// 	[new Rook(this, 1), new Knight(this, 1), new Bishop(this, 1), new Queen(this, 1), new King(this, 1), new Bishop(this, 1), new Knight(this, 1), new Rook(this, 1)],
+		// 	[new Pawn(this, 1), new Pawn(this, 0), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1)],
+		// 	[null, null, null, null, null, null, null, null],
+		// 	[null, null, null, null, null, null, null, null],
+		// 	[null, null, null, null, null, null, null, null],
+		// 	[null, null, null, null, null, null, null, null],
+		// 	[new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
+		// 	[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
+		// ];
 
 		/*this.board = [
 			[null, null, null, null, null, null, null, null],
@@ -95,6 +106,7 @@ const makeChessBoard = boardState => {             //This is the function to be 
 
 	squares[0][1] = new Knight(boardState, 1);
 	squares[0][6] = new Knight(boardState, 1);
+
 	squares[7][1] = new Knight(boardState, 0);
 	squares[7][6] = new Knight(boardState, 0);
 
@@ -108,5 +120,9 @@ const makeChessBoard = boardState => {             //This is the function to be 
 
 	squares[0][4] = new King(boardState, 1);
 	squares[7][4] = new King(boardState, 0);
+
+	//remove !!!!!!!!!!!!!!!!!!!
+	// squares[1][2] = new Pawn(boardState, 1);
+
 	return squares;
 }
