@@ -1,14 +1,15 @@
 import Piece from '../Piece';
+import { boardPositionToString } from '../../utils/boardPosition';
 
 export default class Queen extends Piece {
 	get type() {
 		return 'queen';
 	}
 
-	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
-		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ]);
-		if(!validFinalPosition) {
-			return false;
+	canMove([ fromRow, fromCol ], [ toRow, toCol ], mode=0) {
+		const validFinalPosition = super.canMove([ fromRow, fromCol ], [ toRow, toCol ], mode);
+		if(!validFinalPosition || typeof(validFinalPosition) === 'string') {
+			return validFinalPosition;
 		}
 		const numRows = toRow - fromRow;
 		const numCols = toCol - fromCol;
@@ -17,9 +18,11 @@ export default class Queen extends Piece {
 			let currR = fromRow + 1;
 			let currC = fromCol + 1;
 			while (currR < toRow && currC < toCol) {
-				if (this.boardState.getPiece([currR, currC]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
+
 				currR++;
 				currC++;
 			}
@@ -30,9 +33,11 @@ export default class Queen extends Piece {
 			let currR = fromRow + 1;
 			let currC = fromCol - 1;
 			while (currR < toRow && currC > toCol) {
-				if (this.boardState.getPiece([currR, currC]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
+
 				currR++;
 				currC--;
 			}
@@ -43,9 +48,11 @@ export default class Queen extends Piece {
 			let currR = fromRow - 1;
 			let currC = fromCol + 1;
 			while (currR > toRow && currC < toCol) {
-				if (this.boardState.getPiece([currR, currC]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
+
 				currR--;
 				currC++;
 			}
@@ -56,9 +63,11 @@ export default class Queen extends Piece {
 			let currR = fromRow - 1;
 			let currC = fromCol - 1;
 			while (currR > toRow && currC > toCol) {
-				if (this.boardState.getPiece([currR, currC]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
+
 				currR--;
 				currC--;
 			}
@@ -68,9 +77,11 @@ export default class Queen extends Piece {
 		} else if (numRows > 0 && numCols === 0) {
 			let currR = fromRow + 1;
 			while (currR < toRow) {
-				if (this.boardState.getPiece([currR, fromCol]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([currR, fromCol], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
+
 				currR++;
 			}
 			return true;
@@ -79,8 +90,9 @@ export default class Queen extends Piece {
 		} else if (numRows < 0 && numCols === 0) {
 			let currR = fromRow - 1;
 			while (currR > toRow) {
-				if (this.boardState.getPiece([currR, fromCol]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([currR, fromCol], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
 				currR--;
 			}
@@ -90,9 +102,11 @@ export default class Queen extends Piece {
 		}  else if (numRows === 0 && numCols > 0) {
 			let currC = fromCol + 1;
 			while (currC < toCol) {
-				if (this.boardState.getPiece([fromRow, currC]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([fromRow, currC], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
+
 				currC++;
 			}
 			return true;
@@ -101,14 +115,16 @@ export default class Queen extends Piece {
 		} else if (numRows === 0 && numCols < 0) {
 			let currC = fromCol - 1;
 			while (currC > toCol) {
-				if (this.boardState.getPiece([fromRow, currC]) !== null) {
-					return false;
+				const squareCheck = this.isNextSquareInPathEmpty([fromRow, currC], mode);
+				if(squareCheck !== true) {
+					return squareCheck;
 				}
 				currC--;
 			}
 			return true;
 		} else {
-			return false;
+			return mode === 0 ?
+				false : `A ${this.type} can only move vertically, horizontally, or diagonally`;
 		}
 	}
 }

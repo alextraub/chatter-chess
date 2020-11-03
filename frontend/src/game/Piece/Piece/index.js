@@ -1,4 +1,5 @@
 import BoardState from '../../BoardState';
+import { boardPositionToString } from '../../utils/boardPosition';
 
 /**
  * A single chess piece with unknown type.
@@ -85,6 +86,21 @@ class Piece {
 	}
 
 	/**
+	 * Helper method for validating a move along a path between the from and to positions
+	 * @param {[number, number]} position a valid board position
+	 * @param {0|1?} mode 0 by default, returns only booleans, while mode 1 will return an error message if false
+	 */
+	isNextSquareInPathEmpty([row, col], mode=0) {
+		if(this.boardState.getPiece([row, col]) === null) {
+			return true;
+		} else if(mode === 0) {
+			return false;
+		} else {
+			return `There is a piece at ${boardPositionToString([row, col])} blocking your ${this.type}'s path`;
+		}
+	}
+
+	/**
 	 * Determine if a piece can move from a given position to a target position
 	 * Arguments are assumed to be valid positions on teh board.
 	 *
@@ -93,12 +109,18 @@ class Piece {
 	 * @virtual
 	 * @param {[number, number]} from the starting position
 	 * @param {[number, number]} to the desired position to move the piece to
-	 * @returns {boolean} ture if the piece is able to move tfrom from to to
+	 * @param {0|1?} mode optionally set to 0 (default) to only return true or false, or 1 to return error messages if move is invalid
+	 * @returns {boolean|string} ture if the piece is able to move from from to to otherwise false for mode 0 and an error message if mode 1
 	 * @throws {TypeError} throws error when missing arguments or invalid parameter types are passed
 	 */
-	canMove([ fromRow, fromCol ], [ toRow, toCol ]) {
+	canMove([ fromRow, fromCol ], [ toRow, toCol ], mode=0) {
+		if(mode !== 0 && mode !== 1) {
+			throw TypeError(`canMove can only have a mode paremeter of 0 or 1 but got ${mode}`);
+		}
+
 		if(fromRow === toRow && fromCol === toCol) { // check that the from and to positions are different
-			return false;
+			return mode === 0 ?
+				false : 'You must move a piece to a new position';
 		}
 
 		const targetSquare = this.boardState.getPiece([ toRow, toCol ])
@@ -110,7 +132,8 @@ class Piece {
 			return true;
 		}
 
-		return false;
+		return mode === 0 ?
+			false : `You already have a piece at ${boardPositionToString([toRow, toCol])}`;
 	}
 }
 

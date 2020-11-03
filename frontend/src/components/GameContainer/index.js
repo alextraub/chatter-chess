@@ -43,7 +43,7 @@ export default class GameContainer extends React.Component {
 		}
 
 		/* Bind methods to 'this' */
-		this.handleSuccessfulMove = this.handleSuccessfulMove.bind(this);
+		this.performMove = this.performMove.bind(this);
 		this.nextTurn = this.nextTurn.bind(this);
 		this.currentPlayer = this.currentPlayer.bind(this);
 		this.syncBoard = this.syncBoard.bind(this);
@@ -66,12 +66,12 @@ export default class GameContainer extends React.Component {
 	 * @param {[number, number]} fromPos the position the piece to be hoved is currently at
 	 * @param {[number, number]} toPos the position to move the piece to
 	 */
-	handleSuccessfulMove(fromPos, toPos) {
-		const capturedPiece = this.boardState.getPiece(toPos);
+	performMove(from, to) {
+		const capturedPiece = this.boardState.getPiece(to);
 		if(capturedPiece !== null) {
 			this.updateCapturedLists(capturedPiece);
 		}
-		this.boardState.movePiece(fromPos, toPos);
+		this.boardState.movePiece(from, to);
 		this.syncBoard();
 		// Is an action needed... yes handle it here.  Such as pawn promotion, check, etc.
 		// performAction();
@@ -159,7 +159,7 @@ export default class GameContainer extends React.Component {
 					id="move-input"
 					currentPlayer={this.currentPlayer()}
 					getPiece={this.boardState.getPiece}
-					onMoveSuccess={this.handleSuccessfulMove}
+					performMove={this.performMove}
 				/>
 
 				<div className="row">

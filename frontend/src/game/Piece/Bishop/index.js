@@ -1,22 +1,24 @@
 import Piece from '../Piece';
+import { boardPositionToString } from '../../utils/boardPosition';
 
 export default class Bishop extends Piece {
 	get type() {
 		return 'bishop';
 	}
 
-	canMove([fromRow, fromCol], [toRow, toCol])
+	canMove([fromRow, fromCol], [toRow, toCol], mode=0)
 	{
-		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol]);   //call the super method to see if the move passes basic validation
-		if(!validFinalPosition) {                                    //if the lading place is not valid
-			return false;                                           //return false, the move can not be done
+		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol], mode);   //call the super method to see if the move passes basic validation
+		if(!validFinalPosition || typeof(validFinalPosition) === 'string') {                                    //if the lading place is not valid
+			return validFinalPosition;                                           //return false, the move can not be done
 		}
 		const numRows = toRow - fromRow;                            //Row from compared to to
 		const numCols = toCol - fromCol;                            //Col from compared to to
 
 		if (Math.abs(numRows) !== Math.abs(numCols))                  //if the number of rows crossed != the number of cols crossed
 		{
-			return false;                                           //its not a diagonal path
+			return mode === 0 ?
+				false : `A ${this.type} can only move diagonally`;                                           //its not a diagonal path
 		}
 
 		if (numRows > 0 && numCols > 0)                             //rows and cols are going up, meaning we are going down right the board
@@ -25,9 +27,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol + 1;
 			while(currR < toRow && currC < toCol)                   //while that position is not the final position
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//if that position is not empty
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if (squareCheck !== true)//if that position is not empty
 				{
-					return false;                                   //something is blocking us
+					return squareCheck;                                   //something is blocking us
 				}
 				currR++;                                            //move pointer down right
 				currC++;
@@ -40,9 +43,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol - 1;
 			while(currR < toRow && currC > toCol)
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//copy of up code but going down left
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true)//copy of up code but going down left
 				{
-					return false;
+					return squareCheck;
 				}
 				currR++;
 				currC--;
@@ -54,9 +58,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol + 1;
 			while(currR > toRow && currC < toCol)
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//copy of code but going up right
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if(squareCheck !== true)//copy of code but going up right
 				{
-					return false;
+					return squareCheck;
 				}
 				currR--;
 				currC++;
@@ -68,9 +73,10 @@ export default class Bishop extends Piece {
 			let currC = fromCol - 1;
 			while(currR > toRow && currC > toCol)
 			{
-				if (this.boardState.getPiece([currR, currC]) != null)//copy of code but going up left
+				const squareCheck = this.isNextSquareInPathEmpty([currR, currC], mode);
+				if (squareCheck !== true)//copy of code but going up left
 				{
-					return false;
+					return squareCheck;
 				}
 				currR--;
 				currC--;
