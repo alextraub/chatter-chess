@@ -5,12 +5,12 @@ export default class Check
 {
     inCheck([Row, Col], boardstate, team)
     {
-        search = boardstate.returnBoardState();     //search is the current board state
+        const search = boardstate.returnBoardState();     //search is the current board state
         for(let r=0; r<8; r++)                      //for every row
         {
             for(let c=0; c<8; c++)                  //for every coleum
             {
-                if (search[r][c].player != team)    //if the peice there is an enemy
+                if(search[r][c].player != team)    //if the peice there is an enemy
                 {
                     if (search[r][c].canMove([r, c], [Row, Col]))   //we check if it can move to our square
                     {

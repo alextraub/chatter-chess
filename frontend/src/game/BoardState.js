@@ -40,6 +40,12 @@ export default class BoardState {
 		return true;
 	}
 
+	placePiece(piece, [row, col])						//put a piece in a spicific position
+	{
+		this.board[row, col] = piece;
+		return 0;
+	}
+
 	/*function swapPeice(position, peice)      //returns the peice in the given position after the trasformation to make shure it worked
     {
         pos = PosToNum(position);                           //get the array pos of position
