@@ -5,7 +5,6 @@ import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
-import SwapPieces from "../SwapPieces";
 
 const capturedPieceObj = () => ({
 	count: 0,
@@ -38,17 +37,19 @@ export default class GameContainer extends React.Component {
 			board,
 			capturedWhitePieces: {...this.capturedWhitePieces},
 			capturedBlackPieces: {...this.capturedBlackPieces},
+			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
+			swapList: [], // Possible types of pieces to swap
 			turn: 0 // Number of turns made in the game
-			// showSwap: false
 		}
 
 		/* Bind methods to 'this' */
 		this.performMove = this.performMove.bind(this);
+		this.beginSwap = this.beginSwap.bind(this);
+		this.getPossibleSwapArray = this.getPossibleSwapArray.bind(this);
 		this.nextTurn = this.nextTurn.bind(this);
 		this.currentPlayer = this.currentPlayer.bind(this);
 		this.syncBoard = this.syncBoard.bind(this);
 		this.updateCapturedLists = this.updateCapturedLists.bind(this);
-		this.toggleSwap = this.toggleSwap.bind(this);
 	}
 
 	static propTypes = {
@@ -73,9 +74,9 @@ export default class GameContainer extends React.Component {
 		}
 		this.boardState.movePiece(from, to);
 		this.syncBoard();
-		// Is an action needed... yes handle it here.  Such as pawn promotion, check, etc.
-		// performAction();
-		this.nextTurn();
+		if(!this.beginSwap()) {
+			this.nextTurn();
+		}
 	}
 
 	/**
@@ -84,6 +85,8 @@ export default class GameContainer extends React.Component {
 	nextTurn() {
 		this.setState({
 			...this.state,
+			swapping: false,
+			swapList: [],
 			turn: this.state.turn + 1 // Adds 1 to the turn counter
 		});
 	}
@@ -126,35 +129,109 @@ export default class GameContainer extends React.Component {
 	}
 
 	/**
-	 * Toggles the display of the swap pieces component
+	 * Begins the piece swap sequence of events, if the conditions for a swap are met
 	 *
-	 *
+	 * @param {[number, number]} to board position of piece attempting to be swapped
+	 * @returns {boolean} True if a swap has been started or false otherwise
 	 */
-	toggleSwap() {
-		for (let i = 0; i < 8; i++) {
-			const wP = this.boardState.getPiece([0, i]);
-			const bP = this.boardState.getPiece([7, i]);
-			if (wP.type === 'pawn' || bP.type === 'pawn') {
-				// this.setState({
-				// 	...this.state,
-				// 	showSwap: !this.state.showSwap
-				// });
-				return true;
+	beginSwap(to) {
+		const piece = this.boardState.getPiece(to);
+		if(piece.canSwapOut && to[0] === piece.swapRow) { // Piece is swappable and at a swappble position
+			const { count, pieces } = piece.player === 0 ?
+				this.state.capturedWhitePieces :
+				this.state.capturedBlackPieces;
+
+			if(count > 0) { // If the player has pieces that have been captured
+				const pieceTypes = this.getPossibleSwapArray(pieces); // All possible types of pieces that can be swapped in
+				if(pieceTypes.length > 0) { // Only move forward in the swap procedure if there are pieces that can be swapped in
+					this.setState({ // Set state to be in the middle of swapping a piece
+						...this.state,
+						swapping: to,
+						swapList: pieceTypes
+					});
+					return true;
+				}
 			}
 		}
+
 		return false;
-
 	}
-	//
-	// myPopup(myURL, title, myWidth, myHeight) {
-	// 	const left = (screen.width - myWidth) / 2;
-	// 	const top = (screen.height - myHeight) / 4;
-	// 	const myWindow = window.open(myURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + myWidth + ', height=' + myHeight + ', top=' + top + ', left=' + left);
-	// }
 
-	render() {
+	/**
+	 *
+	 * This method is a helper for getting possible swap piece types
+	 *
+	 * @param {*} pieces an object of piece types and an array of all the pieces that have been captured of that type
+	 * @returns {{type: string; black: boolean;}[]} array of piece types that are currently able to be swapped in
+	 */
+	getPossibleSwapArray(pieces) {
+		return Object.values(pieces)
+			// Filter out any piece type with no captured pieces and then any that cannot be swapped in
+			.filter(pieceArr => pieceArr.length > 0 && pieceArr[0].canSwapIn)
+			.map(pieceArr => { // For the remaing piece arrays, map each to an object denoting what type of pieces it has and if they are black or not
+				return {
+					black: pieceArr[0].isBlack(),
+					type: pieceArr[0].type
+				}
+			});
+	}
+
+	/**
+	 * Perform a swap with a specified piece type. This should only be called after beginSwap is called and returns true
+	 *
+	 * @todo supply this as an event handler to the swap component
+	 * @param {string} type the type value of a piece class
+	 */
+	performSwap(type) {
+		const { swapping } = this.state;
+		const { count, pieces } = this.currentPlayer() === 0 ?
+			this.state.capturedWhitePieces :
+			this.state.capturedBlackPieces;
+		const piece = this.boardState.getPiece(swapping); // The piece being swapped out
+		const newPiece = pieces[type].pop(); // Get the next piece of type that can be swapped in
+		newPiece.captured = false; // New piece no longer is captured
+		// Replace the piece
+		this.boardState.returnBoardState()[swapping[0]][swapping[1]] = newPiece;
+		piece.boardState = null; // Remove old piece from the game
+
+		if(this.currentPlayer() === 0) {
+			this.setState({
+				...this.state,
+				capturedWhitePieces: {
+					count: count - 1,
+					pieces
+				}
+			})
+		} else {
+			this.setState({
+				...this.state,
+				capturedBlackPieces: {
+					count: count - 1,
+					pieces
+				}
+			});
+		}
+
+		// Go to next turn
+		this.syncBoard();
+		this.nextTurn();
+	}
+
+	/**
+	 * Returns the rendered out swap UI
+	 * @todo
+	 */
+	renderSwapUI() {
+		return <p>TODO</p>;
+	}
+
+	/**
+	 * Returns all the UI elements that never are hidden
+	 * @todo disable move input during a piece swap
+	 */
+	renderStandardUI() {
 		return (
-			<div data-testid="game-container" className="container">
+			<>
 				<MoveInput
 					id="move-input"
 					currentPlayer={this.currentPlayer()}
@@ -178,15 +255,6 @@ export default class GameContainer extends React.Component {
 							player={this.props.playerView === 2 ? this.currentPlayer() : this.props.playerView}
 							board={this.state.board}
 						/>
-						{this.toggleSwap() ?
-							<SwapPieces
-								black={!(this.currentPlayer())}
-								// pieces={!(this.currentPlayer()) ?
-								// 	this.state.capturedBlackPieces :
-								// 	this.state.capturedWhitePieces}
-							/> :
-							null
-						}
 					</div>
 
 					<div className="col">
@@ -198,6 +266,27 @@ export default class GameContainer extends React.Component {
 						/>
 					</div>
 				</div>
+			</>
+		);
+	}
+
+	render() {
+		const renderUI = () => {
+			if(this.state.swapping) {
+				return (
+					<>
+						{this.renderStandardUI()}
+						{this.renderStandardUI()}
+					</>
+				)
+			} else {
+				return <>{this.renderStandardUI()}</>;
+			}
+		}
+
+		return (
+			<div data-testid="game-container" className="container">
+				{renderUI()}
 			</div>
 		);
 	}

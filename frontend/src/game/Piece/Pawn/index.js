@@ -6,6 +6,14 @@ export default class Pawn extends Piece {
 		return 'pawn';
 	}
 
+	get canSwapOut() {
+		return true;
+	}
+
+	get canSwapIn() {
+		return false;
+	}
+
 	canMove([fromRow, fromCol], [toRow, toCol], mode=0) {
 		const validFinalPosition = super.canMove([fromRow, fromCol], [toRow, toCol], mode);
 		if (!validFinalPosition || typeof(validFinalPosition) === 'string') {

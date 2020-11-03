@@ -137,3 +137,18 @@ test('Kings have type of "king"', () => {
 	expect(whiteKing.type).toBe('king');
 	expect(blackKing.type).toBe('king');
 });
+
+test('Kings cannot be swapped out', () => {
+	expect(whiteKing.canSwapOut).toBe(false);
+	expect(blackKing.canSwapOut).toBe(false);
+});
+
+test('Kings cannot be swapped in', () => {
+	expect(whiteKing.canSwapIn).toBe(false);
+	expect(blackKing.canSwapIn).toBe(false);
+});
+
+test('Kings throw an error if checking their swapRow property', () => {
+	expect(() => whiteKing.swapRow).toThrow(EvalError);
+	expect(() => blackKing.swapRow).toThrow(EvalError);
+});
