@@ -1,16 +1,14 @@
-import King from '../../Game/Piece/King'
-import BoardState from '../../Game/BoardState'
+import King from '../Piece/King'
+import BoardState from '../BoardState'
 
-export default class Check
-{
-    inCheck([Row, Col], boardstate, team)
+    export function inCheck([Row, Col], boardstate, team)
     {
         const search = boardstate.returnBoardState();     //search is the current board state
         for(let r=0; r<8; r++)                      //for every row
         {
             for(let c=0; c<8; c++)                  //for every coleum
             {
-                if(search[r][c].player != team)    //if the peice there is an enemy
+                if(boardstate.getPiece([r, c]).player != team)    //if the peice there is an enemy
                 {
                     if (search[r][c].canMove([r, c], [Row, Col]))   //we check if it can move to our square
                     {
@@ -22,7 +20,7 @@ export default class Check
         return false;                                //we have checked the whole board and are not in check
     };
 
-    inCheckMate([Row, Col], boardstate, team)
+    export function inCheckMate([Row, Col], boardstate, team)
     {
         
         if(Row-1 >= 0 && Col-1 >= 0)                //if the up left is on the board
@@ -107,4 +105,3 @@ export default class Check
         }
         return false; //we have nowhere to move to, thus we are in check
     }
-}

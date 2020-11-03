@@ -1,7 +1,7 @@
-import BoardState from '../../game/BoardState'
-import Check from './'
-import King from '../../Game/Piece/King'
-import Rook from '../../game/Piece/Rook'
+import BoardState from '../BoardState'
+import Check from '.'
+import King from '../Piece/King'
+import Rook from '../Piece/Rook'
 jest.mock('../../Game/BoardState')
 
 beforeEach(() =>
