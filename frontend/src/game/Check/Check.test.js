@@ -12,51 +12,51 @@ const whiteRook = new Rook(boardState, 0);
 const blackRook = new Rook(boardState, 1);
 function emptyBoard(boardstate)
 {
-    for(let r = 0; r < 8; ++r)
-    {
-        for(let c = 0; c < 8; ++c)
-        {
-            boardstate.board[r][c] = null;
-        }
-    }
+	for(let r = 0; r < 8; ++r)
+	{
+		for(let c = 0; c < 8; ++c)
+		{
+			boardstate.board[r][c] = null;
+		}
+	}
 }
 
 test('it can tell when the King isnt in check', () =>
 {
-    emptyBoard(boardState);
-    boardState.placePiece(blackKing, [7, 4]);
-    boardState.placePiece(whiteKing, [0, 3]);
+	emptyBoard(boardState);
+	boardState.placePiece(blackKing, [7, 4]);
+	boardState.placePiece(whiteKing, [0, 3]);
 
-    expect(inCheck([7, 4], blackKing.boardState, blackKing.player)).toBe(false);
-    expect(inCheck([0, 3], whiteKing.boardState, whiteKing.player)).toBe(false);
+	expect(inCheck([7, 4], blackKing.boardState, blackKing.player)).toBe(false);
+	expect(inCheck([0, 3], whiteKing.boardState, whiteKing.player)).toBe(false);
 })
 
 test('it can tell when the King is in check', () =>
 {
-    emptyBoard(boardState);
-    boardState.placePiece(blackKing, [7, 4]);
-    boardState.placePiece(whiteRook, [0, 4]);
+	emptyBoard(boardState);
+	boardState.placePiece(blackKing, [7, 4]);
+	boardState.placePiece(whiteRook, [0, 4]);
 
-    expect(inCheck([7, 4], blackKing.boardState, blackKing.player)).toBe(true);
+	expect(inCheck([7, 4], blackKing.boardState, blackKing.player)).toBe(true);
 })
 
 test('it can tell when the king is not in check mate', () =>
 {
-    emptyBoard(boardState);
-    boardState.placePiece(whiteKing, [7, 4]);
-    boardState.placePiece(blackRook, [0, 4]);
+	emptyBoard(boardState);
+	boardState.placePiece(whiteKing, [7, 4]);
+	boardState.placePiece(blackRook, [0, 4]);
 
-    expect(inCheckMate([7, 4], whiteKing.boardState, whiteKing.player)).toBe(false);
+	expect(inCheckMate([7, 4], whiteKing.boardState, whiteKing.player)).toBe(false);
 })
 
 test('it can tell when the king is in check mate', () =>
 {
-    emptyBoard(boardState);
-    boardState.placePiece(blackKing, [7, 4]);
+	emptyBoard(boardState);
+	boardState.placePiece(blackKing, [7, 4]);
 
-    boardState.placePiece(whiteRook, [0, 3]);
-    boardState.placePiece(whiteRook, [0, 4]);
-    boardState.placePiece(whiteRook, [0, 5]);
+	boardState.placePiece(whiteRook, [0, 3]);
+	boardState.placePiece(whiteRook, [0, 4]);
+	boardState.placePiece(whiteRook, [0, 5]);
 
-    expect(inCheckMate([7, 4], blackKing.boardState, blackKing.player)).toBe(true);
+	expect(inCheckMate([7, 4], blackKing.boardState, blackKing.player)).toBe(true);
 })
