@@ -223,10 +223,10 @@ export default class GameContainer extends React.Component {
 	 */
 	renderSwapUI() {
 		return (
-			<MoveInput
+			<>
 				swapList={this.state.swapList}
 				performSwap={this.performSwap}
-			/>
+			</>
 		);
 
 	}
