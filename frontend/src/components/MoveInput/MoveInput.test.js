@@ -29,7 +29,7 @@ const renderMoveInput = (currentPlayer=0, disabled=false) => {
 	render(<MoveInput
 		currentPlayer={currentPlayer}
 		getPiece={boardState.getPiece}
-		performMove={jest.fn()}
+		performMove={jest.fn(() => true)}
 		disabled={disabled}
 	/>);
 };
@@ -242,3 +242,15 @@ test('Move submit button is enabled if it has disabled=false prop', () => {
 	renderMoveInput();
 	expect(screen.getByTestId('button')).not.toBeDisabled();
 });
+
+test('Check errors are displayed', () => {
+	render(<MoveInput
+		currentPlayer={0}
+		getPiece={boardState.getPiece}
+		performMove={jest.fn(() => false)}
+	/>);
+	mockValidMove(new DPiece(boardState));
+	updateInputValue('A4 E4');
+	fireEvent.click(screen.getByTestId('button'));
+	expect(screen.getByTestId('error')).toHaveTextContent('That move puts you in check');
+})
