@@ -274,7 +274,7 @@ export default class GameContainer extends React.Component {
 
 	render() {
 		const renderUI = () => {
-			if (this.state.swapping) {
+			if (this.state.swapping !== false) {
 				return (
 					<>
 						{this.renderStandardUI()}
