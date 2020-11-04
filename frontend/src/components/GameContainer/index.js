@@ -36,6 +36,16 @@ export default class GameContainer extends React.Component {
 
 		this.state = {
 			board,
+			check: {
+				white: {
+					status: false,
+					mate: false
+				},
+				black: {
+					status: false,
+					mate: false
+				}
+			},
 			capturedWhitePieces: { ...this.capturedWhitePieces },
 			capturedBlackPieces: { ...this.capturedBlackPieces },
 			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
@@ -192,7 +202,7 @@ export default class GameContainer extends React.Component {
 		const newPiece = pieces[type].pop(); // Get the next piece of type that can be swapped in
 		newPiece.captured = false; // New piece no longer is captured
 		// Replace the piece
-		this.boardState.returnBoardState()[swapping[0]][swapping[1]] = newPiece;
+		this.boardState.placePiece(newPiece, swapping);
 		piece.boardState = null; // Remove old piece from the game
 
 		if (this.currentPlayer() === 0) {
