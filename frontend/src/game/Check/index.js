@@ -35,7 +35,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Row-1 >= 0)                              //if up is on the board
 	{
-		if(boardstate.getPiece([Row-1, Col-1]) == null || boardstate.getPiece([Row-1, Col]).player == team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row-1, Col]) == null || boardstate.getPiece([Row-1, Col]).player == team)//if the space doesn't have a allied piece
 		{
 			if(!(inCheck([Row-1, Col], boardstate, team)))//if that position is not in check
 			{
@@ -45,7 +45,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Row-1 >= 0 && Col+1 < 8)                //if the up right is on the board
 	{
-		if(boardstate.getPiece([Row-1, Col-1]) == null || boardstate.getPiece([Row-1, Col+1]).player == team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row-1, Col+1]) == null || boardstate.getPiece([Row-1, Col+1]).player == team)//if the space doesn't have a allied piece
 		{
 			if(!(inCheck([Row-1, Col+1], boardstate, team)))//if that position is not in check
 			{
@@ -55,7 +55,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Col+1 < 8)                              //if right is on the board
 	{
-		if(boardstate.getPiece([Row-1, Col-1]) == null || boardstate.getPiece([Row, Col+1]).player == team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row, Col+1]) == null || boardstate.getPiece([Row, Col+1]).player == team)//if the space doesn't have a allied piece
 		{
 			if(!(inCheck([Row, Col+1], boardstate, team)))//if that position is not in check
 			{
@@ -65,7 +65,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Row+1 < 8 && Col+1 < 8)                //if down right is on the board
 	{
-		if(boardstate.getPiece([Row-1, Col-1]) == null || boardstate.getPiece([Row+1, Col+1]).player == team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row+1, Col+1]) == null || boardstate.getPiece([Row+1, Col+1]).player == team)//if the space doesn't have a allied piece
 		{
 			if(!(inCheck([Row+1, Col+1], boardstate, team)))//if that position is not in check
 			{
@@ -75,7 +75,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Row+1 < 8)                              //if down is on the board
 	{
-		if(boardstate.getPiece([Row-1, Col-1]) == null || boardstate.getPiece([Row+1, Col]).player == team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row+1, Col]) == null || boardstate.getPiece([Row+1, Col]).player == team)//if the space doesn't have a allied piece
 		{
 			if(!(inCheck([Row+1, Col], boardstate, team)))//if that position is not in check
 			{
@@ -85,7 +85,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Row+1 < 8 && Col-1 >= 0)                //if the down left is on the board
 	{
-		if(boardstate.getPiece([Row-1, Col-1]) == null || boardstate.getPiece([Row+1, Col-1]).player == team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row+1, Col-1]) == null || boardstate.getPiece([Row+1, Col-1]).player == team)//if the space doesn't have a allied piece
 		{
 			if(!(inCheck([Row+1, Col-1], boardstate, team)))//if that position is not in check
 			{
@@ -95,9 +95,9 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Col-1 >= 0)                              //if left is on the board
 	{
-		if(boardstate.getPiece([Row-1, Col-1]) == null || boardstate.getPiece([Row-1, Col-1]).player == team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row, Col-1]) == null || boardstate.getPiece([Row-1, Col-1]).player == team)//if the space doesn't have a allied piece
 		{
-			if(!(inCheck([Row-1, Col-1], boardstate, team)))//if that position is not in check
+			if(!(inCheck([Row, Col-1], boardstate, team)))//if that position is not in check
 			{
 				return false;                    //we can move to another space
 			}
