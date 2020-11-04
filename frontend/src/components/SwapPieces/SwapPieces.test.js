@@ -1,52 +1,58 @@
 import React from 'react';
-import {cleanup, render, screen} from "@testing-library/react";
-import CapturedPieces from "./";
+import {cleanup, render} from "@testing-library/react";
 import '@testing-library/jest-dom/extend-expect';
-import {Bishop, Knight, Rook, Queen} from "../../game/Piece";
-import BoardState from "../../game/BoardState";
 import SwapPieces from "./";
 
-jest.mock('../../game/BoardState.js');
 jest.mock('../ChessPiece/pieceImages.js');
-// jest.mock('../GameContainer.js');
 
 afterEach(cleanup);
 
-const boardState = new BoardState();
-const whiteRook = new Rook(boardState, 0);
-const whiteBishop = new Bishop(boardState, 0);
-const whiteKnight = new Knight(boardState, 0);
-const whiteQueen = new Queen(boardState, 0);
-const blackRook = new Rook(boardState, 1);
-const blackBishop = new Bishop(boardState, 1);
-const blackKnight = new Knight(boardState, 1);
-const blackQueen = new Queen(boardState, 1);
-
-const whitePieces = {
-	black: 0,
-	type: {
-		rook: [whiteRook],
-		bishop: [whiteBishop],
-		knight: [whiteKnight],
-		queen: [whiteQueen]
-	}
-};
-const blackPieces = {
-	count: 4,
-	pieces: {
-		rook: [blackRook],
-		bishop: [blackBishop],
-		knight: [blackKnight],
-		queen: [blackQueen]
-	}
-};
-
+const wRook = {type: 'rook', black: false};
+const bRook = {type: 'rook', black: true};
+const wKnight = {type: 'knight', black: false};
+const bKnight = {type: 'knight', black: true};
+const wBishop = {type: 'bishop', black: false};
+const bBishop = {type: 'bishop', black: true};
+const wQueen = {type: 'queen', black: false};
+const bQueen = {type: 'queen', black: true};
 
 test('Component renders', () => {
-	const { getByTestId, rerender } = render(<SwapPieces swapList={whitePieces} performSwap={jest.fn()} />);
+	const swap = jest.fn();
+	const { getByTestId, rerender } = render(<SwapPieces swapList={[]} performSwap={swap} />);
 	expect(getByTestId('swapPieces')).toBeInTheDocument();
 
-	rerender(<SwapPieces swapList={blackPieces} performSwap={jest.fn()} />);
+	rerender(<SwapPieces swapList={[]} performSwap={swap} />);
 	expect(getByTestId('swapPieces')).toBeInTheDocument();
 });
+
+test('performSwap is called with one white piece', () => {
+	const swap = jest.fn();
+	const { getByTestId } = render(<SwapPieces swapList={[wRook]} performSwap={swap} />);
+	expect(getByTestId('swapPieces')).toBeInTheDocument();
+	expect(swap).toHaveBeenCalled();
+});
+
+test('performSwap is called with multiple white pieces', () => {
+	const swap = jest.fn();
+	const { getByTestId } = render(<SwapPieces swapList={[wRook, wKnight, wBishop, wQueen]} performSwap={swap} />);
+	expect(getByTestId('swapPieces')).toBeInTheDocument();
+	expect(swap).toHaveBeenCalled();
+});
+
+test('performSwap is called with one black piece', () => {
+	const swap = jest.fn();
+	const { getByTestId } = render(<SwapPieces swapList={[bRook]} performSwap={swap} />);
+	expect(getByTestId('swapPieces')).toBeInTheDocument();
+	expect(swap).toHaveBeenCalled();
+});
+
+test('performSwap is called with multiple black pieces', () => {
+	const swap = jest.fn();
+	const { getByTestId } = render(<SwapPieces swapList={[bRook, bKnight, bBishop, bQueen]} performSwap={swap} />);
+	expect(getByTestId('swapPieces')).toBeInTheDocument();
+	expect(swap).toHaveBeenCalled();
+});
+
+
+
 

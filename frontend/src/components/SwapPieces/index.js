@@ -16,7 +16,7 @@ const SwapPieces = props => {
 			<h2>Promote Your Pawn</h2><br/>
 			<p>Click the piece you wish to promote your pawn to</p>
 			<ul>
-				{this.props.swapList.map(({type, black}) => (
+				{props.swapList.map(({type, black}) => (
 					<li data-testid="swapPiece" key={type} className="swap-graphic">
 						<a href='#' onClick={props.performSwap(type)}>
 							<ChessPiece type={type} black={black}/>
