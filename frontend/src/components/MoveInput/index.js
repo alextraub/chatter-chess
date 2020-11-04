@@ -93,7 +93,7 @@ export default class MoveInput extends React.Component {
 			const success = this.props.performMove(validPositions[0], validPositions[1]);
 			this.setState({
 				...this.state,
-				moveError: success ? 'That move puts you in check' : '',
+				moveError: !success ? 'That move puts you in check' : '',
 				move: ''
 			});
 		}

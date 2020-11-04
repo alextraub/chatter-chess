@@ -62,8 +62,8 @@ export default class BoardState {
 	{
 		if (this.board[to1][to2] != null) {
 			this.board[to1][to2].captured = true;                    //tell the to peice its been captured
-			this.whitePieces.remove(this.board[to1][to2]);
-			this.blackPieces.remove(this.board[to1][to2]);
+			this.whitePieces.remove(this.board[to1][to2], [to1, to2]);
+			this.blackPieces.remove(this.board[to1][to2], [to1, to2]);
 		}
 		this.board[to1][to2] = this.board[from1][from2];                  //move the peice to its new tile in the memory array
 		this.whitePieces.update(this.board[to1][to2], [from1, from2], [to1, to2]);

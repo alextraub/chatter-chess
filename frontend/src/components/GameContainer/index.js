@@ -122,10 +122,12 @@ export default class GameContainer extends React.Component {
 		}
 		this.syncBoard();
 		if (!this.beginSwap(to)) {
-			this.updateCheckFlags();
+			this.updateCheckFlags(this.currentPlayer());
 			const { check } = this.state;
 			if(!check.white.mate && !check.black.mate) {
 				this.nextTurn();
+			} else {
+				console.log('check mate');
 			}
 		}
 
@@ -136,10 +138,10 @@ export default class GameContainer extends React.Component {
 	 * Updates the check object in this.state.abs
 	 * This should be called after a move is made but before it is rendered in the UI
 	 */
-	updateCheckFlags() {
+	updateCheckFlags(player) {
 		if(this.state.turn > 1) {
 			let { check } = this.state;
-			const enemyPlayer = this.currentPlayer() === 0 ? 1 : 0;
+			const enemyPlayer = player === 0 ? 1 : 0;
 			const newStatus = this.isInCheck(enemyPlayer);
 			if(enemyPlayer === 0) {
 				check = {
@@ -379,14 +381,14 @@ export default class GameContainer extends React.Component {
 	}
 
 	isInCheck(player, checkCallback=inCheck) {
-		const pieceSet = player === 0 ?
+		const { pieces } = player === 0 ?
 			this.boardState.whitePieces :
 			this.boardState.blackPieces;
-		if(!pieceSet['king']) {
+		if(!pieces['king']) {
 			return false;
 		}
 
-		for(let pos of pieceSet['king']) {
+		for(let pos of pieces['king']) {
 			if(checkCallback(pos, this.boardState, player)) {
 				return true;
 			}
@@ -396,12 +398,6 @@ export default class GameContainer extends React.Component {
 	}
 
 	isInCheckMate(player) {
-		if(player === 0 && !this.state.check.white.status) {
-			return false;
-		} else if(player === 1 && !this.state.check.black.status) {
-			return false;
-		}
-
 		return this.isInCheck(player, inCheckMate);
 	}
 
