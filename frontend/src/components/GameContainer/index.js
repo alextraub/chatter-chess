@@ -407,7 +407,7 @@ export default class GameContainer extends React.Component {
 				return (
 					<>
 						{this.renderStandardUI()}
-						{this.renderSwapUI()}
+						{this.renderStandardUI()}
 					</>
 				)
 			} else {
