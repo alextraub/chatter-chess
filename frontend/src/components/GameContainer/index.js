@@ -231,17 +231,18 @@ export default class GameContainer extends React.Component {
 		const piece = this.boardState.getPiece(to);
 		if (piece.canSwapOut && to[0] === piece.swapRow) { // Piece is swappable and at a swappble position
 			const { count, pieces } = piece.player === 0 ?
-				this.state.capturedWhitePieces :
-				this.state.capturedBlackPieces;
+				this.capturedWhitePieces :
+				this.capturedBlackPieces;
 
 			if (count > 0) { // If the player has pieces that have been captured
-				const pieceTypes = this.getPossibleSwapArray(pieces); // All possible types of pieces that can be swapped in
+				const pieceTypes = this.getPossibleSwapArray(to, pieces); // All possible types of pieces that can be swapped in
 				if (pieceTypes.length > 0) { // Only move forward in the swap procedure if there are pieces that can be swapped in
 					this.setState({ // Set state to be in the middle of swapping a piece
 						...this.state,
 						swapping: to,
 						swapList: pieceTypes
 					});
+					console.log('beginning swap');
 					return true;
 				}
 			}
@@ -254,12 +255,12 @@ export default class GameContainer extends React.Component {
 	 *
 	 * This method is a helper for getting possible swap piece types
 	 *
+	 * @param {[number, number]} to
 	 * @param {*} pieces an object of piece types and an array of all the pieces that have been captured of that type
 	 * @returns {{type: string; black: boolean;}[]} array of piece types that are currently able to be swapped in
 	 */
-	getPossibleSwapArray(pieces) {
-		const curPiece = this.boardState.getPiece(this.state.swapping);
-		const to = this.state.swapping;
+	getPossibleSwapArray(to, pieces) {
+		const curPiece = this.boardState.getPiece(to);
 		return Object.values(pieces)
 			// Filter out any piece type with no captured pieces and then any that cannot be swapped in
 			.filter(pieceArr => {
@@ -406,7 +407,7 @@ export default class GameContainer extends React.Component {
 			if (this.state.swapping !== false) {
 				return (
 					<>
-						{this.renderStandardUI()}
+						{this.renderSwapUI()}
 						{this.renderStandardUI()}
 					</>
 				)

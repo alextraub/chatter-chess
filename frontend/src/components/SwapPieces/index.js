@@ -4,13 +4,6 @@ import ChessPiece from '../ChessPiece';
 import PropTypes from 'prop-types';
 
 const SwapPieces = props => {
-	SwapPieces.propTypes = {
-		performSwap: PropTypes.func,
-		swapList: PropTypes.arrayOf(PropTypes.shape({
-			type: PropTypes.string,
-			black: PropTypes.bool
-		}))
-	};
 	return (
 		<div className="swap-container" data-testid="swapPieces">
 			<h2>Promote Your Pawn</h2><br />
@@ -26,6 +19,14 @@ const SwapPieces = props => {
 			</ul>
 		</div>
 	);
+};
+
+SwapPieces.propTypes = {
+	performSwap: PropTypes.func,
+	swapList: PropTypes.arrayOf(PropTypes.shape({
+		type: PropTypes.string,
+		black: PropTypes.bool
+	}))
 };
 
 export default SwapPieces;
