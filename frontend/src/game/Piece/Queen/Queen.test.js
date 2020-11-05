@@ -197,3 +197,18 @@ test('Queens have type of "queen"', () => {
 	expect(whiteQueen.type).toBe('queen');
 	expect(blackQueen.type).toBe('queen');
 });
+
+test('Queens cannot be swapped out', () => {
+	expect(whiteQueen.canSwapOut).toBe(false);
+	expect(blackQueen.canSwapOut).toBe(false);
+});
+
+test('Queens can be swapped in', () => {
+	expect(whiteQueen.canSwapIn).toBe(true);
+	expect(blackQueen.canSwapIn).toBe(true);
+});
+
+test('Queens throw an error if checking their swapRow property', () => {
+	expect(() => whiteQueen.swapRow).toThrow(EvalError);
+	expect(() => blackQueen.swapRow).toThrow(EvalError);
+});

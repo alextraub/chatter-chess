@@ -1,1 +1,8 @@
-import BoardState from './BoardState';
+import BoardState from './';
+
+
+beforeEach(() =>
+{
+    BoardState.mockClear();
+});
+

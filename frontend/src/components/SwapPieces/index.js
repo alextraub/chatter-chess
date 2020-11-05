@@ -1,41 +1,36 @@
+import './SwapPieces.css';
 import React from 'react';
-import { pieceName } from '../../game/Piece';
-import '../ChessPiece';
-import {whitePieceImages} from "../ChessPiece/pieceImages";
+import ChessPiece from '../ChessPiece';
+import PropTypes from 'prop-types';
 
-export default class CapturedPieces extends React.Component {
-	constructor(props) {
-		super(props);
+const SwapPieces = props => {
+	const renderPieceGraphics = () => {
+		const { swapList } = props;
+		return swapList.map(({type, black}) => (
+			<li data-testid="swapPiece" key={type} className="swap-graphic">
+				<a href='#' onClick={e => {props.performSwap(type)}}>
+					<ChessPiece type={type} black={black} />
+				</a>
+			</li>
+		));
 	}
+	return (
+		<div className="swap-container" data-testid="swapPieces">
+			<h2>Promote Your Pawn</h2><br />
+			<p>Click the piece you wish to promote your pawn to</p>
+			<ul>
+				{renderPieceGraphics()}
+			</ul>
+		</div>
+	);
+};
 
-	render() {
-		return (
-			<div id='capturedContainer'>
-				<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Creepster+Caps" />
-				<h1>Shadow Realm</h1><br/>
-				<h2>Captured White Pieces: {this.props.whitePieces.length}</h2><br/>
-				<ul>
-					{this.props.whitePieces.map((piece) => {
-						if (pieceName(piece) !== "pawn")
-						return (
-							<li>{whitePieceImages.piece}
-								<input data-testid="button" type='submit' value='Swap Piece'/>
-							</li>
-						)
-					})}
-				</ul>
-				<h2>Captured Black Pieces: {this.props.blackPieces.length}</h2><br/>
-				<ul>
-					{this.props.blackPieces.map((piece) => {
-						if (pieceName(piece) !== "pawn")
-						return (
-							<li>{pieceName(piece)}
-								<input data-testid="button" type='submit' value='Swap Piece'/>
-							</li>
-						)
-					})}
-				</ul>
-			</div>
-		);
-	}
-}
+SwapPieces.propTypes = {
+	performSwap: PropTypes.func,
+	swapList: PropTypes.arrayOf(PropTypes.shape({
+		type: PropTypes.string,
+		black: PropTypes.bool
+	}))
+};
+
+export default SwapPieces;

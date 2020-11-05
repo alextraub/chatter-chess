@@ -163,3 +163,19 @@ test('isNextSquareInPathEmpty returns correct values when provided position is n
 	positionUtils.boardPositionToString.mockReturnValue('E4');
 	expect(blackPiece.isNextSquareInPathEmpty([4,5], 1)).toEqual('There is a piece at E4 blocking your generic\'s path');
 });
+
+
+test('By default pieces cannot be swapped out', () => {
+	expect(whitePiece1.canSwapOut).toBe(false);
+	expect(blackPiece.canSwapOut).toBe(false);
+});
+
+test('By default pieces can be swapped in', () => {
+	expect(whitePiece1.canSwapIn).toBe(true);
+	expect(blackPiece.canSwapIn).toBe(true);
+});
+
+test('Pieces throw an error if checking their swapRow property, by default', () => {
+	expect(() => whitePiece2.swapRow).toThrow(EvalError);
+	expect(() => blackPiece.swapRow).toThrow(EvalError);
+});
