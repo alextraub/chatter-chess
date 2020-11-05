@@ -122,12 +122,12 @@ export default class GameContainer extends React.Component {
 		}
 		this.syncBoard();
 		if (!this.beginSwap(to)) {
-			this.updateCheckFlags(this.currentPlayer());
+			this.updateCheckFlags(this.currentPlayer() === 0 ? 1 : 0);
 			const { check } = this.state;
 			if(!check.white.mate && !check.black.mate) {
 				this.nextTurn();
 			} else {
-				console.log('check mate');
+				console.log('and mate!');
 			}
 		}
 
@@ -139,37 +139,34 @@ export default class GameContainer extends React.Component {
 	 * This should be called after a move is made but before it is rendered in the UI
 	 */
 	updateCheckFlags(player) {
-		if(this.state.turn > 1) {
-			let { check } = this.state;
-			const enemyPlayer = player === 0 ? 1 : 0;
-			const newStatus = this.isInCheck(enemyPlayer);
-			if(enemyPlayer === 0) {
-				check = {
-					...check,
-					white: {
-						status: newStatus,
-						mate: !newStatus ?
-							false :
-							this.isInCheckMate(enemyPlayer)
-					}
-				}
-			} else {
-				check = {
-					...check,
-					black: {
-						status: newStatus,
-						mate: !newStatus ?
-							false :
-							this.isInCheckMate(enemyPlayer)
-					}
+		let { check } = this.state;
+		const newStatus = this.isInCheck(player);
+		if(player === 0) {
+			check = {
+				...check,
+				white: {
+					status: newStatus,
+					mate: !newStatus ?
+						false :
+						this.isInCheckMate(player)
 				}
 			}
-
-			this.setState({
-				...this.state,
-				check
-			});
+		} else {
+			check = {
+				...check,
+				black: {
+					status: newStatus,
+					mate: !newStatus ?
+						false :
+						this.isInCheckMate(player)
+				}
+			}
 		}
+
+		this.setState({
+			...this.state,
+			check
+		});
 	}
 
 	/**
@@ -353,6 +350,7 @@ export default class GameContainer extends React.Component {
 					performMove={this.performMove}
 					disabled={isSwapping || gameOver}
 				/>
+				{gameOver ? <span data-testid="winner">{check.white.mate ? 'Bhite' : 'White'} wins!</span> : ''}
 
 				<div className="row">
 					<div className="col">
