@@ -341,6 +341,9 @@ export default class GameContainer extends React.Component {
 	 * @todo disable move input during a piece swap
 	 */
 	renderStandardUI() {
+		const { swapping, check } = this.state;
+		const isSwapping = swapping !== false;
+		const gameOver = check.white.mate || check.black.mate;
 		return (
 			<>
 				<MoveInput
@@ -348,6 +351,7 @@ export default class GameContainer extends React.Component {
 					currentPlayer={this.currentPlayer()}
 					getPiece={this.boardState.getPiece}
 					performMove={this.performMove}
+					disabled={isSwapping || gameOver}
 				/>
 
 				<div className="row">
