@@ -6,6 +6,8 @@ import BoardComponent from '../BoardComponent';
 import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
 import SwapPieces from "../SwapPieces";
+import { inCheck, inCheckMate } from '../../game/Check';
+import Piece from '../../game/Piece';
 
 const capturedPieceObj = () => ({
 	count: 0,
@@ -36,6 +38,16 @@ export default class GameContainer extends React.Component {
 
 		this.state = {
 			board,
+			check: {
+				white: {
+					status: false,
+					mate: false
+				},
+				black: {
+					status: false,
+					mate: false
+				}
+			},
 			capturedWhitePieces: { ...this.capturedWhitePieces },
 			capturedBlackPieces: { ...this.capturedBlackPieces },
 			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
@@ -51,6 +63,10 @@ export default class GameContainer extends React.Component {
 		this.currentPlayer = this.currentPlayer.bind(this);
 		this.syncBoard = this.syncBoard.bind(this);
 		this.updateCapturedLists = this.updateCapturedLists.bind(this);
+		this.rollbackMove = this.rollbackMove.bind(this);
+		this.updateCheckFlags = this.updateCheckFlags.bind(this);
+		this.isInCheck = this.isInCheck.bind(this);
+		this.isInCheckMate = this.isInCheckMate.bind(this);
 	}
 
 	static propTypes = {
@@ -62,6 +78,31 @@ export default class GameContainer extends React.Component {
 	}
 
 	/**
+	 * Returns the state to the point prior to making a specified valid move (specified by parameters)
+	 * @param {[number, number]} from move from position
+	 * @param {Piece} fromPiece the piece at from prior to making the move
+	 * @param {*} to move's to position
+	 * @param {Piece} toPiece the piece at to prior to making the move
+	 */
+	rollbackMove(from, fromPiece, to, toPiece) {
+		// Remove fromPiece from correct PieceSet in order to more easily add pieces using boardState
+		if(fromPiece.player === 0) {
+			this.boardState.whitePieces.remove(fromPiece, from);
+		} else {
+			this.boardState.blackPieces.remove(fromPiece, from);
+		}
+
+		// Move the fromPiece to from
+		this.boardState.placePiece(fromPiece, from);
+
+		// Undo and place any captured piece
+		if(toPiece !== null) {
+			toPiece.captured = false;
+			this.boardState.placePiece(toPiece, to);
+		}
+	}
+
+	/**
 	 *
 	 * Fired when a valid move has been received, and then performs that move.
 	 *
@@ -69,14 +110,65 @@ export default class GameContainer extends React.Component {
 	 * @param {[number, number]} toPos the position to move the piece to
 	 */
 	performMove(from, to) {
-		const capturedPiece = this.boardState.getPiece(to);
-		if (capturedPiece !== null) {
-			this.updateCapturedLists(capturedPiece);
-		}
+		const fromPiece = this.boardState.getPiece(from);
+		const toPiece = this.boardState.getPiece(to);
 		this.boardState.movePiece(from, to);
+		if(this.isInCheck(this.currentPlayer())) {
+			this.rollbackMove(from, fromPiece, to, toPiece);
+			return false;
+		}
+		if (toPiece !== null) {
+			this.updateCapturedLists(toPiece);
+		}
 		this.syncBoard();
-		if (!this.beginSwap()) {
-			this.nextTurn();
+		if (!this.beginSwap(to)) {
+			this.updateCheckFlags(this.currentPlayer());
+			const { check } = this.state;
+			if(!check.white.mate && !check.black.mate) {
+				this.nextTurn();
+			} else {
+				console.log('check mate');
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Updates the check object in this.state.abs
+	 * This should be called after a move is made but before it is rendered in the UI
+	 */
+	updateCheckFlags(player) {
+		if(this.state.turn > 1) {
+			let { check } = this.state;
+			const enemyPlayer = player === 0 ? 1 : 0;
+			const newStatus = this.isInCheck(enemyPlayer);
+			if(enemyPlayer === 0) {
+				check = {
+					...check,
+					white: {
+						status: newStatus,
+						mate: !newStatus ?
+							false :
+							this.isInCheckMate(enemyPlayer)
+					}
+				}
+			} else {
+				check = {
+					...check,
+					black: {
+						status: newStatus,
+						mate: !newStatus ?
+							false :
+							this.isInCheckMate(enemyPlayer)
+					}
+				}
+			}
+
+			this.setState({
+				...this.state,
+				check
+			});
 		}
 	}
 
@@ -139,17 +231,18 @@ export default class GameContainer extends React.Component {
 		const piece = this.boardState.getPiece(to);
 		if (piece.canSwapOut && to[0] === piece.swapRow) { // Piece is swappable and at a swappble position
 			const { count, pieces } = piece.player === 0 ?
-				this.state.capturedWhitePieces :
-				this.state.capturedBlackPieces;
+				this.capturedWhitePieces :
+				this.capturedBlackPieces;
 
 			if (count > 0) { // If the player has pieces that have been captured
-				const pieceTypes = this.getPossibleSwapArray(pieces); // All possible types of pieces that can be swapped in
+				const pieceTypes = this.getPossibleSwapArray(to, pieces); // All possible types of pieces that can be swapped in
 				if (pieceTypes.length > 0) { // Only move forward in the swap procedure if there are pieces that can be swapped in
 					this.setState({ // Set state to be in the middle of swapping a piece
 						...this.state,
 						swapping: to,
 						swapList: pieceTypes
 					});
+					console.log('beginning swap');
 					return true;
 				}
 			}
@@ -162,14 +255,25 @@ export default class GameContainer extends React.Component {
 	 *
 	 * This method is a helper for getting possible swap piece types
 	 *
+	 * @param {[number, number]} to
 	 * @param {*} pieces an object of piece types and an array of all the pieces that have been captured of that type
 	 * @returns {{type: string; black: boolean;}[]} array of piece types that are currently able to be swapped in
 	 */
-	getPossibleSwapArray(pieces) {
-		return Object.values(pieces)
+	getPossibleSwapArray(to, pieces) {
+		const curPiece = this.boardState.getPiece(to);
+		return Object.entries(pieces)
 			// Filter out any piece type with no captured pieces and then any that cannot be swapped in
-			.filter(pieceArr => pieceArr.length > 0 && pieceArr[0].canSwapIn)
-			.map(pieceArr => { // For the remaing piece arrays, map each to an object denoting what type of pieces it has and if they are black or not
+			.filter(([_, pieceArr]) => {
+				if(pieceArr.length > 0 && pieceArr[0].canSwapIn) {
+					this.boardState.board[to[0]][to[1]] = pieceArr[0];
+					const causesCheck = this.isInCheck(this.currentPlayer());
+					this.boardState.board[to[0]][to[1]] = curPiece;
+					return !causesCheck;
+				}
+
+				return false;
+			})
+			.map(([_, pieceArr]) => { // For the remaing piece arrays, map each to an object denoting what type of pieces it has and if they are black or not
 				return {
 					black: pieceArr[0].isBlack(),
 					type: pieceArr[0].type
@@ -189,10 +293,15 @@ export default class GameContainer extends React.Component {
 			this.state.capturedWhitePieces :
 			this.state.capturedBlackPieces;
 		const piece = this.boardState.getPiece(swapping); // The piece being swapped out
+		if(piece.isWhite()) {
+			this.boardState.whitePieces.remove(piece, swapping);
+		} else {
+			this.boardState.blackPieces.remove(piece, swapping);
+		}
 		const newPiece = pieces[type].pop(); // Get the next piece of type that can be swapped in
 		newPiece.captured = false; // New piece no longer is captured
 		// Replace the piece
-		this.boardState.returnBoardState()[swapping[0]][swapping[1]] = newPiece;
+		this.boardState.placePiece(newPiece, swapping);
 		piece.boardState = null; // Remove old piece from the game
 
 		if (this.currentPlayer() === 0) {
@@ -223,7 +332,7 @@ export default class GameContainer extends React.Component {
 	 */
 	renderSwapUI() {
 		return (
-			<SwapPieces SwapList={this.state.swapList} performSwap={this.performSwap} />
+			<SwapPieces swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
 		);
 	}
 
@@ -272,12 +381,33 @@ export default class GameContainer extends React.Component {
 		);
 	}
 
+	isInCheck(player, checkCallback=inCheck) {
+		const { pieces } = player === 0 ?
+			this.boardState.whitePieces :
+			this.boardState.blackPieces;
+		if(!pieces['king']) {
+			return false;
+		}
+
+		for(let pos of pieces['king']) {
+			if(checkCallback(pos, this.boardState, player)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	isInCheckMate(player) {
+		return this.isInCheck(player, inCheckMate);
+	}
+
 	render() {
 		const renderUI = () => {
 			if (this.state.swapping !== false) {
 				return (
 					<>
-						{this.renderStandardUI()}
+						{this.renderSwapUI()}
 						{this.renderStandardUI()}
 					</>
 				)
