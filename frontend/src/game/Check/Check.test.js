@@ -46,6 +46,7 @@ test('it can tell when the king is not in check mate', () =>
 	boardState.placePiece(whiteKing, [7, 4]);
 	boardState.placePiece(blackRook, [0, 4]);
 
+	expect(inCheck([7, 4], whiteKing.boardState, whiteKing.player)).toBe(true);
 	expect(inCheckMate([7, 4], whiteKing.boardState, whiteKing.player)).toBe(false);
 })
 
