@@ -95,7 +95,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 	}
 	if(Col-1 >= 0)                              //if left is on the board
 	{
-		if(boardstate.getPiece([Row, Col-1]) == null || boardstate.getPiece([Row-1, Col-1]).player != team)//if the space doesn't have a allied piece
+		if(boardstate.getPiece([Row, Col-1]) == null || boardstate.getPiece([Row, Col-1]).player != team)//if the space doesn't have a allied piece
 		{
 			if(!(inCheck([Row, Col-1], boardstate, team)))//if that position is not in check
 			{

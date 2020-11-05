@@ -83,3 +83,13 @@ test('Capture piece to get out of check', () => {
 	expect(inCheck(wKing, stdBoardState, 0)).toBe(true);
 	expect(inCheckMate(wKing, stdBoardState, 0)).toBe(false);
 });
+
+test('Block piece to get out of check', () => {
+	const stdBoardState = new BoardState();
+	stdBoardState.movePiece([1, 5], [2, 5]);
+	stdBoardState.movePiece([6, 5], [4, 5]);
+	stdBoardState.movePiece([7, 3], [3, 7]);
+	const bKing = [0,4];
+	expect(inCheck(bKing, stdBoardState, 1)).toBe(true);
+	expect(inCheckMate(bKing, stdBoardState, 1)).toBe(false);
+});
