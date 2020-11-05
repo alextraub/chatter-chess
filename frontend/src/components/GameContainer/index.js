@@ -261,9 +261,9 @@ export default class GameContainer extends React.Component {
 	 */
 	getPossibleSwapArray(to, pieces) {
 		const curPiece = this.boardState.getPiece(to);
-		return Object.values(pieces)
+		return Object.entries(pieces)
 			// Filter out any piece type with no captured pieces and then any that cannot be swapped in
-			.filter(pieceArr => {
+			.filter(([_, pieceArr]) => {
 				if(pieceArr.length > 0 && pieceArr[0].canSwapIn) {
 					this.boardState.board[to[0]][to[1]] = pieceArr[0];
 					const causesCheck = this.isInCheck(this.currentPlayer());
@@ -273,7 +273,7 @@ export default class GameContainer extends React.Component {
 
 				return false;
 			})
-			.map(pieceArr => { // For the remaing piece arrays, map each to an object denoting what type of pieces it has and if they are black or not
+			.map(([_, pieceArr]) => { // For the remaing piece arrays, map each to an object denoting what type of pieces it has and if they are black or not
 				return {
 					black: pieceArr[0].isBlack(),
 					type: pieceArr[0].type
@@ -332,7 +332,7 @@ export default class GameContainer extends React.Component {
 	 */
 	renderSwapUI() {
 		return (
-			<SwapPieces SwapList={this.state.swapList} performSwap={this.performSwap} />
+			<SwapPieces swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
 		);
 	}
 
