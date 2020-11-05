@@ -244,6 +244,12 @@ export default class GameContainer extends React.Component {
 					performMove={this.performMove}
 				/>
 
+				<input
+					data-testid="move-input"
+					performSwap={this.performSwap}
+					disabled={this.props.disabled}
+				/>
+
 				<div className="row">
 					<div className="col">
 						<CapturedPieces
