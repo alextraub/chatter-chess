@@ -223,7 +223,7 @@ export default class GameContainer extends React.Component {
 	 */
 	renderSwapUI() {
 		return (
-			<SwapPieces SwapList={this.state.swapList} performSwap={this.performSwap} />
+			<SwapPieces swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
 		);
 	}
 
@@ -232,6 +232,9 @@ export default class GameContainer extends React.Component {
 	 * @todo disable move input during a piece swap
 	 */
 	renderStandardUI() {
+		const { swapping, check } = this.state;
+		const isSwapping = swapping !== false;
+		const gameOver = check.white.mate || check.black.mate;
 		return (
 			<>
 				<MoveInput
@@ -239,12 +242,7 @@ export default class GameContainer extends React.Component {
 					currentPlayer={this.currentPlayer()}
 					getPiece={this.boardState.getPiece}
 					performMove={this.performMove}
-				/>
-
-				<input
-					data-testid="move-input"
-					performSwap={this.performSwap}
-					disabled={this.props.disabled}
+					disabled={isSwapping || gameOver}
 				/>
 
 				<div className="row">
@@ -283,7 +281,7 @@ export default class GameContainer extends React.Component {
 			if (this.state.swapping !== false) {
 				return (
 					<>
-						{this.renderStandardUI()}
+						{this.renderSwapUI()}
 						{this.renderStandardUI()}
 					</>
 				)
