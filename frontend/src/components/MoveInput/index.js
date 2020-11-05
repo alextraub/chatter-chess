@@ -1,19 +1,7 @@
 import './MoveInput.css';
 import React from 'react';
-
-export const convertPosition = pos => {
-	let pos1 = pos.charCodeAt(0) - 'A'.charCodeAt(0);
-	let pos2 = pos.charAt(1);
-	try {
-		pos2 = parseInt(pos2) - 1;
-	} catch (error){
-		return -1;
-	}
-	if ((pos1 < 0 || pos1 > 7) || (pos2 < 0 || pos2 > 7)) {
-		return -1;
-	}
-	return [pos1, pos2];
-};
+import PropTypes from 'prop-types';
+import {boardPositionToTuple, isValidBoardPositionString} from '../../game/utils/boardPosition'
 
 export default class MoveInput extends React.Component {
 
@@ -25,72 +13,120 @@ export default class MoveInput extends React.Component {
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
-		this.validate = this.validate.bind(this);
+		this.validateInput = this.validateInput.bind(this);
+		this.validateMove = this.validateMove.bind(this);
 	}
 
-	validate(from, to) {
-		if (from.length !== 2) {
-			return false;
+	static propTypes = {
+		currentPlayer: PropTypes.oneOf([0, 1]).isRequired,
+		getPiece: PropTypes.func.isRequired,
+		performMove: PropTypes.func.isRequired,
+		disabled: PropTypes.bool
+	}
+
+	validateInput(move) {
+		const positions = move.split(' ').filter(p => p != '');
+		let from;
+		let to;
+		if(positions.length !== 2) {
+			switch(positions.length) {
+			case 0: return 'Please provide a move';
+			case 1: return 'Please provide a position to move to';
+			default: return 'You may only move a piece to one position at a time';
+			}
 		}
-		if (to.length !== 2) {
-			return false;
+
+		[from, to] = positions;
+		const isFromInvalid = !isValidBoardPositionString(from);
+		const isToInvalid = !isValidBoardPositionString(to);
+		if(isFromInvalid || isToInvalid) {
+			if(isFromInvalid && isToInvalid) {
+				return `${from} and ${to} are not valid positions`;
+			}
+			return `${isFromInvalid ? from : to} is not a valid position`;
 		}
-		const fromPos = convertPosition(from);
-		const toPos = convertPosition(to);
-		if (fromPos === -1 || toPos === -1) {
-			return false;
+
+		return [from, to];
+	}
+
+	validateMove(from, to) {
+		const fromTuple = boardPositionToTuple(from);
+		let toTuple;
+
+		const piece = this.props.getPiece(fromTuple);
+		if(!piece) {
+			return `There isn't a piece at ${from}`;
 		}
-		const piece = this.props.getPiece(fromPos);
-		if (!piece || piece.player !== this.props.currentPlayer) {
-			return false;
+		if (piece.player !== this.props.currentPlayer) {
+			return `You may only move a ${this.props.currentPlayer === 0 ? 'white' : 'black'} piece`;
 		}
-		return piece.canMove(fromPos, toPos);
+		toTuple = boardPositionToTuple(to);
+		const validMove = piece.canMove(fromTuple, toTuple, 1);
+
+		return validMove === true ?
+			[fromTuple, toTuple] :
+			`${validMove}`;
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
-		const {move} = this.state;
-		const command = move.trim().split(" ");
-		if (command.length !== 2 || !(this.validate(command[0], command[1]))) {
+		const { move } = this.state;
+
+		let validPositions = this.validateInput(move.trim());
+		if(typeof(validPositions) === 'string') {
 			this.setState({
 				...this.state,
-				moveError: "Invalid Move"
+				move: '',
+				moveError: validPositions
 			});
 			return;
 		}
-		this.props.onMoveSuccess(convertPosition(command[0]), convertPosition(command[1]));
-		this.setState({
-			...this.state,
-			move: '',
-			moveError: ''
-		}); // clear form
+		validPositions = this.validateMove(validPositions[0], validPositions[1]);
+		const isInvalidMove = typeof(validPositions) === 'string';
+		if(isInvalidMove) {
+			this.setState({
+				...this.state,
+				move: '',
+				moveError: validPositions
+			});
+		} else {
+			const success = this.props.performMove(validPositions[0], validPositions[1]);
+			this.setState({
+				...this.state,
+				moveError: !success ? 'That move puts you in check' : '',
+				move: ''
+			});
+		}
 	}
 
 	handleInputChange(event) {
 		event.preventDefault();
 		this.setState({
 			...this.state,
-			move: event.target.value
+			move: event.target.value,
+			moveError: ''
 		});
 	}
 
 	render() {
 		return (
-			<div id='inputContainer'>
-				<h1>Enter your move below</h1><br/>
-				<h2>Please enter your move in the form of &quot;RowColumn RowColumn&quot;!</h2><br/>
-				<h3>For example, if you want to move a knight from G1 to H3, you would enter this in as &quot;G1 H3&quot;.</h3><br/>
-				<p>
-					{this.props.currentPlayer ? (
-						'It is blacks turn'
-					) : (
-						'It is whites turn'
-					)}
-				</p>
+			<div id='inputContainer' data-testid="move-input">
 				<form onSubmit={event => {this.handleSubmit(event)}}>
-					<input data-testid="move" type="text" placeholder="Enter Move Here" name="move" value={this.state.move} onChange={event => {this.handleInputChange(event)}}/>
-					<div style={{color: "red"}}>{this.state.moveError}</div>
-					<input type='submit' value='Submit Move'/>
+					<input
+						data-testid="move"
+						type="text"
+						placeholder="Enter Move Here"
+						name="move"
+						value={this.state.move}
+						disabled={this.props.disabled}
+						onChange={event => {this.handleInputChange(event)}}
+					/>
+					<div data-testid="error" style={{color: "red"}}>{this.state.moveError}</div>
+					<input
+						data-testid="button"
+						disabled={this.props.disabled}
+						type='submit'
+						value='Submit Move' />
 				</form>
 			</div>
 		);

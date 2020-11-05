@@ -7,6 +7,12 @@ const config = {
 	module: {
 		rules: [
 			{
+				test: /\.(png|jpg)$/,
+				use: {
+					loader: 'url-loader'
+				}
+			},
+			{
 				test: /\.css$/,
 				use: [
 					{ loader: "style-loader" },

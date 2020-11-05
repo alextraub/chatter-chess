@@ -1,7 +1,7 @@
 import './BoardSquare.css';
 import React from "react";
 import PropTypes from "prop-types";
-import BoardPiece from '../BoardPiece';
+import ChessPiece from '../ChessPiece';
 import Piece from '../../game/Piece';
 
 /**
@@ -11,7 +11,7 @@ import Piece from '../../game/Piece';
  * @param {{black: boolean; piece:null|Piece}} props
  * the piece located on the square, or undefined if there isn't any
  */
-const BoardSquare = ({ black, piece }) => {
+const BoardSquare = ({ black, piece, position }) => {
 
 	const squareColor = black ? 'black' : 'white';
 
@@ -19,20 +19,32 @@ const BoardSquare = ({ black, piece }) => {
 		if(piece === null) {
 			return '';
 		} else {
-			return <BoardPiece piece={piece} />
+			return <ChessPiece black={piece.isBlack()}  type={piece.type}/>
+		}
+	}
+
+	const renderPositionLabel = () => {
+		if(position) {
+			return <span data-testid="position-label" className="label-position">{position}</span>
+		} else {
+			return '';
 		}
 	}
 
 	return (
 		<div data-testid="board-square" className={`square ${squareColor}`}>
-			{renderPiece()}
+			{renderPositionLabel()}
+			<div data-testid="piece-container" className="piece-container">
+				{renderPiece()}
+			</div>
 		</div>
 	);
 }
 
 BoardSquare.propTypes = {
 	black: PropTypes.bool,
-	piece: PropTypes.instanceOf(Piece)
+	piece: PropTypes.instanceOf(Piece),
+	position: PropTypes.string
 };
 
 BoardSquare.defaultProps = {

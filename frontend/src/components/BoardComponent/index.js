@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import BoardSquare from '../BoardSquare';
 import Piece from '../../game/Piece/Piece';
+import { boardPositionToString } from '../../game/utils/boardPosition';
 
 export default class BoardComponent extends React.Component {
 		static propTypes = {
@@ -16,20 +17,39 @@ export default class BoardComponent extends React.Component {
 			for (let row = 0; row < 8; row++) {
 				for (let col = 0; col < 8; col++) {
 					const piece = this.props.board[row][col];
+					const position = boardPositionToString([row, col]);
 					if (row % 2 === 0) {
 						if (col % 2 === 0) {
-							squares.push(<BoardSquare key={`${row}-${col}`} piece={piece} />)
+							squares.push(<BoardSquare
+								key={position}
+								piece={piece}
+								position={position}
+							/>)
 						}
 						else {
-							squares.push(<BoardSquare key={`${row}-${col}`} black piece={piece} />)
+							squares.push(<BoardSquare
+								key={position}
+								black
+								piece={piece}
+								position={position}
+							/>)
 						}
 					}
 					if (row % 2 === 1) {
 						if (col % 2 === 0) {
-							squares.push(<BoardSquare key={`${row}-${col}`} black piece={piece} />)
+							squares.push(<BoardSquare
+								key={position}
+								black
+								piece={piece}
+								position={position}
+							/>)
 
 						} else {
-							squares.push(<BoardSquare key={`${row}-${col}`} piece={piece} />)
+							squares.push(<BoardSquare
+								key={position}
+								piece={piece}
+								position={position}
+							/>)
 						}
 					}
 				}
