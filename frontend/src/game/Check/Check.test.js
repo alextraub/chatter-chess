@@ -40,7 +40,7 @@ test('it can tell when the King is in check', () =>
 	expect(inCheck([7, 4], blackKing.boardState, blackKing.player)).toBe(true);
 })
 
-test('it can tell when the king is not in check mate', () =>
+test('it can tell when the king is in check but not in check mate', () =>
 {
 	emptyBoard(boardState);
 	boardState.placePiece(whiteKing, [7, 4]);
@@ -64,10 +64,10 @@ test('it can tell when the king is in check mate', () =>
 
 test('Fool\'s mate', () => {
 	const stdBoardState = new BoardState();
-	stdBoardState.movePiece([6, 5], [5,5]);
-	stdBoardState.movePiece([1,4], [3,4]);
-	stdBoardState.movePiece([6,6],[4,6]);
-	stdBoardState.movePiece([0,3], [4,7]);
+	stdBoardState.movePiece([6, 5], [5, 5]);
+	stdBoardState.movePiece([1, 4], [3, 4]);
+	stdBoardState.movePiece([6, 6], [4, 6]);
+	stdBoardState.movePiece([0, 3], [4, 7]);
 	const wKing = [7,4];
 	expect(inCheck(wKing, stdBoardState, 0)).toBe(true);
 	expect(inCheckMate(wKing, stdBoardState, 0)).toBe(true);
