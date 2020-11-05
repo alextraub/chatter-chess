@@ -64,7 +64,7 @@ export default class GameContainer extends React.Component {
 		this.syncBoard = this.syncBoard.bind(this);
 		this.updateCapturedLists = this.updateCapturedLists.bind(this);
 		this.rollbackMove = this.rollbackMove.bind(this);
-		this.updateCheckFlags = this.updateCheckFlags.bind(this);
+		this.updateCheckFlags = this.getCheckFlags.bind(this);
 		this.isInCheck = this.isInCheck.bind(this);
 		this.isInCheckMate = this.isInCheckMate.bind(this);
 	}
@@ -122,8 +122,13 @@ export default class GameContainer extends React.Component {
 		}
 		this.syncBoard();
 		if (!this.beginSwap(to)) {
-			this.updateCheckFlags(this.currentPlayer() === 0 ? 1 : 0);
-			const { check } = this.state;
+			const check = this.getCheckFlags(this.currentPlayer() === 0 ? 1 : 0);
+			this.setState({
+				...this.state,
+				check: {
+					...check
+				}
+			});
 			if(!check.white.mate && !check.black.mate) {
 				this.nextTurn();
 			} else {
@@ -138,7 +143,7 @@ export default class GameContainer extends React.Component {
 	 * Updates the check object in this.state.abs
 	 * This should be called after a move is made but before it is rendered in the UI
 	 */
-	updateCheckFlags(player) {
+	getCheckFlags(player) {
 		let { check } = this.state;
 		const newStatus = this.isInCheck(player);
 		if(player === 0) {
@@ -163,10 +168,7 @@ export default class GameContainer extends React.Component {
 			}
 		}
 
-		this.setState({
-			...this.state,
-			check
-		});
+		return check;
 	}
 
 	/**
