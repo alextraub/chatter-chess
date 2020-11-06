@@ -51,6 +51,9 @@ class PieceSet {
 		}
 	}
 
+	/**
+	 * Number of items in the set
+	 */
 	get size() {
 		return this.#count;
 	}
@@ -149,8 +152,8 @@ class PieceSet {
 
 	/**
 	 *
-	 * @param {(piece: Piece) => boolean} predicate
-	 * @returns {Piece[]}
+	 * @param {(position: [number, number]) => boolean} predicate
+	 * @returns {[number,number][]}
 	 */
 	getPieces(predicate=() => true) {
 		let pieces = [];
