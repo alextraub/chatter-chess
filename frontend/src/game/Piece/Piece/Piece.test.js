@@ -179,3 +179,61 @@ test('Pieces throw an error if checking their swapRow property, by default', () 
 	expect(() => whitePiece2.swapRow).toThrow(EvalError);
 	expect(() => blackPiece.swapRow).toThrow(EvalError);
 });
+
+test('getValidMove path simply returns the from and to positions when given a move that is not horizontal, vertical, or diagonal', () => {
+	expect(whitePiece1.getValidMovePath([0,2], [3,4])).toEqual([[0,2], [3,4]]);
+	expect(whitePiece2.getValidMovePath([1,2], [7,4])).toEqual([[1,2], [7,4]]);
+	expect(blackPiece.getValidMovePath([0,2], [4,0])).toEqual([[0,2], [4,0]]);
+});
+
+test('getValidMovePath returns all position from from to to for a horizontal move', () => {
+	const path1 = [
+		[0,3],
+		[0,4],
+		[0,5],
+		[0,6]
+	];
+	expect(whitePiece1.getValidMovePath([0,3],[0,6])).toEqual(path1);
+	const path2 = path1.reverse()
+	expect(whitePiece2.getValidMovePath([0,6],[0,3])).toEqual(path2);
+	expect(blackPiece.getValidMovePath([2,4], [2,3])).toEqual([[2,4],[2,3]]);
+});
+
+
+test('getValidMovePath returns all position from from to to for a vertical move', () => {
+	const path1 = [
+		[2,3],
+		[3,3],
+		[4,3],
+		[5,3],
+		[6,3]
+	];
+	expect(whitePiece1.getValidMovePath([2,3],[6,3])).toEqual(path1);
+	const path2 = path1.reverse()
+	expect(whitePiece2.getValidMovePath([6,3],[2,3])).toEqual(path2);
+	expect(blackPiece.getValidMovePath([2,4], [1,4])).toEqual([[2,4],[1,4]]);
+});
+
+test('getValidMovePath returns all position from from to to for a diagonal move', () => {
+	const path1 = [
+		[2,3],
+		[3,4],
+		[4,5],
+		[5,6],
+		[6,7]
+	];
+	const path2 = [
+		[2,3],
+		[3,2],
+		[4,1],
+		[5,0]
+	];
+
+	expect(blackPiece.getValidMovePath([2,3],[6,7])).toEqual(path1);
+	expect(whitePiece2.getValidMovePath([2,3],[5,0])).toEqual(path2);
+
+	const path3 = path1.reverse();
+	const path4 = path2.reverse();
+	expect(blackPiece.getValidMovePath([6,7],[2,3])).toEqual(path3);
+	expect(whitePiece1.getValidMovePath([5,0],[2,3])).toEqual(path4);
+});

@@ -107,6 +107,47 @@ class Piece {
 	}
 
 	/**
+	 * Given a from and to position, get all positions that form a horizontal, vertical, or diagonal path between them, otherwise get just the from and to positions.abs
+	 * This method assumes it is being used for a move that is valid for this instance
+	 *
+	 * @param {[number, number]} from
+	 * @param {[number, number]} to
+	 * @returns {[number, number][]} the path from from to to (inclusive)
+	 */
+	getValidMovePath([fromRow, fromCol], [toRow, toCol]) {
+		const rInc = fromRow < toRow ? 1 : -1;
+		const cInc = fromCol < toCol ? 1 : -1;
+		const numRows = Math.abs(toRow - fromRow);
+		const numCols = Math.abs(toCol - fromCol);
+		let r = fromRow;
+		let c = fromCol;
+		let path = [];
+		if(numRows === 0) {
+			while(c !== toCol) {
+				path.push([r,c]);
+				c = c + cInc;
+			}
+		} else if(numCols === 0) {
+			while(r !== toRow) {
+				path.push([r,c]);
+				r = r + rInc;
+			}
+		} else if(numRows === numCols) {
+			while(c !== toCol) {
+				path.push([r,c]);
+				c = c + cInc;
+				r = r + rInc;
+			}
+		} else {
+			path.push([fromRow, fromCol]);
+		}
+
+		path.push([toRow, toCol]);
+
+		return path;
+	}
+
+	/**
 	 * Helper method for validating a move along a path between the from and to positions
 	 * @param {[number, number]} position a valid board position
 	 * @param {0|1?} mode 0 by default, returns only booleans, while mode 1 will return an error message if false
