@@ -12,13 +12,26 @@ const whiteRook = new Rook(boardState, 0);
 const blackRook = new Rook(boardState, 1);
 function emptyBoard(boardstate)
 {
-	for(let r = 0; r < 8; ++r)
-	{
-		for(let c = 0; c < 8; ++c)
-		{
-			boardstate.board[r][c] = null;
-		}
-	}
+	boardstate.whitePieces.getPieces().forEach(([r,c]) => {
+		const piece = boardstate.getPiece([r,c]);
+		boardstate.whitePieces.remove(piece, [r,c]);
+		boardstate.board[r][c] = null;
+	});
+
+	boardstate.blackPieces.getPieces().forEach(([r,c]) => {
+		const piece = boardstate.getPiece([r,c]);
+		boardstate.blackPieces.remove(piece, [r,c]);
+		boardstate.board[r][c] = null;
+	});
+	// for(let r = 0; r < 8; ++r)
+	// {
+	// 	for(let c = 0; c < 8; ++c)
+	// 	{
+	// 		const piece = boardstate.board[r][c];
+
+	// 		boardstate.board[r][c] = null;
+	// 	}
+	// }
 }
 
 test('it can tell when the King isnt in check', () =>

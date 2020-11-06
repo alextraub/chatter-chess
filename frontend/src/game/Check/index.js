@@ -3,21 +3,28 @@ import BoardState from '../BoardState'
 
 export function inCheck([Row, Col], boardstate, team)
 {
-	const search = boardstate.returnBoardState();     //search is the current board state
-	for(let r=0; r<8; r++)                      //for every row
-	{
-		for(let c=0; c<8; c++)                  //for every coleum
-		{
-			if(search[r][c] != null && search[r][c].player != team)    //if the peice there is an enemy
-			{
-				if(search[r][c].canMove([r, c], [Row, Col]))   //we check if it can move to our square
-				{
-					return true;                //if it can we return true, we are in check
-				}
-			}
-		}
-	}
-	return false;                                //we have checked the whole board and are not in check
+	const enemyPieces = team == 0 ?
+		boardstate.blackPieces :
+		boardstate.whitePieces;
+	// const search = boardstate.returnBoardState();     //search is the current board state
+	// for(let r=0; r<8; r++)                      //for every row
+	// {
+	// 	for(let c=0; c<8; c++)                  //for every coleum
+	// 	{
+	// 		if(search[r][c] != null && search[r][c].player != team)    //if the peice there is an enemy
+	// 		{
+	// 			if(search[r][c].canMove([r, c], [Row, Col]))   //we check if it can move to our square
+	// 			{
+	// 				return true;                //if it can we return true, we are in check
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// return false; //we have checked the whole board and are not in check
+
+	return enemyPieces.getPieces().some(position => {
+		return boardstate.getPiece(position).canMove(position, [Row, Col]);
+	});
 }
 
 export function inCheckMate([Row, Col], boardstate, team)
@@ -103,5 +110,6 @@ export function inCheckMate([Row, Col], boardstate, team)
 			}
 		}
 	}
+
 	return true; //we have nowhere to move to, thus we are in check
 }
