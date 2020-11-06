@@ -50,6 +50,7 @@ export default class BoardState {
 		this.getPiece = this.getPiece.bind(this);
 		this.movePiece = this.movePiece.bind(this);
 		this.returnBoardState = this.returnBoardState.bind(this);
+		this.placePiece = this.placePiece.bind(this);
 	}
 
 	getPiece([row, col])                              //Returns what peice is stored on each tile
