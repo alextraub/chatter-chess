@@ -1,11 +1,6 @@
 import PieceSet from './';
 import { Pawn, Rook, Knight, Bishop, Queen, King } from '../Piece';
 import BoardState from '../BoardState';
-jest.mock('../BoardState.js');
-
-beforeEach(() => {
-	BoardState.mockClear();
-});
 
 const boardState = new BoardState();
 const pawn = new Pawn(boardState);
@@ -166,3 +161,79 @@ test('update actually changes an element', () => {
 	expect(contains(pieceSet.pieces['pawn'], [0,0])).toBe(false);
 	expect(contains(pieceSet.pieces['pawn'], [1,6])).toBe(true);
 });
+
+test('size starts at 0 for no argument constructor', () => {
+	const pieceSet = new PieceSet();
+
+	expect(pieceSet.size).toBe(0);
+});
+
+test('size goes up for each added piece', () => {
+	const pieceSet = new PieceSet();
+	pieceSet.add(pawn, [0,0]);
+	expect(pieceSet.size).toBe(1);
+	pieceSet.add(pawn, [1,2]);
+	pieceSet.add(rook, [0,2]);
+	expect(pieceSet.size).toBe(3);
+});
+
+test('size does not change if add is passed an element that is not able to be added', () => {
+	const pieceSet = new PieceSet(1);
+	pieceSet.add(knight, [1,3]);
+	expect(pieceSet.size).toBe(0);
+});
+
+test('size does not change if add is passed an element that is already in the set', () => {
+	const pieceSet = new PieceSet();
+	pieceSet.add(bishop, [0, 5]);
+	pieceSet.add(bishop, [0, 5]);
+	pieceSet.add(bishop, [0, 5]);
+	pieceSet.add(bishop, [0, 5]);
+	expect(pieceSet.size).toBe(1);
+});
+
+test('update does not impact size', () => {
+	const pieceSet = new PieceSet(-1, [[king]]);
+	pieceSet.update(king, [0,0], [0,3]);
+	expect(pieceSet.size).toBe(1);
+});
+
+test('remove decreases size by 1 if provided an element in the set', () => {
+	const pieceSet = new PieceSet(-1, [[queen]]);
+	pieceSet.remove(queen, [0,0]);
+	expect(pieceSet.size).toBe(0);
+});
+
+test('remove dos not change size if provided an element not in the set', () => {
+	const pieceSet = new PieceSet(-1, [[queen]]);
+	pieceSet.remove(queen, [0,1]);
+	expect(pieceSet.size).toBe(1);
+	pieceSet.remove(pawn, [0,0]);
+	expect(pieceSet.size).toBe(1);
+});
+
+test('getPieces with no argument returns an array with the positions of all pieces in the set', () => {
+	const bState = new BoardState();
+	const pieceSet = new PieceSet(-1, bState.board);
+	const pieces = pieceSet.getPieces();
+
+	expect(pieces).toHaveLength(32);
+
+	const piecePositions = [
+		[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],
+		[1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],[1,7],
+		[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[6,6],[6,7],
+		[7,0],[7,1],[7,2],[7,3],[7,4],[7,5],[7,6],[7,7]
+	];
+
+	piecePositions.forEach(([r,c]) => {
+		expect(pieces.some(([x,y]) => x==r && y==c)).toBe(true);
+	});
+});
+
+test('getPieces with a predicate argument filters elements', () => {
+	const bState = new BoardState();
+	const pieceSet = new PieceSet(-1, bState.board);
+
+	expect(pieceSet.getPieces(piece => bState.getPiece(piece).type === 'king')).toHaveLength(2);
+})

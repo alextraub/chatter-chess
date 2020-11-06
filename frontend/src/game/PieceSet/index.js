@@ -14,6 +14,7 @@ class PieceSet {
 		generic: []
 	}
 	player
+	#count = 0
 
 	/**
 	 *
@@ -50,6 +51,10 @@ class PieceSet {
 		}
 	}
 
+	get size() {
+		return this.#count;
+	}
+
 	/**
 	 * Add a piece position to the set
 	 *
@@ -73,6 +78,7 @@ class PieceSet {
 		} else {
 			this.pieces[piece.type] = [[row, col]];
 		}
+		this.#count++;
 		return true;
 	}
 
@@ -100,6 +106,7 @@ class PieceSet {
 		}
 		const newPieceArray = this.pieces[piece.type].filter(([r, c]) => r !== row || c !== col);
 		this.pieces[piece.type] = newPieceArray;
+		this.#count--;
 		return true;
 	}
 
@@ -138,6 +145,24 @@ class PieceSet {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 *
+	 * @param {(piece: Piece) => boolean} predicate
+	 * @returns {Piece[]}
+	 */
+	getPieces(predicate=() => true) {
+		let pieces = [];
+		Object.entries(this.pieces)
+			.filter(([_, pieceArray]) => pieceArray.length > 0)
+			.map(([_, pieceArray]) => pieceArray
+				.filter(piece => predicate(piece)))
+			.forEach(pieceArray => {
+				pieces = pieces.concat(pieceArray);
+			});
+
+		return pieces;
 	}
 }
 
