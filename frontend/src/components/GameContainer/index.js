@@ -64,7 +64,7 @@ export default class GameContainer extends React.Component {
 		this.syncBoard = this.syncBoard.bind(this);
 		this.updateCapturedLists = this.updateCapturedLists.bind(this);
 		this.rollbackMove = this.rollbackMove.bind(this);
-		this.updateCheckFlags = this.getCheckFlags.bind(this);
+		this.getCheckFlags = this.getCheckFlags.bind(this);
 		this.isInCheck = this.isInCheck.bind(this);
 		this.isInCheckMate = this.isInCheckMate.bind(this);
 	}
