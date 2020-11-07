@@ -1,10 +1,12 @@
 import React from "react";
+import GameContainer from './GameContainer';
 
 const App = () => (
-    <div>
-        <h1>Chatter Chess</h1>
-		<small>Play chess with your voice</small>
-    </div>
+	<div>
+		<GameContainer />
+		<p>Credits</p>
+		Chess piece graphics by <a href="https://en.wikipedia.org/wiki/User:Cburnett">Colin M.L. Burnett</a>
+	</div>
 );
 
 export default App;
