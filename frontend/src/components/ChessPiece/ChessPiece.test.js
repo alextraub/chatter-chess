@@ -23,7 +23,7 @@ test('Pawn has correct alt text', () => {
 	expect(() => screen.getAllByAltText('black pawn')).toThrow();
 
 
-	rerender(<ChessPiece type="pawn" black/>);
+	rerender(<ChessPiece type="pawn" black />);
 
 	expect(screen.getAllByAltText('black pawn')).toHaveLength(1);
 	expect(() => screen.getAllByAltText('white pawn')).toThrow();
@@ -35,7 +35,7 @@ test('Rook has correct alt text', () => {
 	expect(() => screen.getAllByAltText('black rook')).toThrow();
 
 
-	rerender(<ChessPiece type="rook" black/>);
+	rerender(<ChessPiece type="rook" black />);
 
 	expect(screen.getAllByAltText('black rook')).toHaveLength(1);
 	expect(() => screen.getAllByAltText('white rook')).toThrow();
@@ -47,7 +47,7 @@ test('Knight has correct alt text', () => {
 	expect(() => screen.getAllByAltText('black knight')).toThrow();
 
 
-	rerender(<ChessPiece type="knight" black/>);
+	rerender(<ChessPiece type="knight" black />);
 
 	expect(screen.getAllByAltText('black knight')).toHaveLength(1);
 	expect(() => screen.getAllByAltText('white knight')).toThrow();
@@ -59,7 +59,7 @@ test('Bishop has correct alt text', () => {
 	expect(() => screen.getAllByAltText('black bishop')).toThrow();
 
 
-	rerender(<ChessPiece type="bishop" black/>);
+	rerender(<ChessPiece type="bishop" black />);
 
 	expect(screen.getAllByAltText('black bishop')).toHaveLength(1);
 	expect(() => screen.getAllByAltText('white bishop')).toThrow();
@@ -71,7 +71,7 @@ test('Pawn has correct alt text', () => {
 	expect(() => screen.getAllByAltText('black king')).toThrow();
 
 
-	rerender(<ChessPiece type="king" black/>);
+	rerender(<ChessPiece type="king" black />);
 
 	expect(screen.getAllByAltText('black king')).toHaveLength(1);
 	expect(() => screen.getAllByAltText('white king')).toThrow();
@@ -83,7 +83,7 @@ test('Queen has correct alt text', () => {
 	expect(() => screen.getAllByAltText('black queen')).toThrow();
 
 
-	rerender(<ChessPiece type="queen" black/>);
+	rerender(<ChessPiece type="queen" black />);
 
 	expect(screen.getAllByAltText('black queen')).toHaveLength(1);
 	expect(() => screen.getAllByAltText('white queen')).toThrow();

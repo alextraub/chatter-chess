@@ -31,7 +31,7 @@ export default class GameContainer extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.boardState = new BoardState();
+		this.boardState = this.props.boardState;
 		this.capturedWhitePieces = capturedPieceObj();
 		this.capturedBlackPieces = capturedPieceObj();
 		const board = this.boardState.returnBoardState();
@@ -52,7 +52,7 @@ export default class GameContainer extends React.Component {
 			capturedBlackPieces: { ...this.capturedBlackPieces },
 			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
 			swapList: [], // Possible types of pieces to swap
-			turn: 0 // Number of turns made in the game
+			turn: this.props.turn // Number of turns made in the game
 		}
 
 		/* Bind methods to 'this' */
@@ -70,11 +70,15 @@ export default class GameContainer extends React.Component {
 	}
 
 	static propTypes = {
-		playerView: PropTypes.oneOf([0, 1, 2])
+		playerView: PropTypes.oneOf([0, 1, 2]),
+		boardState: PropTypes.instanceOf(BoardState),
+		turn: PropTypes.number
 	}
 
 	static defaultProps = {
-		playerView: 2
+		playerView: 2,
+		boardState: new BoardState(),
+		turn: 0
 	}
 
 	/**
