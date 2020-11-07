@@ -241,7 +241,6 @@ export default class GameContainer extends React.Component {
 						swapping: to,
 						swapList: pieceTypes
 					});
-					console.log('beginning swap');
 					return true;
 				}
 			}
@@ -352,7 +351,7 @@ export default class GameContainer extends React.Component {
 					performMove={this.performMove}
 					disabled={isSwapping || gameOver}
 				/>
-				{gameOver ? <span data-testid="winner">{check.white.mate ? 'Bhite' : 'White'} wins!</span> : ''}
+				{gameOver ? <span data-testid="winner">{check.white.mate ? 'White' : 'White'} wins!</span> : ''}
 
 				<div className="row">
 					<div className="col">
