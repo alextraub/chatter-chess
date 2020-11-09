@@ -1,61 +1,44 @@
 {
-		"name": "chatter-chess",
-		"version": "0.0.0",
-		"private": true,
-		"scripts": {
-				"prepare": "python -m pip install -r requirements.txt",
-				"build": "webpack",
-				"test": "jest",
-				"start": "python manage.py runserver",
-				"dev-server": "cross-env DJANGO_SETTINGS_MODULE=\"chatter_chess.settings.dev_server\" concurrently \"cross-env-shell npx webpack-dev-server\" \"python manage.py runserver\""
-		},
-		"jest": {
-				"transform": {
-						".*": "babel-jest"
-				},
-				"moduleNameMapper": {
-						"\\.(css|jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "identity-obj-proxy"
-				}
-		},
-		"dependencies": {
-				"@babel/core": "^7.11.6",
-				"@babel/plugin-proposal-private-methods": "^7.10.4",
-				"@babel/preset-env": "^7.11.5",
-				"@babel/preset-react": "^7.10.4",
-				"autoprefixer": "^9.8.6",
-				"babel-loader": "^8.1.0",
-				"css-loader": "^4.3.0",
-				"file-loader": "^6.1.1",
-				"nan": "^2.14.1",
-				"postcss-loader": "^4.0.1",
-				"precss": "^4.0.0",
-				"prop-types": "^15.7.2",
-				"react": "^16.13.1",
-				"react-dom": "^16.13.1",
-				"style-loader": "^1.2.1",
-				"url-loader": "^4.1.1",
-				"webpack": "^4.44.1",
-				"webpack-cli": "^3.3.12",
-				"@testing-library/dom": "latest"
-		},
-		"devDependencies": {
-				"@babel/plugin-proposal-class-properties": "^7.10.4",
-				"@testing-library/jest-dom": "^5.11.4",
-				"@testing-library/react": "^11.0.4",
-				"babel-eslint": "^10.1.0",
-				"babel-jest": "^26.3.0",
-				"babel-polyfill": "^6.26.0",
-				"concurrently": "^5.3.0",
-				"cross-env": "^7.0.2",
-				"eslint": "^7.10.0",
-				"eslint-plugin-import": "^2.22.1",
-				"eslint-plugin-jest": "^24.0.2",
-				"eslint-plugin-jsx-a11y": "^6.3.1",
-				"eslint-plugin-react": "^7.21.2",
-				"eslint-plugin-react-hooks": "^4.1.2",
-				"identity-obj-proxy": "^3.0.0",
-				"jest": "^26.4.2",
-				"react-test-renderer": "^16.13.1",
-				"webpack-dev-server": "^3.11.0"
-		}
+  "name": "chatter-chess",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@aws-amplify/ui-react": "^0.2.27",
+    "@testing-library/jest-dom": "^5.11.5",
+    "@testing-library/react": "^11.1.1",
+    "@testing-library/user-event": "^12.2.0",
+    "aws-amplify": "^3.3.7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.0",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
 }
