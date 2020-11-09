@@ -1,0 +1,8 @@
+br {
+	display: block; /* makes it have a width */
+	content: ""; /* clears default height */
+	margin-top: 10px;
+}
+#inputContainer h1 {
+	text-decoration: underline;
+}

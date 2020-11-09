@@ -3,7 +3,3 @@ root = true
 
 [*]
 end_of_line = lf
-indent_style = tab
-
-[*.config]
-indent_style = space

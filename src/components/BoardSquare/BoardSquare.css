@@ -1,0 +1,28 @@
+.piece-container {
+	align-self: center;
+	padding: 20px;
+}
+
+.square {
+	justify-content: center;
+	align-items: center;
+}
+
+.square.white {
+	background-color: #eee;
+}
+.square.black {
+	background-color: #444;
+}
+
+.label-position {
+	background-color: #cc6;
+	flex: 1;
+	padding: 0;
+	margin: 0;
+	float: right;
+	position: relative;
+	padding: 1px;
+	border-left: 2px inset #aa4;
+	border-bottom: 2px inset #ee8;
+}
