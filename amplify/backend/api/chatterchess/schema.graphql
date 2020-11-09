@@ -1,0 +1,55 @@
+enum GameType {
+	Local,
+	Online
+}
+
+enum Team {
+	WHITE,
+	BLACK
+}
+
+enum PieceType {
+	PAWN,
+	ROOK,
+	KNIGHT,
+	BISHOP,
+	QUEEN,
+	KING,
+	GENERIC
+}
+
+type Player {
+	team: Team!
+}
+
+type Position {
+	row: Int!
+	col: Int!
+}
+
+type Piece {
+	player: Player!,
+	type: PieceType!
+	captured: Boolean!
+	position: Position # Not null if captured is false and null if captured is true
+}
+
+type CheckStatus {
+	player: Player!
+	status: Boolean! # true if in check
+	mate: Boolean # Should never be true if status is false
+}
+
+type Turn {
+	number: Int! # The number of turns taken in the game thus far
+	player: Player! # Which player's turn it is
+}
+
+type Game @model {
+  id: ID!
+	type: GameType!
+	players: [Player]!
+  turn: Turn!
+	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured
+	check: [CheckStatus!]! # Each team should have 1 element in the list
+}
