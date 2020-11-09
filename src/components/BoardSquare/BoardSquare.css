@@ -6,6 +6,7 @@
 .square {
 	justify-content: center;
 	align-items: center;
+	min-width: 106px;
 }
 
 .square.white {
