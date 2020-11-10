@@ -30,7 +30,7 @@ export default class CapturedPieces extends React.Component {
 
 		return (
 			<div className="captured-container" data-testid="capturedContainer">
-				<h2 data-testid={`${black ? 'black' : 'white'}-captured-total`}>{/*Captured ({pieces.count})*/}</h2><br />
+				<h2 data-testid={`${black ? 'black' : 'white'}-captured-total`}>Captured ({pieces.count})</h2><br />
 				<ul>
 					{Object.entries(pieces.pieces)
 						.filter(entry => entry[1].length > 0)

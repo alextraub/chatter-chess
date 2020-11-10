@@ -123,3 +123,28 @@ test('Bishops throw an error if checking their swapRow property', () => {
 	expect(() => whiteBishop.swapRow).toThrow(EvalError);
 	expect(() => blackBishop.swapRow).toThrow(EvalError);
 });
+
+test('toObject has correct type property', () => {
+	expect(whiteBishop.toObject().type).toEqual('bishop');
+	expect(blackBishop.toObject().type).toEqual('bishop');
+});
+
+test('toObject has correct player property', () => {
+	expect(whiteBishop.toObject().player).toBe(0);
+	expect(blackBishop.toObject().player).toBe(1);
+});
+
+test('toObject has correct captured property for uncaptured pieces', () => {
+	expect(whiteBishop.toObject().captured).toBe(false);
+	expect(blackBishop.toObject().captured).toBe(false);
+});
+
+test('toObject has correct captured property for captured pieces', () => {
+	whiteBishop.captured = true;
+	expect(whiteBishop.toObject().captured).toBe(true);
+	whiteBishop.captured = false;
+
+	blackBishop.captured = true;
+	expect(blackBishop.toObject().captured).toBe(true);
+	blackBishop.captured = false;
+});

@@ -9,7 +9,10 @@ import { boardPositionToString } from '../../game/utils/boardPosition';
 export default class BoardComponent extends React.Component {
 		static propTypes = {
 			player: PropTypes.oneOf([0, 1]),
-			board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.instanceOf(Piece)))
+			board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
+				type: PropTypes.string,
+				player: PropTypes.oneOf([0, 1])
+			})))
 		}
 
 		render() {

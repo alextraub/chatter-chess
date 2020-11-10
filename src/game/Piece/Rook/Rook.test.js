@@ -140,3 +140,28 @@ test('Rooks throw an error if checking their swapRow property', () => {
 	expect(() => whiteRook.swapRow).toThrow(EvalError);
 	expect(() => blackRook.swapRow).toThrow(EvalError);
 });
+
+test('toObject has correct type property', () => {
+	expect(whiteRook.toObject().type).toEqual('rook');
+	expect(blackRook.toObject().type).toEqual('rook');
+});
+
+test('toObject has correct player property', () => {
+	expect(whiteRook.toObject().player).toBe(0);
+	expect(blackRook.toObject().player).toBe(1);
+});
+
+test('toObject has correct captured property for uncaptured pieces', () => {
+	expect(whiteRook.toObject().captured).toBe(false);
+	expect(blackRook.toObject().captured).toBe(false);
+});
+
+test('toObject has correct captured property for captured pieces', () => {
+	whiteRook.captured = true;
+	expect(whiteRook.toObject().captured).toBe(true);
+	whiteRook.captured = false;
+
+	blackRook.captured = true;
+	expect(blackRook.toObject().captured).toBe(true);
+	blackRook.captured = false;
+});

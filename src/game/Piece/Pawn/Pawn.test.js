@@ -165,3 +165,27 @@ test('Black pawns have a swapRow of 7', () => {
 	expect(() => blackPawn.swapRow).not.toThrow();
 	expect(blackPawn.swapRow).toBe(7);
 });
+test('toObject has correct type property', () => {
+	expect(whitePawn.toObject().type).toEqual('pawn');
+	expect(blackPawn.toObject().type).toEqual('pawn');
+});
+
+test('toObject has correct player property', () => {
+	expect(whitePawn.toObject().player).toBe(0);
+	expect(blackPawn.toObject().player).toBe(1);
+});
+
+test('toObject has correct captured property for uncaptured pieces', () => {
+	expect(whitePawn.toObject().captured).toBe(false);
+	expect(blackPawn.toObject().captured).toBe(false);
+});
+
+test('toObject has correct captured property for captured pieces', () => {
+	whitePawn.captured = true;
+	expect(whitePawn.toObject().captured).toBe(true);
+	whitePawn.captured = false;
+
+	blackPawn.captured = true;
+	expect(blackPawn.toObject().captured).toBe(true);
+	blackPawn.captured = false;
+});

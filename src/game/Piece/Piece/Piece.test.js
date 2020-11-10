@@ -239,3 +239,28 @@ test('getValidMovePath returns all position from from to to for a diagonal move'
 	expect(blackPiece.getValidMovePath([6,7],[2,3])).toEqual(path3);
 	expect(whitePiece1.getValidMovePath([5,0],[2,3])).toEqual(path4);
 });
+
+test('toObject has correct type property', () => {
+	expect(whitePiece1.toObject().type).toEqual('generic');
+	expect(blackPiece.toObject().type).toEqual('generic');
+});
+
+test('toObject has correct player property', () => {
+	expect(whitePiece2.toObject().player).toBe(0);
+	expect(blackPiece.toObject().player).toBe(1);
+});
+
+test('toObject has correct captured property for uncaptured pieces', () => {
+	expect(whitePiece2.toObject().captured).toBe(false);
+	expect(blackPiece.toObject().captured).toBe(false);
+});
+
+test('toObject has correct captured property for captured pieces', () => {
+	whitePiece1.captured = true;
+	expect(whitePiece1.toObject().captured).toBe(true);
+	whitePiece1.captured = false;
+
+	blackPiece.captured = true;
+	expect(blackPiece.toObject().captured).toBe(true);
+	blackPiece.captured = false;
+});

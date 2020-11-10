@@ -204,6 +204,18 @@ class Piece {
 		return mode === 0 ?
 			false : `You already have a piece at ${boardPositionToString([toRow, toCol])}`;
 	}
+
+	toObject() {
+		return {
+			type: this.type,
+			player: this.player,
+			captured: this.captured
+		}
+	}
+
+	toJSON() {
+		return JSON.stringify(this.toObject());
+	}
 }
 
 export default Piece;

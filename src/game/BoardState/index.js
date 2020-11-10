@@ -1,5 +1,6 @@
-import { Pawn, Rook, Knight, Bishop, Queen, King } from '../Piece'
+import { createPiece } from '../Piece'
 import PieceSet from '../PieceSet';
+import StandardBoard from './boards/standardGame';
 
 /* This file stores the positions of all current peices on the board
 and can return what piece is on a position on the board, all current
@@ -9,40 +10,22 @@ export default class BoardState {
 	whitePieces
 	blackPieces
 
-	constructor()                                         //create board
+	constructor(pieces=StandardBoard)                                         //create board
 	{
-		// replace!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
 		this.board = [
-			[new Rook(this, 1), new Knight(this, 1), new Bishop(this, 1), new Queen(this, 1), new King(this, 1), new Bishop(this, 1), new Knight(this, 1), new Rook(this, 1)],
-			[new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1)],
 			[null, null, null, null, null, null, null, null],
 			[null, null, null, null, null, null, null, null],
 			[null, null, null, null, null, null, null, null],
 			[null, null, null, null, null, null, null, null],
-			[new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
-			[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null]
 		];
-		// this.board = [
-		// 	[new Rook(this, 1), new Knight(this, 1), new Bishop(this, 1), new Queen(this, 1), new King(this, 1), new Bishop(this, 1), new Knight(this, 1), new Rook(this, 1)],
-		// 	[new Pawn(this, 1), new Pawn(this, 0), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1), new Pawn(this, 1)],
-		// 	[null, null, null, null, null, null, null, null],
-		// 	[null, null, null, null, null, null, null, null],
-		// 	[null, null, null, null, null, null, null, null],
-		// 	[null, null, null, null, null, null, null, null],
-		// 	[new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0), new Pawn(this, 0)],
-		// 	[new Rook(this, 0), new Knight(this, 0), new Bishop(this, 0), new Queen(this, 0), new King(this, 0), new Bishop(this, 0), new Knight(this, 0), new Rook(this, 0)]
-		// ];
 
-		/*this.board = [
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-			[null, null, null, null, null, null, null, null],
-		];*/
+		for(let { type, player, position } of pieces) {
+			this.board[position[0]][position[1]] = createPiece(type, this, player);
+		}
 
 		this.whitePieces = new PieceSet(0, this.board);
 		this.blackPieces = new PieceSet(1, this.board);
@@ -51,6 +34,7 @@ export default class BoardState {
 		this.movePiece = this.movePiece.bind(this);
 		this.returnBoardState = this.returnBoardState.bind(this);
 		this.placePiece = this.placePiece.bind(this);
+		this.getBoard = this.getBoard.bind(this);
 	}
 
 	getPiece([row, col])                              //Returns what peice is stored on each tile
@@ -76,6 +60,14 @@ export default class BoardState {
 
 	placePiece(piece, [row, col])						//put a piece in a spicific position
 	{
+		if(this.board[row][col] !== null) {
+			if(this.board[row][col].isWhite()) {
+				this.whitePieces.remove(this.board[row][col], [row, col]);
+			} else {
+				this.blackPieces.remove(this.board[row][col], [row, col]);
+			}
+		}
+
 		this.board[row][col] = piece;
 		if(piece.player === 0) {
 			this.whitePieces.add(piece, [row, col]);
@@ -85,61 +77,20 @@ export default class BoardState {
 		return 0;
 	}
 
-	/*function swapPeice(position, peice)      //returns the peice in the given position after the trasformation to make shure it worked
-    {
-        pos = PosToNum(position);                           //get the array pos of position
-        if(Board[pos].type = Pawn)                          //If the board position contains a pawn
-        {
-            Board[pos] = peice;                             //replace the pawn with the chosen peice
-        }
-        return Board[pos];                                  //return array positon's new value
-    }*/
-
 	returnBoardState()                 //return the array containing a copy of the Board State
 	{
 		return this.board;
 	}
 
+	getBoard() {
+		return this.board.map(row => {
+			return row.map(piece => {
+				if(piece === null) {
+					return null;
+				} else {
+					return piece.toObject();
+				}
+			})
+		});
+	}
 }
-
-// const makeChessBoard = boardState => {             //This is the function to be called at the start of each game to create a borad set to its deafult
-// 	let squares = [];
-// 	for(let r=0; r<8; r++) {
-// 		squares.push([]);
-// 		for(let c=0; c<8; c++) {
-// 			squares[r].push(null);
-// 		}
-// 	}
-// 	console.log(squares);
-
-// 	for(let i = 0; i < 8; i++){
-// 		squares[1][i] = new Pawn(boardState, 1);
-// 		squares[6][i] = new Pawn(boardState, 0);
-// 	}
-// 	squares[0][0] = new Rook(boardState, 1);
-// 	squares[0][7] = new Rook(boardState, 1);
-// 	squares[7][0] = new Rook(boardState, 0);
-// 	squares[7][7] = new Rook(boardState, 0);
-
-// 	squares[0][1] = new Knight(boardState, 1);
-// 	squares[0][6] = new Knight(boardState, 1);
-
-// 	squares[7][1] = new Knight(boardState, 0);
-// 	squares[7][6] = new Knight(boardState, 0);
-
-// 	squares[0][2] = new Bishop(boardState, 1);
-// 	squares[0][5] = new Bishop(boardState, 1);
-// 	squares[7][2] = new Bishop(boardState, 0);
-// 	squares[7][5] = new Bishop(boardState, 0);
-
-// 	squares[0][3] = new Queen(boardState, 1);
-// 	squares[7][3] = new Queen(boardState, 0);
-
-// 	squares[0][4] = new King(boardState, 1);
-// 	squares[7][4] = new King(boardState, 0);
-
-// 	//remove !!!!!!!!!!!!!!!!!!!
-// 	// squares[1][2] = new Pawn(boardState, 1);
-
-// 	return squares;
-// }

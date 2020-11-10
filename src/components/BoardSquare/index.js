@@ -19,7 +19,7 @@ const BoardSquare = ({ black, piece, position }) => {
 		if(piece === null) {
 			return '';
 		} else {
-			return <ChessPiece black={piece.isBlack()}  type={piece.type} />
+			return <ChessPiece black={piece.player === 1}  type={piece.type} />
 		}
 	}
 
@@ -34,7 +34,7 @@ const BoardSquare = ({ black, piece, position }) => {
 	return (
 		<div data-testid="board-square" className={`square ${squareColor}`}>
 			{renderPositionLabel()}
-			<div data-testid="piece-container" className="piece-container">
+			<div data-testid={position ? position : 'piece-container'} className="piece-container">
 				{renderPiece()}
 			</div>
 		</div>
@@ -43,7 +43,10 @@ const BoardSquare = ({ black, piece, position }) => {
 
 BoardSquare.propTypes = {
 	black: PropTypes.bool,
-	piece: PropTypes.instanceOf(Piece),
+	piece: PropTypes.shape({
+		type: PropTypes.string,
+		player: PropTypes.oneOf([0,1])
+	}),
 	position: PropTypes.string
 };
 

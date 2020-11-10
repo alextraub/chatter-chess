@@ -66,13 +66,6 @@ test('Knight can move left 2 squares and up 1 square', () => {
 	expect(blackKnight.canMove([5, 3], [6, 1], 0)).toBe(true);
 });
 
-test('Knight can move right 2 squares and down 1 square', () => {
-	moveToEmptySquare();
-
-	expect(whiteKnight.canMove([4, 4], [3, 2], 1)).toBe(true);
-	expect(blackKnight.canMove([1, 5], [0, 3], 1)).toBe(true);
-});
-
 test('Knights can move to a square with an enemy piece', () => {
 	boardState.getPiece.mockReturnValueOnce(blackPiece).mockReturnValue(whitePiece);
 
@@ -135,4 +128,29 @@ test('Knights can be swapped in', () => {
 test('Knights throw an error if checking their swapRow property', () => {
 	expect(() => whiteKnight.swapRow).toThrow(EvalError);
 	expect(() => blackKnight.swapRow).toThrow(EvalError);
+});
+
+test('toObject has correct type property', () => {
+	expect(whiteKnight.toObject().type).toEqual('knight');
+	expect(blackKnight.toObject().type).toEqual('knight');
+});
+
+test('toObject has correct player property', () => {
+	expect(whiteKnight.toObject().player).toBe(0);
+	expect(blackKnight.toObject().player).toBe(1);
+});
+
+test('toObject has correct captured property for uncaptured pieces', () => {
+	expect(whiteKnight.toObject().captured).toBe(false);
+	expect(blackKnight.toObject().captured).toBe(false);
+});
+
+test('toObject has correct captured property for captured pieces', () => {
+	whiteKnight.captured = true;
+	expect(whiteKnight.toObject().captured).toBe(true);
+	whiteKnight.captured = false;
+
+	blackKnight.captured = true;
+	expect(blackKnight.toObject().captured).toBe(true);
+	blackKnight.captured = false;
 });

@@ -33,10 +33,9 @@ export default class GameContainer extends React.Component {
 		this.boardState = this.props.boardState;
 		this.capturedWhitePieces = capturedPieceObj();
 		this.capturedBlackPieces = capturedPieceObj();
-		const board = this.boardState.returnBoardState();
 
 		this.state = {
-			board,
+			board: [...this.boardState.getBoard()],
 			check: {
 				white: {
 					status: false,
@@ -112,7 +111,7 @@ export default class GameContainer extends React.Component {
 	 * @param {[number, number]} fromPos the position the piece to be hoved is currently at
 	 * @param {[number, number]} toPos the position to move the piece to
 	 */
-	performMove(from, to) {
+	async performMove(from, to) {
 		const fromPiece = this.boardState.getPiece(from);
 		const toPiece = this.boardState.getPiece(to);
 		this.boardState.movePiece(from, to);
@@ -123,8 +122,11 @@ export default class GameContainer extends React.Component {
 		if (toPiece !== null) {
 			this.updateCapturedLists(toPiece);
 		}
-		this.syncBoard();
-		if (!this.beginSwap(to)) {
+		await this.syncBoard();
+
+		const swapping = this.beginSwap(to);
+
+		if (!swapping) {
 			const check = this.getCheckFlags(this.currentPlayer() === 0 ? 1 : 0);
 			this.setState({
 				...this.state,
@@ -133,7 +135,7 @@ export default class GameContainer extends React.Component {
 				}
 			});
 			if(!check.white.mate && !check.black.mate) {
-				this.nextTurn();
+				await this.nextTurn();
 			}
 		}
 
@@ -175,7 +177,7 @@ export default class GameContainer extends React.Component {
 	/**
 	 * Updates the state to reflect the start of a new turn
 	 */
-	nextTurn() {
+	async nextTurn() {
 		this.setState({
 			...this.state,
 			swapping: false,
@@ -187,10 +189,10 @@ export default class GameContainer extends React.Component {
 	/**
 	 * Updates the component to reflect the current BoardState
 	 */
-	syncBoard() {
+	async syncBoard() {
 		this.setState({
 			...this.state,
-			board: this.boardState.returnBoardState(),
+			board: this.boardState.getBoard(),
 			capturedWhitePieces: this.capturedWhitePieces,
 			capturedBlackPieces: this.capturedBlackPieces
 		});
@@ -260,13 +262,12 @@ export default class GameContainer extends React.Component {
 	 */
 	getPossibleSwapArray(to, pieces) {
 		const curPiece = this.boardState.getPiece(to);
-		return Object.entries(pieces)
+		const result = Object.entries(pieces)
 			// Filter out any piece type with no captured pieces and then any that cannot be swapped in
 			.filter(([_, pieceArr]) => {
 				if(pieceArr.length > 0 && pieceArr[0].canSwapIn) {
-					this.boardState.board[to[0]][to[1]] = pieceArr[0];
+					this.boardState.placePiece(pieceArr[0], to);
 					const causesCheck = this.isInCheck(this.currentPlayer());
-					this.boardState.board[to[0]][to[1]] = curPiece;
 					return !causesCheck;
 				}
 
@@ -274,10 +275,15 @@ export default class GameContainer extends React.Component {
 			})
 			.map(([_, pieceArr]) => { // For the remaing piece arrays, map each to an object denoting what type of pieces it has and if they are black or not
 				return {
-					black: pieceArr[0].isBlack(),
-					type: pieceArr[0].type
+					...pieceArr[0].toObject(),
+					black: pieceArr[0].isBlack()
 				}
 			});
+
+		if(this.boardState.getPiece(to) !== curPiece) {
+			this.boardState.placePiece(curPiece, to);
+		}
+		return result;
 	}
 
 	/**
@@ -286,43 +292,32 @@ export default class GameContainer extends React.Component {
 	 * @todo supply this as an event handler to the swap component
 	 * @param {string} type the type value of a piece class
 	 */
-	performSwap(type) {
-		const { swapping } = this.state;
+	async performSwap(type) {
+		const { swapping } = this.state; // Position of piece being swapped
 		const { count, pieces } = this.currentPlayer() === 0 ?
 			this.state.capturedWhitePieces :
 			this.state.capturedBlackPieces;
 		const piece = this.boardState.getPiece(swapping); // The piece being swapped out
-		if(piece.isWhite()) {
-			this.boardState.whitePieces.remove(piece, swapping);
-		} else {
-			this.boardState.blackPieces.remove(piece, swapping);
-		}
+		piece.captured = true;
 		const newPiece = pieces[type].pop(); // Get the next piece of type that can be swapped in
 		newPiece.captured = false; // New piece no longer is captured
 		// Replace the piece
 		this.boardState.placePiece(newPiece, swapping);
-		piece.boardState = null; // Remove old piece from the game
-
-		if (this.currentPlayer() === 0) {
-			this.setState({
-				...this.state,
-				capturedWhitePieces: {
-					count: count - 1,
-					pieces
-				}
-			})
+		if(this.currentPlayer() === 0) {
+			this.capturedWhitePieces.pieces.pawn.push(piece);
 		} else {
-			this.setState({
-				...this.state,
-				capturedBlackPieces: {
-					count: count - 1,
-					pieces
-				}
-			});
+			this.capturecBlackPieces.pieces.pawn.push(piece);
 		}
 
+
+		this.setState({
+			...this.state,
+			capturedWhitePieces: this.capturedWhitePieces,
+			capturecBlackPieces: this.capturedBlackPieces
+		});
+
 		// Go to next turn
-		this.syncBoard();
+		await this.syncBoard();
 		this.nextTurn();
 	}
 

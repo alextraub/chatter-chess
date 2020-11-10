@@ -212,3 +212,29 @@ test('Queens throw an error if checking their swapRow property', () => {
 	expect(() => whiteQueen.swapRow).toThrow(EvalError);
 	expect(() => blackQueen.swapRow).toThrow(EvalError);
 });
+
+
+test('toObject has correct type property', () => {
+	expect(whiteQueen.toObject().type).toEqual('queen');
+	expect(blackQueen.toObject().type).toEqual('queen');
+});
+
+test('toObject has correct player property', () => {
+	expect(whiteQueen.toObject().player).toBe(0);
+	expect(blackQueen.toObject().player).toBe(1);
+});
+
+test('toObject has correct captured property for uncaptured pieces', () => {
+	expect(whiteQueen.toObject().captured).toBe(false);
+	expect(blackQueen.toObject().captured).toBe(false);
+});
+
+test('toObject has correct captured property for captured pieces', () => {
+	whiteQueen.captured = true;
+	expect(whiteQueen.toObject().captured).toBe(true);
+	whiteQueen.captured = false;
+
+	blackQueen.captured = true;
+	expect(blackQueen.toObject().captured).toBe(true);
+	blackQueen.captured = false;
+});

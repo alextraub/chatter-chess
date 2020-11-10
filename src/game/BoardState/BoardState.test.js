@@ -1,4 +1,4 @@
-import BoardState from '.';
+import BoardState from './';
 
 
 beforeEach(() =>
