@@ -22,7 +22,10 @@ export default class MoveInput extends React.Component {
 		getPiece: PropTypes.func.isRequired,
 		performMove: PropTypes.func.isRequired,
 		disabled: PropTypes.bool,
-		check: PropTypes.bool
+		check: PropTypes.shape({
+			previous: PropTypes.bool,
+			status: PropTypes.bool
+		})
 	}
 
 
@@ -93,10 +96,21 @@ export default class MoveInput extends React.Component {
 			});
 		} else {
 
-			this.props.performMove(validPositions[0], validPositions[1])
+			let errorMessage = '';
+			try {
+				this.props.performMove(validPositions[0], validPositions[1])
+				if(this.props.check.status) {
+					errorMessage = this.props.check.previous ?
+						'That move leaves you in check' :
+						'That move puts you in check'
+				}
+			} catch (error) {
+				//
+			}
+
 			this.setState({
 				...this.state,
-				moveError: this.props.check ? 'That move puts you in check' : '',
+				moveError: errorMessage,
 				move: ''
 			});
 

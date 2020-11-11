@@ -245,15 +245,28 @@ test('Move submit button is enabled if it has disabled=false prop', () => {
 	expect(screen.getByTestId('button')).not.toBeDisabled();
 });
 
-test('Check errors are displayed', async () => {
+test('Check errors are displayed for moving into check', async () => {
 	await render(<MoveInput
 		currentPlayer={0}
 		getPiece={boardState.getPiece}
 		performMove={jest.fn(() => false)}
-		check
+		check={{previous: false, status: true}}
 	/>);
 	mockValidMove(new DPiece(boardState));
 	await updateInputValue('A4 E4');
 	await fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).toHaveTextContent('That move puts you in check');
+});
+
+test('Check errors are displayed for remaining in check', async () => {
+	await render(<MoveInput
+		currentPlayer={0}
+		getPiece={boardState.getPiece}
+		performMove={jest.fn(() => false)}
+		check={{previous: true, status: true}}
+	/>);
+	mockValidMove(new DPiece(boardState));
+	await updateInputValue('A4 E4');
+	await fireEvent.click(screen.getByTestId('button'));
+	expect(screen.getByTestId('error')).toHaveTextContent('That move leaves you in check');
 })

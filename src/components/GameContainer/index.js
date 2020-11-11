@@ -38,10 +38,12 @@ export default class GameContainer extends React.Component {
 			board: [...this.boardState.getBoard()],
 			check: {
 				white: {
+					previous: false,
 					status: false,
 					mate: false
 				},
 				black: {
+					previous: false,
 					status: false,
 					mate: false
 				}
@@ -120,7 +122,7 @@ export default class GameContainer extends React.Component {
 
 		if(this.isInCheck(this.currentPlayer())) {
 			this.rollbackMove(from, fromPiece, to, toPiece);
-			return false;
+			return;
 		}
 		if (toPiece !== null) {
 			this.updateCapturedLists(toPiece);
@@ -141,8 +143,6 @@ export default class GameContainer extends React.Component {
 				await this.nextTurn();
 			}
 		}
-
-		return true;
 	}
 
 	/**
@@ -156,6 +156,7 @@ export default class GameContainer extends React.Component {
 			check = {
 				...check,
 				white: {
+					previous: check.white.status,
 					status: newStatus,
 					mate: !newStatus ?
 						false :
@@ -166,6 +167,7 @@ export default class GameContainer extends React.Component {
 			check = {
 				...check,
 				black: {
+					previous: check.black.status,
 					status: newStatus,
 					mate: !newStatus ?
 						false :
@@ -352,8 +354,8 @@ export default class GameContainer extends React.Component {
 					performMove={this.performMove}
 					disabled={isSwapping || gameOver}
 					check={this.currentPlayer() === 0 ?
-						this.state.check.white.status :
-						this.state.check.black.status}
+						this.state.check.white :
+						this.state.check.black}
 				/>
 				{gameOver ? <span data-testid="winner">{check.white.mate ? 'White' : 'White'} wins!</span> : ''}
 
