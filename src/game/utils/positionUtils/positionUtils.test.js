@@ -4,7 +4,7 @@ import {
 	isValidBoardPositionString,
 	boardPositionToString,
 	boardPositionToTuple
-} from './boardPosition';
+} from './';
 
 test('All valid tuple representations are determined to be valid', () => {
 	for(let r=0; r<8; r++) {
@@ -107,8 +107,8 @@ test('boardPositionToString only converts valid board position tuples', () => {
 	expect(() => boardPositionToString([4, 2])).not.toThrow();
 });
 test('Tuple to string board position conversions are correct', () => {
-	expect(boardPositionToString([0, 0])).toEqual('A1');
-	expect(boardPositionToString([3, 7])).toEqual('D8');
+	expect(boardPositionToString([0, 0])).toEqual('A8');
+	expect(boardPositionToString([3, 7])).toEqual('H5');
 	expect(boardPositionToString([1, 6])).not.toEqual('b7');
 	expect(boardPositionToString([5, 3])).not.toEqual('f4');
 });
@@ -122,10 +122,10 @@ test('boardPositionToTuple only converts valid board position strings', () => {
 	expect(() => boardPositionToTuple('B3')).not.toThrow();
 	expect(() => boardPositionToTuple('g6')).not.toThrow();
 });
-test('String to tuple board position conversions are correct', () => {
-	expect(boardPositionToTuple('a4')).toEqual([0, 3]);
-	expect(boardPositionToTuple('B8')).toEqual([1, 7]);
-	expect(boardPositionToTuple('c3')).toEqual([2, 2]);
-	expect(boardPositionToTuple('E1')).toEqual([4, 0]);
+test('String to tuple board position conversions are correct for player=0', () => {
+	expect(boardPositionToTuple('a4')).toEqual([4, 0]);
+	expect(boardPositionToTuple('B8')).toEqual([0, 1]);
+	expect(boardPositionToTuple('c3')).toEqual([5, 2]);
+	expect(boardPositionToTuple('E1')).toEqual([7, 4]);
 
 });

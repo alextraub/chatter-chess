@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import BoardSquare from '../BoardSquare';
 import Piece from '../../game/Piece/Piece';
-import { boardPositionToString } from '../../game/utils/boardPosition';
+import { boardPositionToString } from '../../game/utils/positionUtils';
 
 export default class BoardComponent extends React.Component {
 		static propTypes = {

@@ -1,7 +1,7 @@
 import './MoveInput.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {boardPositionToTuple, isValidBoardPositionString} from '../../game/utils/boardPosition'
+import {boardPositionToTuple, isValidBoardPositionString} from '../../game/utils/positionUtils'
 
 export default class MoveInput extends React.Component {
 

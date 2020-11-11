@@ -3,8 +3,8 @@ import DPiece from '../DPiece';
 import BoardState from '../../BoardState';
 jest.mock('../../BoardState');
 
-const positionUtils = require('../../utils/boardPosition');
-jest.mock('../../utils/boardPosition.js');
+const positionUtils = require('../../utils/positionUtils');
+jest.mock('../../utils/positionUtils');
 
 beforeEach(() => {
 	BoardState.mockClear();

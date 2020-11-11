@@ -12,7 +12,7 @@ export const isValidBoardPositionTuple = position => {
 	if(!Array.isArray(position) || position.length !== 2) {
 		return false;
 	}
-	const [row, col] = position;
+	const [col, row] = position;
 	if(typeof(row) !== 'number' || typeof(col) !== 'number') {
 		return false;
 	}
@@ -56,7 +56,7 @@ export const isValidBoardPosition = position => {
 
 /**
  * Converts a board position from a tuple representation to a string.abs
- * Note: the returned string uses upper case row letters
+ * Note: the returned string uses upper case column letters
  *
  * @param {[number, number]} position
  * @throws {TypeError} position is not a valid tuple representation of a board position
@@ -67,17 +67,17 @@ export const boardPositionToString = position => {
 	}
 
 	let [row, col] = position;
-	col++; // Convert the col
+	row = 7 - row + 1; // Convert the row
 
-	const rowCode = 'A'.charCodeAt(0) + row; // Get the char code for the row
-	row = String.fromCharCode(rowCode); // convert row
+	const colCode = 'A'.charCodeAt(0) + col; // Get the char code for the col
+	col = String.fromCharCode(colCode); // convert col
 
-	return `${row}${col}`;
+	return `${col}${row}`;
 }
 
 /**
  * Given a board position as a string representation, get that position as a tuple representation.
- * Note: Row letter can be upper or lower case
+ * Note: Column letter can be upper or lower case
  *
  * @param {string} position
  * @return {[number, number]}
@@ -88,10 +88,10 @@ export const boardPositionToTuple = position => {
 		throw new TypeError(`boardPositionToTuple expected a valid board position string but got ${position}`);
 	}
 
-	let [row, col] = position.split('');
-	col = parseInt(col) - 1; // Convert the col
-	row = row.toUpperCase(); // Make sure the row is upper case
-	row = row.charCodeAt(0) - 'A'.charCodeAt(0); // convert the row
+	let [col, row] = position.split('');
+	row = 7 - parseInt(row) + 1; // Convert the row
+	col = col.toUpperCase(); // Make sure the col is upper case
+	col = col.charCodeAt(0) - 'A'.charCodeAt(0); // convert the col
 
 	return [row, col];
 }

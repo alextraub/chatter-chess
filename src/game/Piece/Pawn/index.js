@@ -1,5 +1,5 @@
 import Piece from '../Piece';
-import { boardPositionToString } from '../../utils/boardPosition';
+import { boardPositionToString } from '../../utils/positionUtils';
 
 export default class Pawn extends Piece {
 	get type() {

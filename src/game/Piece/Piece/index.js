@@ -1,5 +1,5 @@
 import BoardState from '../../BoardState';
-import { boardPositionToString } from '../../utils/boardPosition';
+import { boardPositionToString } from '../../utils/positionUtils';
 
 /**
  * A single chess piece with unknown type.
