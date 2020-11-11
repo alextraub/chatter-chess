@@ -101,6 +101,8 @@ export default class GameContainer extends React.Component {
 		if(toPiece !== null) {
 			toPiece.captured = false;
 			this.boardState.placePiece(toPiece, to);
+		} else {
+			this.boardState.board[to[0]][to[1]] = null;
 		}
 	}
 
@@ -115,6 +117,7 @@ export default class GameContainer extends React.Component {
 		const fromPiece = this.boardState.getPiece(from);
 		const toPiece = this.boardState.getPiece(to);
 		this.boardState.movePiece(from, to);
+
 		if(this.isInCheck(this.currentPlayer())) {
 			this.rollbackMove(from, fromPiece, to, toPiece);
 			return false;
@@ -184,6 +187,8 @@ export default class GameContainer extends React.Component {
 			swapList: [],
 			turn: this.state.turn + 1 // Adds 1 to the turn counter
 		});
+
+		return true;
 	}
 
 	/**
@@ -294,7 +299,7 @@ export default class GameContainer extends React.Component {
 	 */
 	async performSwap(type) {
 		const { swapping } = this.state; // Position of piece being swapped
-		const { count, pieces } = this.currentPlayer() === 0 ?
+		const { pieces } = this.currentPlayer() === 0 ?
 			this.state.capturedWhitePieces :
 			this.state.capturedBlackPieces;
 		const piece = this.boardState.getPiece(swapping); // The piece being swapped out
@@ -318,7 +323,7 @@ export default class GameContainer extends React.Component {
 
 		// Go to next turn
 		await this.syncBoard();
-		this.nextTurn();
+		await this.nextTurn();
 	}
 
 	/**
@@ -346,6 +351,9 @@ export default class GameContainer extends React.Component {
 					getPiece={this.boardState.getPiece}
 					performMove={this.performMove}
 					disabled={isSwapping || gameOver}
+					check={this.currentPlayer() === 0 ?
+						this.state.check.white.status :
+						this.state.check.black.status}
 				/>
 				{gameOver ? <span data-testid="winner">{check.white.mate ? 'White' : 'White'} wins!</span> : ''}
 

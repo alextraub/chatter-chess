@@ -21,8 +21,10 @@ export default class MoveInput extends React.Component {
 		currentPlayer: PropTypes.oneOf([0, 1]).isRequired,
 		getPiece: PropTypes.func.isRequired,
 		performMove: PropTypes.func.isRequired,
-		disabled: PropTypes.bool
+		disabled: PropTypes.bool,
+		check: PropTypes.bool
 	}
+
 
 	validateInput(move) {
 		const positions = move.split(' ').filter(p => p !== '');
@@ -68,7 +70,7 @@ export default class MoveInput extends React.Component {
 			`${validMove}`;
 	}
 
-	handleSubmit(event) {
+	async handleSubmit(event) {
 		event.preventDefault();
 		const { move } = this.state;
 
@@ -90,12 +92,14 @@ export default class MoveInput extends React.Component {
 				moveError: validPositions
 			});
 		} else {
-			const success = this.props.performMove(validPositions[0], validPositions[1]);
+
+			this.props.performMove(validPositions[0], validPositions[1])
 			this.setState({
 				...this.state,
-				moveError: !success ? 'That move puts you in check' : '',
+				moveError: this.props.check ? 'That move puts you in check' : '',
 				move: ''
 			});
+
 		}
 	}
 

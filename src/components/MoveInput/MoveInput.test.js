@@ -28,12 +28,14 @@ const renderMoveInput = (currentPlayer=0, disabled=false) => {
 	render(<MoveInput
 		currentPlayer={currentPlayer}
 		getPiece={boardState.getPiece}
-		performMove={jest.fn(() => true)}
+		performMove={jest.fn(() => ({
+			then: () => true
+		}))}
 		disabled={disabled}
 	/>);
 };
 
-const updateInputValue = value => {
+const updateInputValue = async value => {
 	fireEvent.change(screen.getByTestId('move'), {
 		target: {
 			value: value
@@ -48,46 +50,46 @@ test('Component renders', () => {
 });
 
 /* Text field interactions */
-test('User can enter a move', () => {
+test('User can enter a move', async () => {
 	renderMoveInput();
-	updateInputValue("A1 B2")
+	await updateInputValue("A1 B2")
 	expect(screen.getByTestId("move").value).toBe('A1 B2');
 });
 
-test('Error message is removed after typing a character in the text field', () => {
+test('Error message is removed after typing a character in the text field', async () => {
 	renderMoveInput();
 
 	fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).not.toBeEmptyDOMElement();
 
-	updateInputValue('a');
+	await updateInputValue('a');
 	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
 });
 
-test('Error message is removed after deleting a character in the text field', () => {
+test('Error message is removed after deleting a character in the text field', async () => {
 	renderMoveInput();
-	updateInputValue('a');
+	await updateInputValue('a');
 	fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).not.toBeEmptyDOMElement();
 
-	updateInputValue('\b');
+	await updateInputValue('\b');
 	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
 });
 
-test('Move changes based on what is typed', () => {
+test('Move changes based on what is typed', async () => {
 	renderMoveInput();
-	updateInputValue("A1 B2");
+	await updateInputValue("A1 B2");
 	expect(screen.getByTestId("move")).toHaveValue('A1 B2');
-	updateInputValue("A2 B");
+	await updateInputValue("A2 B");
 	expect(screen.getByTestId("move")).toHaveValue('A2 B');
 	updateInputValue("A3 B3");
 	expect(screen.getByTestId("move")).toHaveValue('A3 B3');
 });
 
 /* Valid input */
-test('No error message is displayed when a valid move is entered with all lower case letters', () => {
-	renderMoveInput();
-	updateInputValue("c1 a3")
+test('No error message is displayed when a valid move is entered with all lower case letters', async () => {
+	await renderMoveInput();
+	await updateInputValue("c1 a3")
 	mockValidMove(whitePiece);
 	fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
@@ -101,16 +103,16 @@ test('No error message is displayed when a valid move is entered with all capita
 	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
 });
 
-test('No error message is displayed when a valid move is entered with with a mix of upper and lower case letters', () => {
-	renderMoveInput();
-	updateInputValue("g6 B7");
+test('No error message is displayed when a valid move is entered with with a mix of upper and lower case letters', async () => {
+	await renderMoveInput();
+	await updateInputValue("g6 B7");
 	mockValidMove(whitePiece);
 	fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
 
 	cleanup();
 	renderMoveInput(1);
-	updateInputValue("H1 e3");
+	await updateInputValue("H1 e3");
 	mockValidMove(blackPiece);
 	fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
@@ -243,14 +245,15 @@ test('Move submit button is enabled if it has disabled=false prop', () => {
 	expect(screen.getByTestId('button')).not.toBeDisabled();
 });
 
-test('Check errors are displayed', () => {
-	render(<MoveInput
+test('Check errors are displayed', async () => {
+	await render(<MoveInput
 		currentPlayer={0}
 		getPiece={boardState.getPiece}
 		performMove={jest.fn(() => false)}
+		check
 	/>);
 	mockValidMove(new DPiece(boardState));
-	updateInputValue('A4 E4');
-	fireEvent.click(screen.getByTestId('button'));
+	await updateInputValue('A4 E4');
+	await fireEvent.click(screen.getByTestId('button'));
 	expect(screen.getByTestId('error')).toHaveTextContent('That move puts you in check');
 })

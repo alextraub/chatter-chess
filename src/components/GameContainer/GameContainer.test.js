@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitFor, within, render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { within, render, screen, cleanup, fireEvent } from '@testing-library/react';
 
 import GameContainer from './';
 import BoardState from '../../game/BoardState';
@@ -98,6 +98,21 @@ test('Capturing a piece to get out of check does not cause an error message to b
 	const bState = await renderCheckScenario1('a5 A6')
 	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
 	expect(bState.getPiece([0,5]).type).toEqual('king');
+});
+
+test('Check error is displayed', async () => {
+	const bState = new BoardState();
+
+	render(<GameContainer boardState={bState} />);
+
+	await makeMove('G6 F6');
+	await makeMove('b5 d5');
+	await makeMove('G8 f8');
+	await makeMove('a4 E8');
+	await makeMove('h8 g8');
+
+
+	expect(screen.getByTestId('error')).toHaveTextContent('That move puts you in check');
 });
 
 test('Fool\'s mate', async () => {
