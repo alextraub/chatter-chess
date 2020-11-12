@@ -110,7 +110,7 @@ test('Check error is displayed', async () => {
 	await makeMove('d8 h4');
 	await makeMove('h1 h2');
 
-	expect(screen.getByTestId('error')).toHaveTextContent('That move puts you in check');
+	expect(screen.getByTestId('error')).toHaveTextContent('That move leaves you in check');
 });
 
 test('Fool\'s mate', async () => {

@@ -22,10 +22,7 @@ export default class MoveInput extends React.Component {
 		getPiece: PropTypes.func.isRequired,
 		performMove: PropTypes.func.isRequired,
 		disabled: PropTypes.bool,
-		check: PropTypes.shape({
-			previous: PropTypes.bool,
-			status: PropTypes.bool
-		})
+		inCheck: PropTypes.func
 	}
 
 
@@ -99,20 +96,20 @@ export default class MoveInput extends React.Component {
 			let errorMessage = '';
 			try {
 				this.props.performMove(validPositions[0], validPositions[1])
-				if(this.props.check.status) {
-					errorMessage = this.props.check.previous ?
-						'That move leaves you in check' :
-						'That move puts you in check'
+				if(this.props.inCheck(this.props.currentPlayer)) {
+					errorMessage =
+						'That move leaves you in check';
 				}
+				this.setState({
+					...this.state,
+					moveError: errorMessage,
+					move: ''
+				});
 			} catch (error) {
 				//
 			}
 
-			this.setState({
-				...this.state,
-				moveError: errorMessage,
-				move: ''
-			});
+
 
 		}
 	}

@@ -250,12 +250,12 @@ test('Check errors are displayed for moving into check', async () => {
 		currentPlayer={0}
 		getPiece={boardState.getPiece}
 		performMove={jest.fn(() => false)}
-		check={{previous: false, status: true}}
+		inCheck={() => true}
 	/>);
 	mockValidMove(new DPiece(boardState));
 	await updateInputValue('A4 E4');
 	await fireEvent.click(screen.getByTestId('button'));
-	expect(screen.getByTestId('error')).toHaveTextContent('That move puts you in check');
+	expect(screen.getByTestId('error')).toHaveTextContent('That move leaves you in check');
 });
 
 test('Check errors are displayed for remaining in check', async () => {
@@ -263,7 +263,7 @@ test('Check errors are displayed for remaining in check', async () => {
 		currentPlayer={0}
 		getPiece={boardState.getPiece}
 		performMove={jest.fn(() => false)}
-		check={{previous: true, status: true}}
+		inCheck={() => true}
 	/>);
 	mockValidMove(new DPiece(boardState));
 	await updateInputValue('A4 E4');

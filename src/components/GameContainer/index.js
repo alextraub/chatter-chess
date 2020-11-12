@@ -67,6 +67,7 @@ export default class GameContainer extends React.Component {
 		this.getCheckFlags = this.getCheckFlags.bind(this);
 		this.isInCheck = this.isInCheck.bind(this);
 		this.isInCheckMate = this.isInCheckMate.bind(this);
+		this.updateCheckFlags = this.updateCheckFlags.bind(this);
 	}
 
 	static propTypes = {
@@ -122,8 +123,10 @@ export default class GameContainer extends React.Component {
 
 		if(this.isInCheck(this.currentPlayer())) {
 			this.rollbackMove(from, fromPiece, to, toPiece);
-			return;
+
+			return false ;
 		}
+
 		if (toPiece !== null) {
 			this.updateCapturedLists(toPiece);
 		}
@@ -132,17 +135,27 @@ export default class GameContainer extends React.Component {
 		const swapping = this.beginSwap(to);
 
 		if (!swapping) {
-			const check = this.getCheckFlags(this.currentPlayer() === 0 ? 1 : 0);
+			//this.updateCheckFlags();
+			const prevCheck = this.currentPlayer() === 0 ?
+				{ white: { check: false, mate: false } } :
+				{ black: { check: false, mate: false } };
+			const newCheck = {
+				...this.getCheckFlags(this.currentPlayer() === 0 ? 1 : 0)
+
+			}
 			this.setState({
 				...this.state,
 				check: {
-					...check
+					...newCheck,
+					...prevCheck
 				}
 			});
-			if(!check.white.mate && !check.black.mate) {
+			if(!this.state.check.white.mate && !this.state.check.black.mate) {
 				await this.nextTurn();
 			}
 		}
+
+		return true;
 	}
 
 	/**
@@ -177,6 +190,34 @@ export default class GameContainer extends React.Component {
 		}
 
 		return check;
+	}
+
+	async updateCheckFlags() {
+		const prevCheck = this.state.check;
+		const prevWhiteStatus = prevCheck.white.status;
+		const prevBlackStatus = prevCheck.black.status;
+		const newWhiteStatus = this.isInCheck(0);
+		const newBlackStatus = this.isInCheck(1);
+		const newWhiteCheckMate = prevWhiteStatus ?
+			this.isInCheckMate(0) : false;
+		const newBlackCheckMate = prevBlackStatus ?
+			this.isInCheckMate(1) : false;
+
+		this.setState({
+			...this.state,
+			check: {
+				white: {
+					previous: prevWhiteStatus,
+					status: newWhiteStatus,
+					mate: newWhiteCheckMate
+				},
+				black: {
+					previous: prevBlackStatus,
+					status: newBlackStatus,
+					mate: newBlackCheckMate
+				}
+			}
+		});
 	}
 
 	/**
@@ -349,6 +390,7 @@ export default class GameContainer extends React.Component {
 			<>
 				<MoveInput
 					id="move-input"
+					inCheck={this.isInCheck}
 					currentPlayer={this.currentPlayer()}
 					getPiece={this.boardState.getPiece}
 					performMove={this.performMove}
