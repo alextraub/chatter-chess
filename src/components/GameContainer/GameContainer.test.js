@@ -189,3 +189,17 @@ test('Pawn is swapped in the UI after selecting a piece to promote', async () =>
 		.getAllByAltText('white pawn')).toThrow();
 
 });
+
+test('Blocking a piece to get out of check does not display an error message', async () => {
+	const bState = new BoardState();
+
+	render(<GameContainer boardState={bState} />);
+
+	await makeMove('e2 e4');
+	await makeMove('d7 d5');
+	await makeMove('f1 b5');
+
+	await makeMove('d8 d7');
+
+	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
+});
