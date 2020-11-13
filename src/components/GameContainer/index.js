@@ -399,7 +399,7 @@ export default class GameContainer extends React.Component {
 						this.state.check.white :
 						this.state.check.black}
 				/>
-				{gameOver ? <span data-testid="winner">{check.white.mate ? 'White' : 'White'} wins!</span> : ''}
+				{gameOver ? <span data-testid="winner">{check.white.mate ? 'Black' : 'White'} wins!</span> : ''}
 
 				<div className="row">
 					<div className="col">
