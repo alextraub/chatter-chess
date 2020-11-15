@@ -8,7 +8,7 @@ module.exports = {
 
 		return handlerInput.responseBuilder
 			.speak(speechText)
-			.withSimpleCard('Hello World', speechText)
+			.withSimpleCard('Hello and welcome to Chatter Chess!', speechText)
 			.getResponse();
 	}
 };
