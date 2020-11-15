@@ -4,7 +4,7 @@ module.exports = {
       && handlerInput.requestEnvelope.request.intent.name === 'HelloWorldIntent';
 	},
 	handle(handlerInput) {
-		const speechText = 'Hello World!';
+		const speechText = 'Hello and welecome to Chatter Chess!';
 
 		return handlerInput.responseBuilder
 			.speak(speechText)
