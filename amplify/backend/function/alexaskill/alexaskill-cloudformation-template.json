@@ -90,7 +90,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-chatterchess-dev-135711-deployment",
-          "S3Key": "amplify-builds/alexaskill-745254722f4b6b2b7a74-build.zip"
+          "S3Key": "amplify-builds/alexaskill-4d3631687a336c4b7850-build.zip"
         }
       }
     },
