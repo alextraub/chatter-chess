@@ -1,7 +1,5 @@
 import React from "react";
 import GameContainer from './components/GameContainer';
-import { withAuthenticator } from '@aws-amplify/ui-react';
-
 
 const App = () => (
 	<div>
@@ -11,5 +9,4 @@ const App = () => (
 	</div>
 );
 
-// export default withAuthenticator(App);
 export default App;
