@@ -7,6 +7,11 @@
         "update",
         "delete"
       ]
+    },
+    "auth": {
+      "chatterchess91ec7506": [
+        "read"
+      ]
     }
   },
   "lambdaLayers": []
