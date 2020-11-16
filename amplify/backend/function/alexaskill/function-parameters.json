@@ -10,7 +10,10 @@
     },
     "auth": {
       "chatterchess91ec7506": [
-        "read"
+        "create",
+        "read",
+        "update",
+        "delete"
       ]
     }
   },
