@@ -25,9 +25,12 @@ export default class UserHub extends React.Component {
 			}
 		});
 
-		Auth.currentAuthenticatedUser()
-			.then(user => this.setState({ user }))
-			.catch(() => false);
+		try {
+			Auth.currentAuthenticatedUser()
+				.then(user => this.setState({ user }))
+		} catch {
+			//
+		}
 	}
 
 	render() {
