@@ -25,9 +25,12 @@ export default class UserHub extends React.Component {
 			}
 		});
 
+
+
 		try {
 			Auth.currentAuthenticatedUser()
 				.then(user => this.setState({ user }))
+				.catch(err => Error(err));
 		} catch {
 			//
 		}
@@ -39,7 +42,7 @@ export default class UserHub extends React.Component {
 		if(!user) {
 			return (
 				<div className="user-hub">
-					<button onClick={() => Auth.federatedSignIn()}>Sign in</button>
+					<button onClick={async () => Auth.federatedSignIn()}>Sign in</button>
 				</div>
 			);
 		} else {
