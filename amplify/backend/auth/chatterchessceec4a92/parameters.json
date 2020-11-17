@@ -45,7 +45,7 @@
             "Arn"
         ]
     },
-    "useDefault": "defaultSocial",
+    "useDefault": "manual",
     "usernameAttributes": [
         "email"
     ],
@@ -65,5 +65,9 @@
         "Ref": "AWS::StackId"
     },
     "permissions": [],
+    "thirdPartyAuth": true,
+    "authProviders": [
+        "www.amazon.com"
+    ],
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"email\",\"openid\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://master.d20i9t2msa7pei.amplifyapp.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://master.d20i9t2msa7pei.amplifyapp.com/\"]}"
 }
