@@ -127,6 +127,15 @@ Parameters:
       
   hostedUIProviderCreds:
     Type: String
+                
+  thirdPartyAuth:
+    Type: String
+                    
+  authProviders:
+    Type: CommaDelimitedList
+      
+  amazonAppId:
+    Type: String
               
   oAuthMetadata:
     Type: String
@@ -716,6 +725,13 @@ Resources:
             - cognito-idp.${region}.amazonaws.com/${client}
             - { region: !Ref "AWS::Region",  client: !Ref UserPool}
             
+      SupportedLoginProviders: 
+        
+        
+        
+        www.amazon.com: !Ref amazonAppId
+        
+      
       AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
        
        
@@ -769,5 +785,8 @@ Outputs :
    
   
    
+  
+  AmazonWebClient:
+    Value: !Ref amazonAppId
    
   
