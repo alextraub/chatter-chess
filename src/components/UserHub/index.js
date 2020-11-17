@@ -42,7 +42,7 @@ export default class UserHub extends React.Component {
 		if(!user) {
 			return (
 				<div className="user-hub">
-					<button onClick={async () => Auth.federatedSignIn()}>Sign in</button>
+					<button onClick={() => Auth.federatedSignIn()}>Sign in</button>
 				</div>
 			);
 		} else {
