@@ -12,13 +12,45 @@
               "description": ""
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authchatterchess91ec7506"
+              }
+            }
+          ]
         }
       }
     }
   },
+  "function": {
+    "alexaskill": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "chatterchess",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "chatterchess91ec7506",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    }
+  },
   "auth": {
-    "chatterchess6a7d5706": {
+    "chatterchess91ec7506": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
