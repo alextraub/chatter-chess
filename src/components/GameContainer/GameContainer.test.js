@@ -125,7 +125,7 @@ test('Fool\'s mate', async () => {
 
 	expect(screen.getByTestId('move')).toBeDisabled();
 	expect(screen.getByTestId('button')).toBeDisabled();
-	expect(screen.getByTestId('winner')).toHaveTextContent('White wins');
+	expect(screen.getByTestId('winner')).toHaveTextContent('Black wins!');
 });
 
 test('Total captured count updates', async () => {
