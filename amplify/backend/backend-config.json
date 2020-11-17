@@ -35,5 +35,12 @@
       ]
     }
   },
-  "auth": {}
+  "auth": {
+    "chatterchess68753c2f": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
 }
