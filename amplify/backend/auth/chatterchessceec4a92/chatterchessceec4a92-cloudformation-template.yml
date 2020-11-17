@@ -98,9 +98,6 @@ Parameters:
   dependsOn:
     Type: CommaDelimitedList
         
-  thirdPartyAuth:
-    Type: String
-              
   userPoolGroups:
     Type: String
               
@@ -121,19 +118,19 @@ Parameters:
       
   hostedUIProviderMeta:
     Type: String
-              
-  hostedUIProviderCreds:
-    Type: String
-              
-  oAuthMetadata:
-    Type: String
-                                
+                    
   parentStack:
     Type: String
                 
   permissions:
     Type: CommaDelimitedList
-    
+      
+  hostedUIProviderCreds:
+    Type: String
+              
+  oAuthMetadata:
+    Type: String
+                        
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
