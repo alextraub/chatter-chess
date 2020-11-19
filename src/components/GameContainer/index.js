@@ -32,8 +32,30 @@ export default class GameContainer extends React.Component {
 		super(props);
 
 		this.boardState = this.props.boardState;
-		this.capturedWhitePieces = capturedPieceObj();
-		this.capturedBlackPieces = capturedPieceObj();
+		this.capturedWhitePieces = {
+			count: 0,
+			pieces: {
+				pawn: [],
+				rook: [],
+				knight: [],
+				bishop: [],
+				queen: [],
+				king: [],
+				generic: []
+			}
+		}
+		this.capturedBlackPieces = {
+			count: 0,
+			pieces: {
+				pawn: [],
+				rook: [],
+				knight: [],
+				bishop: [],
+				queen: [],
+				king: [],
+				generic: []
+			}
+		};
 
 		this.state = {
 			board: [...this.boardState.getBoard()],
@@ -256,10 +278,16 @@ export default class GameContainer extends React.Component {
 	updateCapturedLists(piece) {
 		if (piece.isWhite()) {
 			this.capturedWhitePieces.count++;
-			this.capturedWhitePieces.pieces[piece.type].push(piece);
+			this.capturedWhitePieces.pieces[piece.type] = [
+				...this.capturedWhitePieces.pieces[piece.type],
+				piece
+			]
 		} else {
 			this.capturedBlackPieces.count++;
-			this.capturedBlackPieces.pieces[piece.type].push(piece);
+			this.capturedBlackPieces.pieces[piece.type] = [
+				...this.capturedBlackPieces.pieces[piece.type],
+				piece
+			]
 		}
 	}
 
@@ -375,7 +403,7 @@ export default class GameContainer extends React.Component {
 	 */
 	renderSwapUI() {
 		return (
-			<SwapPieces swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
+			<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
 		);
 	}
 
@@ -404,8 +432,8 @@ export default class GameContainer extends React.Component {
 					{gameOver ? <span data-testid="winner">{check.white.mate ? 'Black' : 'White'} wins!</span> : ''}</Col>
 				<Col md="12">
 					<CapturedPieces
-						black={this.currentPlayer() === 1}
-						pieces={this.currentPlayer() === 1 ?
+						black={this.currentPlayer() !== 0}
+						pieces={this.currentPlayer() !== 1 ?
 							this.state.capturedWhitePieces :
 							this.state.capturedBlackPieces}
 						className="list-group-horizontal"
@@ -420,8 +448,8 @@ export default class GameContainer extends React.Component {
 				</Col>
 				<Col md="12">
 					<CapturedPieces
-						black={this.currentPlayer() !== 1}
-						pieces={this.currentPlayer() !== 1 ?
+						black={this.currentPlayer() === 0}
+						pieces={this.currentPlayer() === 1 ?
 							this.state.capturedWhitePieces :
 							this.state.capturedBlackPieces}
 						className="list-group-horizontal"
@@ -453,22 +481,10 @@ export default class GameContainer extends React.Component {
 	}
 
 	render() {
-		const renderUI = () => {
-			if (this.state.swapping !== false) {
-				return (
-					<>
-						{this.renderSwapUI()}
-						{this.renderStandardUI()}
-					</>
-				)
-			} else {
-				return <>{this.renderStandardUI()}</>;
-			}
-		}
-
 		return (
 			<Container className="justify-content-center	" data-testid="game-container">
-				{renderUI()}
+				<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
+				{this.renderStandardUI()}
 			</Container>
 		);
 	}

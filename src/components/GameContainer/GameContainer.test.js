@@ -162,7 +162,7 @@ test('Pawn is swapped in the UI after selecting a piece to promote', async () =>
 
 	await makeMove('a7 a8');
 
-	fireEvent.click(screen.getByTestId('swap-graphic'));
+	fireEvent.click(screen.getByTestId('swap-button'));
 
 	expect(within(screen.getByTestId('A8'))
 		.getAllByLabelText('white rook')).toHaveLength(2);
@@ -184,3 +184,37 @@ test('Blocking a piece to get out of check does not display an error message', a
 
 	expect(screen.getByTestId('move-feedback')).toBeEmptyDOMElement();
 });
+
+
+test('Pieces are added to the correct captured list', async () => {
+	const bState = new BoardState();
+
+	render(<GameContainer boardState={bState} />);
+	await makeMove('a2 a4');
+	await makeMove('b7 b5');
+	await makeMove('a4 b5');
+
+	expect(within(screen.getAllByTestId('capturedContainer')[0])
+		.getAllByLabelText('black pawn')).toHaveLength(1);
+	expect(() => within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByLabelText('black pawn')).toThrow();
+
+	await makeMove('c8 b7');
+	await makeMove('a1 a6');
+	await makeMove('b7 a6');
+
+	expect(within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByTestId('captured-graphic')).toHaveLength(1);
+	expect(within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByTestId('captured-graphic')).toHaveLength(1);
+
+	expect(() => within(screen.getAllByTestId('capturedContainer')[0])
+		.getAllByLabelText('black pawn')).toThrow();
+	expect(within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByLabelText('black pawn')).toHaveLength(1);
+
+	expect(() => within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByLabelText('white rook')).toThrow();
+	expect(within(screen.getAllByTestId('capturedContainer')[0])
+		.getAllByLabelText('white rook')).toHaveLength(1);
+})
