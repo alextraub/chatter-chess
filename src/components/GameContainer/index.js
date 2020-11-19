@@ -8,13 +8,12 @@ import CapturedPieces from "../CapturedPieces";
 import SwapPieces from "../SwapPieces";
 import { inCheck, inCheckMate } from '../../game/Check';
 import { Col, Container, Row } from 'reactstrap';
-import { createPiece } from '../../game/Piece';
 
 const capturedPieceObj = () => ({
-	count: 1,
+	count: 0,
 	pieces: {
-		pawn: [createPiece('pawn', null, 1), createPiece('pawn', null, 1)],
-		rook: [createPiece('rook', null, 1)],
+		pawn: [],
+		rook: [],
 		knight: [],
 		bishop: [],
 		queen: [],
