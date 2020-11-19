@@ -55,15 +55,6 @@ test('Component renders', () => {
 	expect(getByTestId('capturedContainer')).toBeInTheDocument();
 });
 
-test('Component displays correct amount of captured white pieces', () => {
-	const { getByTestId } = render(<CapturedPieces pieces={whitePieces} />);
-	expect(getByTestId('white-captured-total')).toHaveTextContent('Captured (3)');
-});
-
-test('Component displays correct amount of captured black pieces', () => {
-	const { getByTestId } = render(<CapturedPieces black pieces={blackPieces} />);
-	expect(getByTestId('capturedContainer')).toHaveTextContent('Captured (4)');
-});
 
 test('Component displays captured white pieces', () => {
 	const { getAllByTestId } = render(<CapturedPieces pieces={whitePieces} />);

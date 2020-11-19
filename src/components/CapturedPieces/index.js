@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Piece, { Pawn, Rook, Knight, Bishop, Queen, King } from '../../game/Piece';
 import ChessPiece from '../ChessPiece';
+import { ListGroup, ListGroupItem, Badge } from 'reactstrap';
 
 export default class CapturedPieces extends React.Component {
 	static propTypes = {
@@ -18,30 +19,27 @@ export default class CapturedPieces extends React.Component {
 				generic: PropTypes.arrayOf(PropTypes.instanceOf(Piece))
 			})
 		}).isRequired,
-		black: PropTypes.bool
+		black: PropTypes.bool,
+		className: PropTypes.string
 	}
 
 	static defaultProps = {
-		black: false
+		black: false,
+		className: ''
 	}
 
 	render() {
 		const { black, pieces } = this.props;
-
 		return (
-			<div className="captured-container" data-testid="capturedContainer">
-				<h2 data-testid={`${black ? 'black' : 'white'}-captured-total`}>Captured ({pieces.count})</h2><br />
-				<ul>
-					{Object.entries(pieces.pieces)
-						.filter(entry => entry[1].length > 0)
-						.map(([type, pieceArray]) => (
-							<li data-testid="captured-graphic" key={`${type}s`} className="captured-graphic">
-								<ChessPiece type={type} black={black} />
-								<span className="captured-count">x{pieceArray.length}</span>
-							</li>
-						))}
-				</ul>
-			</div>
+			<ListGroup data-testid="capturedContainer" className={this.props.className}>
+				{Object.entries(pieces.pieces)
+					.filter(entry => entry[1].length > 0)
+					.map(([type, pieceArray]) => (
+						<ListGroupItem color="primary" data-testid="captured-graphic" key={`${type}s`}>
+							<ChessPiece type={type} black={black} quantity={pieceArray.length > 1 ? pieceArray.length : 0} />
+						</ListGroupItem>
+					))}
+			</ListGroup>
 		);
 	}
 }

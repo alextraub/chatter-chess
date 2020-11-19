@@ -1,87 +1,61 @@
 import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
-
-
+import { render, screen } from '@testing-library/react';
 import ChessPiece from './';
 
-afterEach(cleanup);
+jest.mock('../../../node_modules/@fortawesome/react-fontawesome');
 
-test('Generic piece has x as text content', () => {
+test('Generic piece has correct aria label', () => {
 	const { rerender } = render(<ChessPiece type="generic" />);
 
-	expect(screen.getByTestId('chess-piece')).toHaveTextContent('x');
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'white generic');
 	rerender(<ChessPiece type="generic" black />);
-	expect(screen.getByTestId('chess-piece')).toHaveTextContent('x');
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'black generic');
 });
 
-test('Pawn has correct alt text', () => {
+test('Pawn has correct aria label', () => {
 	const  { rerender } = render(<ChessPiece type="pawn" />)
-	expect(screen.getAllByAltText('white pawn')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('black pawn')).toThrow();
-
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'white pawn');
 
 	rerender(<ChessPiece type="pawn" black />);
 
-	expect(screen.getAllByAltText('black pawn')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('white pawn')).toThrow();
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'black pawn');
 });
 
-test('Rook has correct alt text', () => {
+test('Rook has correct aria label', () => {
 	const  { rerender } = render(<ChessPiece type="rook" />)
-	expect(screen.getAllByAltText('white rook')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('black rook')).toThrow();
-
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'white rook');
 
 	rerender(<ChessPiece type="rook" black />);
 
-	expect(screen.getAllByAltText('black rook')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('white rook')).toThrow();
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'black rook');
 });
 
-test('Knight has correct alt text', () => {
+test('Knight has correct aria label', () => {
 	const  { rerender } = render(<ChessPiece type="knight" />)
-	expect(screen.getAllByAltText('white knight')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('black knight')).toThrow();
-
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'white knight');
 
 	rerender(<ChessPiece type="knight" black />);
 
-	expect(screen.getAllByAltText('black knight')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('white knight')).toThrow();
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'black knight');
 });
 
-test('Bishop has correct alt text', () => {
+test('Bishop has correct aria label', () => {
 	const  { rerender } = render(<ChessPiece type="bishop" />)
-	expect(screen.getAllByAltText('white bishop')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('black bishop')).toThrow();
-
-
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'white bishop');
 	rerender(<ChessPiece type="bishop" black />);
-
-	expect(screen.getAllByAltText('black bishop')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('white bishop')).toThrow();
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'black bishop');
 });
 
-test('King has correct alt text', () => {
+test('King has correct aria label', () => {
 	const  { rerender } = render(<ChessPiece type="king" />)
-	expect(screen.getAllByAltText('white king')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('black king')).toThrow();
-
-
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'white king');
 	rerender(<ChessPiece type="king" black />);
-
-	expect(screen.getAllByAltText('black king')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('white king')).toThrow();
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'black king');
 });
 
-test('Queen has correct alt text', () => {
+test('Queen has correct aria label', () => {
 	const  { rerender } = render(<ChessPiece type="queen" />)
-	expect(screen.getAllByAltText('white queen')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('black queen')).toThrow();
-
-
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'white queen');
 	rerender(<ChessPiece type="queen" black />);
-
-	expect(screen.getAllByAltText('black queen')).toHaveLength(1);
-	expect(() => screen.getAllByAltText('white queen')).toThrow();
+	expect(screen.getByTestId('chess-piece')).toHaveAttribute('aria-label', 'black queen');
 });
