@@ -1,5 +1,6 @@
 import React from 'react';
 import { Auth, Hub } from 'aws-amplify';
+import { Button } from 'reactstrap';
 
 export default class UserHub extends React.Component {
 	constructor() {
@@ -42,17 +43,15 @@ export default class UserHub extends React.Component {
 		if(!user) {
 			return (
 				<div className="user-hub">
-					<button onClick={() => Auth.federatedSignIn()}>Sign in</button>
+					<Button color="primary" onClick={() => Auth.federatedSignIn()}>Sign in</Button>
 				</div>
 			);
 		} else {
 			return (
-				<div className="user-hub">
-					<button onClick={() => Auth.signOut()}>Sign out</button>
+				<div className="user-hub m-0">
+					<Button type="button" color="primary" onClick={() => Auth.signOut()}>Sign out</Button>
 				</div>
 			);
 		}
-
-
 	}
 }

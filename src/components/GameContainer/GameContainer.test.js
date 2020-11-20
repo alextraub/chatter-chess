@@ -43,12 +43,12 @@ test('GameContainer is rendered', () => {
 });
 
 const makeMove = async moveString => {
-	fireEvent.change(screen.getByTestId('move'), {
+	fireEvent.change(screen.getByTestId('move-textbox'), {
 		target: {
 			value: moveString
 		}
 	});
-	fireEvent.click(screen.getByTestId('button'));
+	fireEvent.click(screen.getByTestId('move-submit'));
 
 	return true;
 }
@@ -84,19 +84,19 @@ const renderCheckScenario1 = async moveString => {
 
 test('Capturing a piece to get out of check does not cause an error message to be displayed (scenario 1.1)', async () => {
 	const bState = await renderCheckScenario1('D7 F8')
-	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
+	expect(screen.getByTestId('move-feedback')).toBeEmptyDOMElement();
 	expect(bState.getPiece([0,5]).type).toEqual('knight');
 });
 
 test('Capturing a piece to get out of check does not cause an error message to be displayed (scenario 1.2)', async () => {
 	const bState = await renderCheckScenario1('F3 F8')
-	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
+	expect(screen.getByTestId('move-feedback')).toBeEmptyDOMElement();
 	expect(bState.getPiece([0,5]).type).toEqual('queen');
 });
 
 test('Capturing a piece to get out of check does not cause an error message to be displayed (scenario 1.3)', async () => {
 	const bState = await renderCheckScenario1('e8 F8')
-	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
+	expect(screen.getByTestId('move-feedback')).toBeEmptyDOMElement();
 	expect(bState.getPiece([0,5]).type).toEqual('king');
 });
 
@@ -110,42 +110,22 @@ test('Check error is displayed', async () => {
 	await makeMove('d8 h4');
 	await makeMove('h1 h2');
 
-	expect(screen.getByTestId('error')).toHaveTextContent('That move leaves you in check');
+	expect(screen.getByTestId('move-feedback')).toHaveTextContent('That move leaves you in check');
 });
 
 test('Fool\'s mate', async () => {
 	render(<GameContainer />);
-	expect(screen.getByTestId('move')).toBeEnabled();
-	expect(screen.getByTestId('button')).toBeEnabled();
+	expect(screen.getByTestId('move-textbox')).toBeEnabled();
+	expect(screen.getByTestId('move-submit')).toBeEnabled();
 
 	await makeMove('F2 F3');
 	await makeMove('e7 e5');
 	await makeMove('G2 g4');
 	await makeMove('d8 H4');
 
-	expect(screen.getByTestId('move')).toBeDisabled();
-	expect(screen.getByTestId('button')).toBeDisabled();
+	expect(screen.getByTestId('move-textbox')).toBeDisabled();
+	expect(screen.getByTestId('move-submit')).toBeDisabled();
 	expect(screen.getByTestId('winner')).toHaveTextContent('Black wins!');
-});
-
-test('Total captured count updates', async () => {
-	const bState = new BoardState();
-
-	render(<GameContainer boardState={bState} />);
-
-	await makeMove('A2 A4');
-	// await makeMove('G1 E1');
-
-	// await makeMove('B2 D2');
-	await makeMove('B7 B5');
-
-
-	expect(screen.getByTestId('black-captured-total')).toHaveTextContent('Captured (0)');
-
-	// await makeMove('E1 D2');
-	await makeMove('A4 B5');
-
-	expect(screen.getByTestId('black-captured-total')).toHaveTextContent('Captured (1)');
 });
 
 test('Pieces change position in the UI after being moved', async () => {
@@ -157,14 +137,15 @@ test('Pieces change position in the UI after being moved', async () => {
 
 
 	expect(within(screen.getByTestId('A2'))
-		.getAllByAltText('white pawn')).toHaveLength(1);
+		.getAllByLabelText('white pawn')).toHaveLength(2);
 
 	await makeMove('A2 A3');
 
-	expect(screen.getByTestId('A2')).toBeEmptyDOMElement();
+	expect(within(screen.getByTestId('A2'))
+		.getByTestId('piece-container')).toBeEmptyDOMElement();
 
 	expect(within(screen.getByTestId('A3'))
-		.getAllByAltText('white pawn')).toHaveLength(1);
+		.getAllByLabelText('white pawn')).toHaveLength(2);
 });
 
 test('Pawn is swapped in the UI after selecting a piece to promote', async () => {
@@ -181,12 +162,12 @@ test('Pawn is swapped in the UI after selecting a piece to promote', async () =>
 
 	await makeMove('a7 a8');
 
-	fireEvent.click(screen.getByTestId('swap-graphic'));
+	fireEvent.click(screen.getByTestId('swap-button'));
 
 	expect(within(screen.getByTestId('A8'))
-		.getAllByAltText('white rook')).toHaveLength(1);
+		.getAllByLabelText('white rook')).toHaveLength(2);
 	expect(() => within(screen.getByTestId('A8'))
-		.getAllByAltText('white pawn')).toThrow();
+		.getAllByLabelText('white pawn')).toThrow();
 
 });
 
@@ -201,5 +182,39 @@ test('Blocking a piece to get out of check does not display an error message', a
 
 	await makeMove('d8 d7');
 
-	expect(screen.getByTestId('error')).toBeEmptyDOMElement();
+	expect(screen.getByTestId('move-feedback')).toBeEmptyDOMElement();
 });
+
+
+test('Pieces are added to the correct captured list', async () => {
+	const bState = new BoardState();
+
+	render(<GameContainer boardState={bState} />);
+	await makeMove('a2 a4');
+	await makeMove('b7 b5');
+	await makeMove('a4 b5');
+
+	expect(within(screen.getAllByTestId('capturedContainer')[0])
+		.getAllByLabelText('black pawn')).toHaveLength(1);
+	expect(() => within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByLabelText('black pawn')).toThrow();
+
+	await makeMove('c8 b7');
+	await makeMove('a1 a6');
+	await makeMove('b7 a6');
+
+	expect(within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByTestId('captured-graphic')).toHaveLength(1);
+	expect(within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByTestId('captured-graphic')).toHaveLength(1);
+
+	expect(() => within(screen.getAllByTestId('capturedContainer')[0])
+		.getAllByLabelText('black pawn')).toThrow();
+	expect(within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByLabelText('black pawn')).toHaveLength(1);
+
+	expect(() => within(screen.getAllByTestId('capturedContainer')[1])
+		.getAllByLabelText('white rook')).toThrow();
+	expect(within(screen.getAllByTestId('capturedContainer')[0])
+		.getAllByLabelText('white rook')).toHaveLength(1);
+})

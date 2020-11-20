@@ -1,29 +1,80 @@
-.piece-container {
-	align-self: center;
-	padding: 20px;
-}
 
 .square {
-	justify-content: center;
-	align-items: center;
-	min-width: 106px;
+	min-height: 11vw;
+	max-height: 11vw;
+	width: 11vw;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	/* align-items: center; */
+}
+
+@media only screen and (min-width: 576px) {
+	.square {
+		min-height: 10vw;
+		max-height: 10vw;
+		width: 10vw;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	.square {
+		min-height: 9vw;
+		max-height: 9vw;
+		width: 9vw;
+	}
+}
+
+@media only screen and (min-width: 992px) {
+	.square {
+		min-height: 8vw;
+		max-height: 8vw;
+		width: 8vw;
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+	.square {
+		min-height: 5vw;
+		max-height: 5vw;
+		width: 5vw;
+	}
 }
 
 .square.white {
-	background-color: #eee;
+	background-color: #ccc;
 }
 .square.black {
 	background-color: #444;
 }
 
+.position-container {
+	line-height: 1rem;
+}
+
+/* .piece-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.position-container {
+	display: inline-flex;
+	justify-content: flex-end;
+	align-items: center;
+	vertical-align: baseline;
+	font-size: 1rem;
+}
+
+.piece {
+	vertical-align: middle;
+}
+
 .label-position {
 	background-color: #cc6;
-	flex: 1;
-	padding: 0;
-	margin: 0;
+	vertical-align: top;
 	float: right;
-	position: relative;
 	padding: 1px;
 	border-left: 2px inset #aa4;
 	border-bottom: 2px inset #ee8;
-}
+} */

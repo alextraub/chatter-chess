@@ -19,24 +19,26 @@ const BoardSquare = ({ black, piece, position }) => {
 		if(piece === null) {
 			return '';
 		} else {
-			return <ChessPiece black={piece.player === 1}  type={piece.type} />
+			return <>
+				<ChessPiece className="d-flex d-sm-none" size="1x" black={piece.player === 1}  type={piece.type} />
+				<ChessPiece className="d-none d-sm-flex" size="2x" black={piece.player === 1}  type={piece.type} />
+			</>
 		}
 	}
 
 	const renderPositionLabel = () => {
 		if(position) {
-			return <span data-testid="position-label" className="label-position">{position}</span>
+			return <span className="bg-warning">{position}</span>;
 		} else {
 			return '';
 		}
 	}
 
+
 	return (
-		<div data-testid="board-square" className={`square ${squareColor}`}>
-			{renderPositionLabel()}
-			<div data-testid={position ? position : 'piece-container'} className="piece-container">
-				{renderPiece()}
-			</div>
+		<div data-testid={`${position}`} className={`square ${squareColor}`}>
+			<div data-testid="position-container" className="text-container align-text-top d-inline-flex justify-content-end position-container">{renderPositionLabel()}</div>
+			<div data-testid="piece-container" className="h-100 flex-column d-inline-flex justify-content-center align-items-center">{renderPiece()}</div>
 		</div>
 	);
 }
@@ -51,7 +53,8 @@ BoardSquare.propTypes = {
 };
 
 BoardSquare.defaultProps = {
-	piece: null
+	piece: null,
+	position: 'board-square'
 };
 
 export default BoardSquare;

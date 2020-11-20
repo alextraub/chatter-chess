@@ -1,7 +1,7 @@
-import './MoveInput.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {boardPositionToTuple, isValidBoardPositionString} from '../../game/utils/positionUtils'
+import { Form, InputGroup, FormFeedback, InputGroupAddon, Input, Button } from 'reactstrap';
 
 export default class MoveInput extends React.Component {
 
@@ -125,25 +125,29 @@ export default class MoveInput extends React.Component {
 
 	render() {
 		return (
-			<div id='inputContainer' data-testid="move-input">
-				<form onSubmit={event => {this.handleSubmit(event)}}>
-					<input
-						data-testid="move"
+			<Form data-testid="move-input" onSubmit={event => {this.handleSubmit(event)}} inline>
+				<FormFeedback tooltip={this.state.moveError !== ''} data-testid="move-feedback" className={this.state.message !== '' ? 'd-block' : ''}>{this.state.moveError}</FormFeedback>
+				<InputGroup>
+					<Input
+						data-testid="move-textbox"
 						type="text"
 						placeholder="Enter Move Here"
 						name="move"
 						value={this.state.move}
 						disabled={this.props.disabled}
+						invalid={this.state.moveError !== ''}
 						onChange={event => {this.handleInputChange(event)}}
 					/>
-					<div data-testid="error" style={{color: "red"}}>{this.state.moveError}</div>
-					<input
-						data-testid="button"
-						disabled={this.props.disabled}
-						type='submit'
-						value='Submit Move' />
-				</form>
-			</div>
+					<InputGroupAddon addonType="append">
+						<Button
+							data-testid="move-submit"
+							color="warning"
+							name="move-submit"
+							disabled={this.props.disabled}
+							type="submit">Move</Button>
+					</InputGroupAddon>
+				</InputGroup>
+			</Form>
 		);
 	}
 }
