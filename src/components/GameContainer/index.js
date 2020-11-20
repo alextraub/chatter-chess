@@ -7,7 +7,7 @@ import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
 import SwapPieces from "../SwapPieces";
 import { inCheck, inCheckMate } from '../../game/Check';
-import { Col, Container, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 
 const capturedPieceObj = () => ({
 	count: 0,
@@ -482,10 +482,10 @@ export default class GameContainer extends React.Component {
 
 	render() {
 		return (
-			<Container className="justify-content-center	" data-testid="game-container">
+			<div data-testid="game-container">
 				<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
 				{this.renderStandardUI()}
-			</Container>
+			</div>
 		);
 	}
 }
