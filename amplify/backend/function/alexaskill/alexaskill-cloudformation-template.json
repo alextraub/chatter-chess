@@ -17,10 +17,6 @@
     "apichatterchessGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apichatterchessGraphQLAPIEndpointOutput"
-    },
-    "apichatterchessGraphQLAPIKeyOutput": {
-      "Type": "String",
-      "Default": "apichatterchessGraphQLAPIKeyOutput"
     }
   },
   "Conditions": {
@@ -45,12 +41,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "alexaskill",
+            "ccalexaskill",
             {
               "Fn::Join": [
                 "",
                 [
-                  "alexaskill",
+                  "ccalexaskill",
                   "-",
                   {
                     "Ref": "env"
@@ -73,9 +69,6 @@
             },
             "API_CHATTERCHESS_GRAPHQLAPIENDPOINTOUTPUT": {
               "Ref": "apichatterchessGraphQLAPIEndpointOutput"
-            },
-            "API_CHATTERCHESS_GRAPHQLAPIKEYOUTPUT": {
-              "Ref": "apichatterchessGraphQLAPIKeyOutput"
             }
           }
         },
@@ -90,7 +83,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-chatterchess-dev-135711-deployment",
-          "S3Key": "amplify-builds/alexaskill-5242534c66384a426a4f-build.zip"
+          "S3Key": "amplify-builds/alexaskill-42775a74735452306d37-build.zip"
         }
       }
     },
@@ -100,12 +93,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "chatterchessLambdaRolead84270e",
+            "chatterchessLambdaRole2d42f464",
             {
               "Fn::Join": [
                 "",
                 [
-                  "chatterchessLambdaRolead84270e",
+                  "chatterchessLambdaRole2d42f464",
                   "-",
                   {
                     "Ref": "env"

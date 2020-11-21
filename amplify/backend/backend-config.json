@@ -6,10 +6,9 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": ""
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authchatterchess"
             }
           },
           "additionalAuthenticationProviders": []
@@ -28,15 +27,14 @@
           "resourceName": "chatterchess",
           "attributes": [
             "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
+            "GraphQLAPIEndpointOutput"
           ]
         }
       ]
     }
   },
   "auth": {
-    "chatterchess68753c2f": {
+    "chatterchess": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
