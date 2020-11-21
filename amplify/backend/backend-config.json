@@ -1,5 +1,12 @@
 {
   "api": {},
   "function": {},
-  "auth": {}
+  "auth": {
+    "accounts": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
 }
