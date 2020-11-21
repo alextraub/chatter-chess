@@ -1,4 +1,13 @@
 {
-  "permissions": {},
+  "permissions": {
+    "api": {
+      "chatterchess": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
   "lambdaLayers": []
 }
