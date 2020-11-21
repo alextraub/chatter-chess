@@ -130,6 +130,18 @@ Parameters:
       
   hostedUIProviderCreds:
     Type: String
+                      
+  authProviders:
+    Type: CommaDelimitedList
+      
+  facebookAppId:
+    Type: String
+              
+  googleClientId:
+    Type: String
+              
+  amazonAppId:
+    Type: String
               
   oAuthMetadata:
     Type: String
@@ -719,6 +731,17 @@ Resources:
             - cognito-idp.${region}.amazonaws.com/${client}
             - { region: !Ref "AWS::Region",  client: !Ref UserPool}
             
+      SupportedLoginProviders: 
+        
+        graph.facebook.com: !Ref facebookAppId
+        
+        
+        accounts.google.com: !Ref googleClientId
+        
+        
+        www.amazon.com: !Ref amazonAppId
+        
+      
       AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
        
        
@@ -768,9 +791,18 @@ Outputs :
   AppClientSecret:
     Value: !GetAtt UserPoolClientInputs.appSecret
   
+  
+  GoogleWebClient:
+    Value: !Ref googleClientId
    
    
   
+  
+  FacebookWebClient:
+    Value: !Ref facebookAppId
    
+  
+  AmazonWebClient:
+    Value: !Ref amazonAppId
    
   
