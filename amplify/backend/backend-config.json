@@ -36,7 +36,7 @@
     }
   },
   "auth": {
-    "chatterchess68753c2f": {
+    "chatterchess": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
