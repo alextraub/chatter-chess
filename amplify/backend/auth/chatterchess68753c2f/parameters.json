@@ -68,5 +68,5 @@
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"email\",\"openid\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"email\",\"openid\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"]}"
 }
