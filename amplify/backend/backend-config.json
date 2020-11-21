@@ -16,7 +16,23 @@
       }
     }
   },
-  "function": {},
+  "function": {
+    "alexaskill": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "games",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    }
+  },
   "auth": {
     "accounts": {
       "service": "Cognito",

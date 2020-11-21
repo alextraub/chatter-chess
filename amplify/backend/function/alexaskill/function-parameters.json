@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "api": {
+      "games": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
