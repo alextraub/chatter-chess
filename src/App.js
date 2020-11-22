@@ -34,7 +34,7 @@ const App = () => {
 		return Auth.currentAuthenticatedUser()
 			.then(userData => userData)
 			.catch(err => {
-				console.error(err);
+
 			});
 	}
 
