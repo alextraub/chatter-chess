@@ -125,7 +125,7 @@ export default class MoveInput extends React.Component {
 
 	render() {
 		return (
-			<Form data-testid="move-input" onSubmit={event => {this.handleSubmit(event)}} inline>
+			<Form data-testid="move-input" onSubmit={event => {this.handleSubmit(event)}} inline className="mb-1">
 				<FormFeedback tooltip={this.state.moveError !== ''} data-testid="move-feedback" className={this.state.message !== '' ? 'd-block' : ''}>{this.state.moveError}</FormFeedback>
 				<InputGroup>
 					<Input

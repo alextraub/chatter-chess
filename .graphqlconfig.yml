@@ -1,6 +1,6 @@
 projects:
-  chatterchess:
-    schemaPath: amplify/backend/api/chatterchess/build/schema.graphql
+  games:
+    schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
     excludes:

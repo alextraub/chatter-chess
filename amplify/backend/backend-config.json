@@ -1,15 +1,14 @@
 {
   "api": {
-    "chatterchess": {
+    "games": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": ""
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authaccounts"
             }
           },
           "additionalAuthenticationProviders": []
@@ -25,18 +24,17 @@
       "dependsOn": [
         {
           "category": "api",
-          "resourceName": "chatterchess",
+          "resourceName": "games",
           "attributes": [
             "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
+            "GraphQLAPIEndpointOutput"
           ]
         }
       ]
     }
   },
   "auth": {
-    "chatterchess68753c2f": {
+    "accounts": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

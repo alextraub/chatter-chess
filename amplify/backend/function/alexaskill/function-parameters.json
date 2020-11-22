@@ -1,7 +1,7 @@
 {
   "permissions": {
     "api": {
-      "chatterchess": [
+      "games": [
         "create",
         "read",
         "update",

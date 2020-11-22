@@ -1,7 +1,7 @@
 import React from 'react';
 import ChessPiece from '../ChessPiece';
 import PropTypes from 'prop-types';
-import { Button, Modal, ModalBody, ModalHeader, ListGroup, ListGroupItem } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader, ListGroup, ListGroupItem } from 'reactstrap';
 
 const SwapPieces = props => {
 	const renderPieceGraphics = () => {

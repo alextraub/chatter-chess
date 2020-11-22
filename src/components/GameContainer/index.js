@@ -7,20 +7,7 @@ import BoardState from '../../game/BoardState';
 import CapturedPieces from "../CapturedPieces";
 import SwapPieces from "../SwapPieces";
 import { inCheck, inCheckMate } from '../../game/Check';
-import { Col, Container, Row } from 'reactstrap';
-
-const capturedPieceObj = () => ({
-	count: 0,
-	pieces: {
-		pawn: [],
-		rook: [],
-		knight: [],
-		bishop: [],
-		queen: [],
-		king: [],
-		generic: []
-	}
-});
+import { Col, Row } from 'reactstrap';
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
@@ -399,15 +386,6 @@ export default class GameContainer extends React.Component {
 	}
 
 	/**
-	 * Returns the rendered out swap UI
-	 */
-	renderSwapUI() {
-		return (
-			<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
-		);
-	}
-
-	/**
 	 * Returns all the UI elements that never are hidden
 	 * @todo disable move input during a piece swap
 	 */
@@ -418,7 +396,7 @@ export default class GameContainer extends React.Component {
 
 		return (
 			<Row>
-				<Col className="mb-1">
+				<Col md="12">
 					<MoveInput
 						inCheck={this.isInCheck}
 						currentPlayer={this.currentPlayer()}
@@ -482,10 +460,10 @@ export default class GameContainer extends React.Component {
 
 	render() {
 		return (
-			<Container className="justify-content-center	" data-testid="game-container">
+			<div data-testid="game-container">
 				<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
 				{this.renderStandardUI()}
-			</Container>
+			</div>
 		);
 	}
 }

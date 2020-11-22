@@ -10,9 +10,7 @@ import awsConfig from "./awsConfig";
 Amplify.configure(awsConfig);
 
 ReactDOM.render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>,
+	<App />,
 	document.getElementById('root')
 );
 

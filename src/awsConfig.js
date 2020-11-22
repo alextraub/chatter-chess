@@ -1,6 +1,13 @@
 import awsConfig from './aws-exports';
 
-const isLocalhost = (
+let isDevelopment = false;
+try {
+	isDevelopment = process.env.NODE_ENV === 'development';
+} catch (err) {
+	console.error('Autherization source is not allowed');
+}
+
+const isLocalhost = isDevelopment && (
 	window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.
     window.location.hostname === "[::1]" ||

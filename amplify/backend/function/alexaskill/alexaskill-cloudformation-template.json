@@ -10,17 +10,13 @@
     "env": {
       "Type": "String"
     },
-    "apichatterchessGraphQLAPIIdOutput": {
+    "apigamesGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apichatterchessGraphQLAPIIdOutput"
+      "Default": "apigamesGraphQLAPIIdOutput"
     },
-    "apichatterchessGraphQLAPIEndpointOutput": {
+    "apigamesGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "apichatterchessGraphQLAPIEndpointOutput"
-    },
-    "apichatterchessGraphQLAPIKeyOutput": {
-      "Type": "String",
-      "Default": "apichatterchessGraphQLAPIKeyOutput"
+      "Default": "apigamesGraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -45,12 +41,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "alexaskill",
+            "ccalexaskill",
             {
               "Fn::Join": [
                 "",
                 [
-                  "alexaskill",
+                  "ccalexaskill",
                   "-",
                   {
                     "Ref": "env"
@@ -68,14 +64,11 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CHATTERCHESS_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apichatterchessGraphQLAPIIdOutput"
+            "API_GAMES_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apigamesGraphQLAPIIdOutput"
             },
-            "API_CHATTERCHESS_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apichatterchessGraphQLAPIEndpointOutput"
-            },
-            "API_CHATTERCHESS_GRAPHQLAPIKEYOUTPUT": {
-              "Ref": "apichatterchessGraphQLAPIKeyOutput"
+            "API_GAMES_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apigamesGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -90,7 +83,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-chatterchess-dev-135711-deployment",
-          "S3Key": "amplify-builds/alexaskill-5242534c66384a426a4f-build.zip"
+          "S3Key": "amplify-builds/alexaskill-414b636b3266486b754f-build.zip"
         }
       }
     },
@@ -100,12 +93,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "chatterchessLambdaRolead84270e",
+            "chatterchessLambdaRole1c9b9613",
             {
               "Fn::Join": [
                 "",
                 [
-                  "chatterchessLambdaRolead84270e",
+                  "chatterchessLambdaRole1c9b9613",
                   "-",
                   {
                     "Ref": "env"
@@ -217,7 +210,7 @@
                       },
                       ":apis/",
                       {
-                        "Ref": "apichatterchessGraphQLAPIIdOutput"
+                        "Ref": "apigamesGraphQLAPIIdOutput"
                       },
                       "/*"
                     ]
