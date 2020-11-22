@@ -9,19 +9,6 @@ import SwapPieces from "../SwapPieces";
 import { inCheck, inCheckMate } from '../../game/Check';
 import { Col, Row } from 'reactstrap';
 
-const capturedPieceObj = () => ({
-	count: 0,
-	pieces: {
-		pawn: [],
-		rook: [],
-		knight: [],
-		bishop: [],
-		queen: [],
-		king: [],
-		generic: []
-	}
-});
-
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
  * as well as renders the top-level UI components for the game.
@@ -399,15 +386,6 @@ export default class GameContainer extends React.Component {
 	}
 
 	/**
-	 * Returns the rendered out swap UI
-	 */
-	renderSwapUI() {
-		return (
-			<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
-		);
-	}
-
-	/**
 	 * Returns all the UI elements that never are hidden
 	 * @todo disable move input during a piece swap
 	 */
@@ -418,7 +396,7 @@ export default class GameContainer extends React.Component {
 
 		return (
 			<Row>
-				<Col className="mb-1">
+				<Col md="12">
 					<MoveInput
 						inCheck={this.isInCheck}
 						currentPlayer={this.currentPlayer()}
