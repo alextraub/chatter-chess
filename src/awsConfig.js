@@ -16,7 +16,7 @@ const isLocalhost = isDevelopment && (
     )
 );
 
-const newOauth = isDevelopment ? {
+const newOauth = isLocalhost ? {
 	...awsConfig.oauth,
 	redirectSignIn: 'http://localhost:3000/',
 	redirectSignOut: 'http://localhost:3000/'
@@ -29,5 +29,7 @@ const modifiedConfig = {
 		identityPoolId: "us-east-1:1791e9e0-699f-4664-9320-8744ddec4ca9"
 	}
 }
+
+console.log(awsConfig);
 
 export default modifiedConfig;
