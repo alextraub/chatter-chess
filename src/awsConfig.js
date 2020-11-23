@@ -33,6 +33,9 @@ const modifiedConfig = {
 		...awsConfig.oauth,
 		redirectSignIn: isLocalhost ? localRedirectSignIn : productionRedirectSignIn,
 		redirectSignOut: isLocalhost ? localRedirectSignOut : productionRedirectSignOut
+	},
+	Auth: {
+		identityPoolId: "us-east-1:1791e9e0-699f-4664-9320-8744ddec4ca9"
 	}
 }
 
