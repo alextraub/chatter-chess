@@ -109,6 +109,8 @@ else
     \"loginwithamazonAppIdUserPool\":\"${AMPLIFY_AMAZON_CLIENT_ID}\",\
     \"loginwithamazonAppSecretUserPool\":\"${AMPLIFY_AMAZON_CLIENT_SECRET}\",\
     \"googleClientId\":\"${AMPLIFY_GOOGLE_CLIENT_ID}\",\
+    \"amazonAppId\":\"${AMPLIFY_AMAZON_CLIENT_ID}\",\
+    \"facebookAppId\":\"${AMPLIFY_FACEBOOK_CLIENT_ID}\",\
     }"
     CATEGORIES="{\
     \"auth\":$AUTHCONFIG\

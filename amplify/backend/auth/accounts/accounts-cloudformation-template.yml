@@ -177,6 +177,14 @@ Parameters:
     Type: String
   
             
+  facebookAppId:
+    Type: String
+  
+            
+  amazonAppId:
+    Type: String
+  
+            
   hostedUIProviderCreds:
     Type: String
   
@@ -904,9 +912,13 @@ Resources:
             
       SupportedLoginProviders: 
         
+        graph.facebook.com: !Ref facebookAppId
+        
         
         accounts.google.com: !Ref googleClientId
         
+        
+        www.amazon.com: !Ref amazonAppId
         
       
       AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
@@ -966,6 +978,12 @@ Outputs :
    
    
   
+  
+  FacebookWebClient:
+    Value: !Ref facebookAppId
    
+  
+  AmazonWebClient:
+    Value: !Ref amazonAppId
    
   
