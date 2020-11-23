@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import Amplify from "aws-amplify";
 import awsConfig from './awsConfig';
 
+console.log(awsConfig);
 Amplify.configure(awsConfig);
 
 ReactDOM.render(
