@@ -16,27 +16,15 @@ const isLocalhost = isDevelopment && (
     )
 );
 
-// Assuming you have two redirect URIs, and the first is for localhost and second is for production
-const [
-	localRedirectSignIn,
-	productionRedirectSignIn
-] = awsConfig.oauth.redirectSignIn.split(",");
-
-const [
-	localRedirectSignOut,
-	productionRedirectSignOut
-] = awsConfig.oauth.redirectSignOut.split(",");
+const newOauth = isDevelopment ? {
+	...awsConfig.oauth,
+	redirectSignIn: 'http://localhost:3000/',
+	redirectSignOut: 'http://localhost:3000/'
+} : awsConfig.oauth;
 
 const modifiedConfig = {
 	...awsConfig,
-	oauth: {
-		...awsConfig.oauth,
-		redirectSignIn: isLocalhost ? localRedirectSignIn : productionRedirectSignIn,
-		redirectSignOut: isLocalhost ? localRedirectSignOut : productionRedirectSignOut
-	},
-	Auth: {
-		identityPoolId: "us-east-1:1791e9e0-699f-4664-9320-8744ddec4ca9"
-	}
+	oauth: newOauth
 }
 
 export default modifiedConfig;

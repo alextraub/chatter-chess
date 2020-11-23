@@ -173,11 +173,15 @@ Parameters:
   authProviders:
     Type: CommaDelimitedList
       
-  googleClientId:
+  hostedUIProviderCreds:
     Type: String
   
             
   facebookAppId:
+    Type: String
+  
+            
+  googleClientId:
     Type: String
   
             
@@ -190,10 +194,6 @@ Parameters:
   
             
             
-  hostedUIProviderCreds:
-    Type: String
-    Default: '[]'
-  
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
