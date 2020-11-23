@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Amplify from "aws-amplify";
-import awsConfig from './awsConfig';
+import awsConfig from './aws-exports';
 
 console.log(awsConfig);
 Amplify.configure(awsConfig);
