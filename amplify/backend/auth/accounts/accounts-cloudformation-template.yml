@@ -169,6 +169,14 @@ Parameters:
   dependsOn:
     Type: CommaDelimitedList
       
+        
+  authProviders:
+    Type: CommaDelimitedList
+      
+  googleClientId:
+    Type: String
+  
+            
   hostedUIProviderCreds:
     Type: String
   
@@ -894,6 +902,13 @@ Resources:
             - cognito-idp.${region}.amazonaws.com/${client}
             - { region: !Ref "AWS::Region",  client: !Ref UserPool}
             
+      SupportedLoginProviders: 
+        
+        
+        accounts.google.com: !Ref googleClientId
+        
+        
+      
       AllowUnauthenticatedIdentities: !Ref allowUnauthenticatedIdentities
        
        
@@ -945,6 +960,9 @@ Outputs :
     Value: !GetAtt SNSRole.Arn
     Description: role arn
   
+  
+  GoogleWebClient:
+    Value: !Ref googleClientId
    
    
   

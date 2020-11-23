@@ -46,7 +46,7 @@
         ]
     },
     "useDefault": "manual",
-    "thirdPartyAuth": false,
+    "thirdPartyAuth": true,
     "usernameAttributes": [
         "email"
     ],
@@ -68,5 +68,8 @@
     },
     "permissions": [],
     "dependsOn": [],
+    "authProviders": [
+        "accounts.google.com"
+    ],
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"]}"
 }
