@@ -21,12 +21,12 @@ const isLocalhost = Boolean(
 const [
 	productionRedirectSignIn,
 	localRedirectSignIn
-] = awsConfig.oauth;
+] = awsConfig.oauth.redirectSignIn;
 
 const [
 	localRedirectSignOut,
 	productionRedirectSignOut
-] = awsConfig.oauth;
+] = awsConfig.oauth.redirectSignOut;
 
 const updatedAwsConfig = {
 	...awsConfig,
