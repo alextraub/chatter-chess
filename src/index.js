@@ -21,12 +21,12 @@ const isLocalhost = Boolean(
 const [
 	productionRedirectSignIn,
 	localRedirectSignIn
-] = ['https://www.chatterchess.com/', 'http://localhost:3000/'];
+] = awsConfig.oauth;
 
 const [
-	productionRedirectSignOut,
-	localRedirectSignOut
-] = ['https://www.chatterchess.com/', 'http://localhost:3000/'];
+	localRedirectSignOut,
+	productionRedirectSignOut
+] = awsConfig.oauth;
 
 const updatedAwsConfig = {
 	...awsConfig,
