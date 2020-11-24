@@ -1,18 +1,18 @@
 {
     "identityPoolName": "chatterchess_accounts_identitypool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "chatte88551cf4",
+    "resourceNameTruncated": "chatteaefc8670",
     "userPoolName": "chatterchess_accounts_userpool",
     "autoVerifiedAttributes": [
         "email"
     ],
-    "mfaConfiguration": "ON",
+    "mfaConfiguration": "OFF",
     "mfaTypes": [
         "SMS Text Message"
     ],
-    "smsAuthenticationMessage": "Your Chatter Chess authentication code is {####}",
+    "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Verify your Chatter Chess Login",
+    "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "accoun88551cf4_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
-    "sharedId": "88551cf4",
-    "resourceName": "accounts",
+    "userpoolClientLambdaRole": "localaaefc8670_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": true,
+    "sharedId": "aefc8670",
+    "resourceName": "localaccounts",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,7 +46,12 @@
         ]
     },
     "useDefault": "manual",
-    "thirdPartyAuth": false,
+    "thirdPartyAuth": true,
+    "authProviders": [
+        "graph.facebook.com",
+        "accounts.google.com",
+        "www.amazon.com"
+    ],
     "usernameAttributes": [
         "email"
     ],
@@ -54,19 +59,19 @@
     "adminQueries": false,
     "triggers": "{}",
     "hostedUI": true,
-    "hostedUIDomainName": "chatterchess",
+    "hostedUIDomainName": "chatterchessaefc8670-aefc8670",
     "authProvidersUserPool": [
         "Facebook",
         "Google",
         "LoginWithAmazon"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}},{\"ProviderName\":\"LoginWithAmazon\",\"authorize_scopes\":\"profile profile:user_id\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"user_id\"}}]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"]}"
+    "dependsOn": []
 }

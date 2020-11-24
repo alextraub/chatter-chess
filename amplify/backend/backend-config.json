@@ -1,40 +1,6 @@
 {
-  "api": {
-    "games": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authaccounts"
-            }
-          },
-          "additionalAuthenticationProviders": []
-        }
-      }
-    }
-  },
-  "function": {
-    "alexaskill": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "games",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        }
-      ]
-    }
-  },
   "auth": {
-    "accounts": {
+    "localaccounts": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
