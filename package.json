@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^0.2.29",
+    "@aws-amplify/ui-react": "^0.2.30",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -13,7 +13,7 @@
     "@testing-library/user-event": "^12.2.2",
     "amazon-cognito-identity-js": "^4.5.5",
     "ask-sdk": "^2.10.0",
-    "aws-amplify": "^3.3.9",
+    "aws-amplify": "^3.3.10",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
     "react": "^16.7.0",
