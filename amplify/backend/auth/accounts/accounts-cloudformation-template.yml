@@ -173,10 +173,6 @@ Parameters:
   authProviders:
     Type: CommaDelimitedList
       
-  hostedUIProviderCreds:
-    Type: String
-  
-            
   facebookAppId:
     Type: String
   
@@ -194,6 +190,10 @@ Parameters:
   
             
             
+  hostedUIProviderCreds:
+    Type: String
+    Default: '[]'
+  
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
