@@ -68,10 +68,5 @@
     },
     "permissions": [],
     "dependsOn": [],
-    "authProviders": [
-        "graph.facebook.com",
-        "accounts.google.com",
-        "www.amazon.com"
-    ],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://www.chatterchess.com/\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"https://www.chatterchess.com/\",\"http://localhost:3000/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"]}"
 }
