@@ -82,7 +82,7 @@
         "Layers": [],
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-chatterchess-dev-135711-deployment",
+          "S3Bucket": "amplify-chatterchess-prod-144800-deployment",
           "S3Key": "amplify-builds/alexaskill-414b636b3266486b754f-build.zip"
         }
       }
