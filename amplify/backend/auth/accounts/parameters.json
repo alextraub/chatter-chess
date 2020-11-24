@@ -46,7 +46,7 @@
         ]
     },
     "useDefault": "manual",
-    "thirdPartyAuth": true,
+    "thirdPartyAuth": false,
     "usernameAttributes": [
         "email"
     ],
@@ -55,11 +55,6 @@
     "triggers": "{}",
     "hostedUI": true,
     "hostedUIDomainName": "chatterchess",
-    "authProvidersUserPool": [
-        "Facebook",
-        "Google",
-        "LoginWithAmazon"
-    ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}},{\"ProviderName\":\"LoginWithAmazon\",\"authorize_scopes\":\"profile profile:user_id\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"user_id\"}}]",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
@@ -68,5 +63,10 @@
     },
     "permissions": [],
     "dependsOn": [],
+    "authProvidersUserPool": [
+        "Facebook",
+        "Google",
+        "LoginWithAmazon"
+    ],
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://chatterchess.com/\"]}"
 }
