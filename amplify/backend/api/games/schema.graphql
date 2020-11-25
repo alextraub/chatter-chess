@@ -45,7 +45,7 @@ type Turn {
 	player: Player! # Which player's turn it is
 }
 
-type Game @model {
+type Game @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
   id: ID!
 	type: GameType!
 	players: [Player]!

@@ -28,12 +28,13 @@ const SignInAndOutButton = ({ user: { loading, data } }) => {
 					setLoading(true);
 					Auth.signOut();
 				}}>Sign out</Button>
+				{/*{alert(JSON.stringify(data))}*/}
 				<Tooltip
 					isOpen={tooltipOpen}
 					toggle={toggleTooltip}
 					target={id}
 				>
-					{data.attributes.email}
+					{data.signInUserSession.idToken.payload.email}
 				</Tooltip>
 			</> :
 			<Button color="primary" onClick={() => {
