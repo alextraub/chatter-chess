@@ -8,6 +8,7 @@ import CapturedPieces from "../CapturedPieces";
 import SwapPieces from "../SwapPieces";
 import { inCheck, inCheckMate } from '../../game/Check';
 import { Col, Row } from 'reactstrap';
+import LoginModal from '../LoginModal';
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
@@ -83,7 +84,11 @@ export default class GameContainer extends React.Component {
 	static propTypes = {
 		playerView: PropTypes.oneOf([0, 1, 2]),
 		boardState: PropTypes.instanceOf(BoardState),
-		turn: PropTypes.number
+		turn: PropTypes.number,
+		user: PropTypes.shape({
+			loading: PropTypes.bool,
+			data: PropTypes.any
+		})
 	}
 
 	static defaultProps = {
@@ -370,7 +375,7 @@ export default class GameContainer extends React.Component {
 		if(this.currentPlayer() === 0) {
 			this.capturedWhitePieces.pieces.pawn.push(piece);
 		} else {
-			this.capturecBlackPieces.pieces.pawn.push(piece);
+			this.capturedBlackPieces.pieces.pawn.push(piece);
 		}
 
 
@@ -460,10 +465,13 @@ export default class GameContainer extends React.Component {
 
 	render() {
 		return (
-			<div data-testid="game-container">
-				<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
-				{this.renderStandardUI()}
-			</div>
+			<>
+				{/* <LoginModal loading={this.props.user.loading} isOpen={!this.props.user.data} /> */}
+				<div data-testid="game-container">
+					<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
+					{this.renderStandardUI()}
+				</div>
+			</>
 		);
 	}
 }

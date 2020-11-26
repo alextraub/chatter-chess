@@ -5,6 +5,9 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { Auth, Hub } from 'aws-amplify';
+import buggyBoard from './game/BoardState/boards/buggyBoard';
+import BoardState from './game/BoardState';
+
 
 const App = () => {
 	const [user, setUser] = useState({ data: null, loading: true });
@@ -49,7 +52,7 @@ const App = () => {
 						<PrivacyPolicy />
 					</Route>
 					<Route path="/">
-						<GameContainer />
+						<GameContainer user={user} />
 					</Route>
 				</Switch>
 			</Container>

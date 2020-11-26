@@ -6,6 +6,11 @@ import BoardState from '../../game/BoardState';
 
 afterEach(cleanup);
 
+const user = {
+	loading: false,
+	data: 'user'
+}
+
 const removePiece = ([r,c], bState) => {
 	const p = bState.getPiece([r,c]);
 	if(p === null) {
@@ -37,7 +42,7 @@ const changePosition = ([fR,fC], [tR, tC], bState) => {
 }
 
 test('GameContainer is rendered', () => {
-	render(<GameContainer />);
+	render(<GameContainer user={user} />);
 
 	expect(screen.getAllByTestId('game-container')).toHaveLength(1);
 });
@@ -76,7 +81,7 @@ const renderCheckScenario1 = async moveString => {
 	changePosition([0,3], [5,5], bState);
 	changePosition([7,6], [0,3], bState);
 
-	render(<GameContainer turn={1} boardState={bState} />);
+	render(<GameContainer user={user} turn={1} boardState={bState} />);
 	await makeMove(moveString);
 
 	return bState;
@@ -102,7 +107,7 @@ test('Capturing a piece to get out of check does not cause an error message to b
 
 test('Check error is displayed', async () => {
 	const bState = new BoardState();
-	render(<GameContainer boardState={bState} />);
+	render(<GameContainer user={user} boardState={bState} />);
 
 	await makeMove('f2 f3');
 	await makeMove('e7 e5');
@@ -114,7 +119,7 @@ test('Check error is displayed', async () => {
 });
 
 test('Fool\'s mate', async () => {
-	render(<GameContainer />);
+	render(<GameContainer user={user} />);
 	expect(screen.getByTestId('move-textbox')).toBeEnabled();
 	expect(screen.getByTestId('move-submit')).toBeEnabled();
 
@@ -133,7 +138,7 @@ test('Pieces change position in the UI after being moved', async () => {
 		{ type: 'pawn', player: 0, position: [6,0] }
 	]);
 
-	render(<GameContainer boardState={bState} />);
+	render(<GameContainer user={user} boardState={bState} />);
 
 
 	expect(within(screen.getByTestId('A2'))
@@ -155,7 +160,7 @@ test('Pawn is swapped in the UI after selecting a piece to promote', async () =>
 		{ type: 'pawn', player: 0, position: [1,0] }
 	]);
 
-	render(<GameContainer turn={1} boardState={bState} />);
+	render(<GameContainer user={user} turn={1} boardState={bState} />);
 
 
 	await makeMove('a3 a2');
@@ -174,7 +179,7 @@ test('Pawn is swapped in the UI after selecting a piece to promote', async () =>
 test('Blocking a piece to get out of check does not display an error message', async () => {
 	const bState = new BoardState();
 
-	render(<GameContainer boardState={bState} />);
+	render(<GameContainer user={user} boardState={bState} />);
 
 	await makeMove('e2 e4');
 	await makeMove('d7 d5');
@@ -189,7 +194,7 @@ test('Blocking a piece to get out of check does not display an error message', a
 test('Pieces are added to the correct captured list', async () => {
 	const bState = new BoardState();
 
-	render(<GameContainer boardState={bState} />);
+	render(<GameContainer user={user} boardState={bState} />);
 	await makeMove('a2 a4');
 	await makeMove('b7 b5');
 	await makeMove('a4 b5');
@@ -217,4 +222,4 @@ test('Pieces are added to the correct captured list', async () => {
 		.getAllByLabelText('white rook')).toThrow();
 	expect(within(screen.getAllByTestId('capturedContainer')[0])
 		.getAllByLabelText('white rook')).toHaveLength(1);
-})
+});
