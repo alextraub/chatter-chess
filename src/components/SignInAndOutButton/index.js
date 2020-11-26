@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Auth } from 'aws-amplify';
+import {API, Auth, graphqlOperation} from 'aws-amplify';
 import { Button, Spinner, Tooltip } from 'reactstrap';
 import PropTypes from 'prop-types';
+import {createGame, deleteGame} from "../../graphql/mutations";
 
 const SignInAndOutButton = ({ user: { loading, data } }) => {
 	const [isLoading, setLoading] = useState(true); // Signals a change of the currently authenticated user
@@ -12,6 +13,28 @@ const SignInAndOutButton = ({ user: { loading, data } }) => {
 	useEffect(() => {
 		setLoading(loading);
 	}, [loading]);
+
+	const addGame = async() => {
+		try {
+			const game = {
+				id: data.signInUserSession.idToken.payload.userId
+			};
+			const gameData = await API.graphql(graphqlOperation(createGame, {input: game}));
+			console.log('Game', gameData);
+		} catch (error) {
+			console.log('error on creating game', error);
+		}
+	};
+	const removeGame = async() => {
+		try {
+			const game = {
+				id: data.signInUserSession.idToken.payload.userId
+			};
+			await API.graphql(graphqlOperation(deleteGame, {input: game}));
+		} catch (error) {
+			console.log('error on deleting game', error);
+		}
+	};
 
 	const id = "Tooltip-logged-in-user"
 
@@ -26,6 +49,7 @@ const SignInAndOutButton = ({ user: { loading, data } }) => {
 			<>
 				<Button id={id} type="button" color="primary" onClick={() => {
 					setLoading(true);
+					removeGame();
 					Auth.signOut();
 				}}>Sign out</Button>
 				{/*{alert(JSON.stringify(data))}*/}
@@ -40,6 +64,7 @@ const SignInAndOutButton = ({ user: { loading, data } }) => {
 			<Button color="primary" onClick={() => {
 				setLoading(true);
 				Auth.federatedSignIn();
+				addGame();
 			}}>Sign in</Button>
 	}
 }
