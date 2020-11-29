@@ -1,3 +1,4 @@
+import "../node_modules//bootstrap/dist/css/bootstrap.min.css";
 import 'jquery/dist/jquery.slim';
 import './index.css';
 import React from 'react';
@@ -6,11 +7,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Amplify from "aws-amplify";
 import awsConfig from "./awsConfig";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 Amplify.configure(awsConfig);
 
 ReactDOM.render(
-	<App />,
+	<Router>
+		<App />
+	</Router>,
 	document.getElementById('root')
 );
 

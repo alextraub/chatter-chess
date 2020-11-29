@@ -1,62 +1,83 @@
 import React, { useEffect, useState } from "react";
 import GameContainer from './components/GameContainer';
-import SignInAndOutButton from './components/SignInAndOutButton';
 import PrivacyPolicy from './components/PrivacyPolicy';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Route, Switch } from 'react-router-dom';
 import { Auth, Hub } from 'aws-amplify';
-import buggyBoard from './game/BoardState/boards/buggyBoard';
-import BoardState from './game/BoardState';
-
+import SignInForm from './components/Authenticator/SignInForm';
+import SignUpForm from './components/Authenticator/SignUpForm';
+import ResendVerificationForm from './components/Authenticator/ReseendVerificationForm';
+import Page from './components/Page';
+import ForgotPasswordForm from './components/Authenticator/ForgotPasswordForm';
 
 const App = () => {
-	const [user, setUser] = useState({ data: null, loading: true });
+	const [user, setUser] = useState({ loading: true, data: null });
 
 	useEffect(() => {
-		Hub.listen('auth', ({ payload: { event, data } }) => {
+		async function getUser() {
+			return Auth.currentAuthenticatedUser()
+				.then(userData => userData)
+		}
+
+		Hub.listen('auth', ({ payload: { event } }) => {
 			// eslint-disable-next-line default-case
 			switch (event) {
-			case 'signIn':
-			case 'cognitoHostedUI':
-				getUser().then(userData => setUser({ data: userData, loading: false }));
-				break;
 			case 'signOut':
-				setUser({ data: null, loading: false });
+				setUser({ loading: false, data: null });
 				break;
-			case 'signIn_failure':
-			case 'cognitoHostedUI_failure':
-				console.error('Sign in failure', data);
+			case 'signIn':
+				getUser().then(userData => setUser({ loading: false, data: userData }));
 				break;
 			}
-		});
+		}, [user.loading]);
 
-		getUser().then(userData => setUser({ data: userData, loading: false }));
-	}, []);
 
-	function getUser() {
-		return Auth.currentAuthenticatedUser()
-			.then(userData => userData)
-			.catch(err => {
-
-			});
-	}
-
+		if(user.loading) {
+			getUser().then(userData => {
+				console.log(userData)
+				if(userData) {
+					setUser({ data: userData, loading: false })
+				} else {
+					setUser({ data: null, loading: false });
+				}
+			})
+				.catch(() => setUser({ data: null, loading: false }));
+		}
+	}, [user]);
 
 
 	return (
-		<Router>
-			<SignInAndOutButton user={user} />
-			<Container className="justify-content-center">
-				<Switch>
-					<Route path="/privacy">
-						<PrivacyPolicy />
-					</Route>
-					<Route path="/">
-						<GameContainer user={user} />
-					</Route>
-				</Switch>
-			</Container>
-		</Router>
+		<Switch>
+			<Route exact path="/signin">
+				<Page centered user={user}>
+					<SignInForm user={user} />
+				</Page>
+			</Route>
+			<Route exact path="/">
+				<Page requireSignIn hasAccountButton user={user}>
+					<GameContainer />
+				</Page>
+			</Route>
+			<Route exact path="/signup">
+				<Page centered user={user}>
+					<SignUpForm user={user} />
+				</Page>
+			</Route>
+			<Route exact path="/forgot-password">
+				<Page centered user={user}>
+					<ForgotPasswordForm />
+				</Page>
+			</Route>
+			<Route exact path="/resend-verification">
+				<Page centered user={user}>
+					<ResendVerificationForm />
+				</Page>
+			</Route>
+			<Route exact path="/privacy">
+				<Page hasAccountButton user={user}>
+					<PrivacyPolicy />
+				</Page>
+			</Route>
+		</Switch>
 	);
 };
 

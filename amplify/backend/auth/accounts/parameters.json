@@ -14,9 +14,12 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Verify your Chatter Chess Login",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
+    "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [],
+    "passwordPolicyCharacters": [
+        "Requires Lowercase",
+        "Requires Uppercase"
+    ],
     "requiredAttributes": [
         "email"
     ],
@@ -52,7 +55,7 @@
     ],
     "userPoolGroups": false,
     "adminQueries": false,
-    "triggers": "{}",
+    "triggers": "{\n  \"PreSignup\": [\n    \"custom\"\n  ]\n}",
     "hostedUI": true,
     "hostedUIDomainName": "chatterchess",
     "authProvidersUserPool": [
@@ -67,6 +70,16 @@
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": [],
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "accountsPreSignup",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ],
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"implicit\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://www.chatterchess.com/\"]}"
 }

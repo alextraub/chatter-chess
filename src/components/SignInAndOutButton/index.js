@@ -15,32 +15,46 @@ const SignInAndOutButton = ({ user: { loading, data } }) => {
 
 	const id = "Tooltip-logged-in-user"
 
-	if(isLoading) {
-		return (
-			<Button disabled type="button" color="primary" id={id}>
-				<Spinner size="sm" />
-			</Button>
-		)
-	} else {
-		return data ?
-			<>
-				<Button id={id} type="button" color="primary" onClick={() => {
+	const renderModalToggle = () => {
+		if(isLoading) {
+			return (
+				<Button disabled type="button" color="primary" id={id}>
+					<Spinner size="sm" />
+				</Button>
+			)
+		} else {
+			return data ?
+				<>
+					<Button id={id} type="button" color="primary" onClick={() => {
+						setLoading(true);
+						Auth.signOut();
+					}}>Sign out</Button>
+					<Tooltip
+						isOpen={tooltipOpen}
+						toggle={toggleTooltip}
+						target={id}
+					>
+						{data.attributes.email}
+					</Tooltip>
+				</> :
+				<Button color="primary" onClick={async () => {
 					setLoading(true);
-					Auth.signOut();
-				}}>Sign out</Button>
-				<Tooltip
-					isOpen={tooltipOpen}
-					toggle={toggleTooltip}
-					target={id}
-				>
-					{data.attributes.email}
-				</Tooltip>
-			</> :
-			<Button color="primary" onClick={() => {
-				setLoading(true);
-				Auth.federatedSignIn();
-			}}>Sign in</Button>
+					try {
+						await Auth.federatedSignIn();
+					} catch (err) {
+						console.log(err);
+					} finally {
+						setLoading(false)
+					}
+				}}>Sign in</Button>
+		}
 	}
+
+	return (
+		<>
+			{renderModalToggle()}
+		</>
+	)
 }
 
 SignInAndOutButton.propTypes = {

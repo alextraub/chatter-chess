@@ -8,13 +8,13 @@ import CapturedPieces from "../CapturedPieces";
 import SwapPieces from "../SwapPieces";
 import { inCheck, inCheckMate } from '../../game/Check';
 import { Col, Row } from 'reactstrap';
-import LoginModal from '../LoginModal';
+import { withAuthenticator } from '@aws-amplify/ui-react';
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
  * as well as renders the top-level UI components for the game.
  */
-export default class GameContainer extends React.Component {
+class GameContainer extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -475,3 +475,6 @@ export default class GameContainer extends React.Component {
 		);
 	}
 }
+
+
+export default GameContainer;
