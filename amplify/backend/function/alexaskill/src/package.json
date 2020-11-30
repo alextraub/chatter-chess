@@ -5,6 +5,7 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "ask-sdk": "^2.10.0"
+    "ask-sdk": "^2.10.0",
+    "ask-sdk-core": "^2.10.1"
   }
 }
