@@ -8,20 +8,9 @@ export const createGame = /* GraphQL */ `
   ) {
     createGame(input: $input, condition: $condition) {
       id
-      type
-      players {
-        team
-      }
-      turn {
-        number
-        player {
-          team
-        }
-      }
+      turn
       pieces {
-        player {
-          team
-        }
+        player
         type
         captured
         position {
@@ -29,15 +18,18 @@ export const createGame = /* GraphQL */ `
           col
         }
       }
-      check {
-        player {
-          team
-        }
+      checkStatusWhite {
+        status
+        mate
+      }
+      checkStatusBlack {
         status
         mate
       }
       createdAt
       updatedAt
+      version
+      owner
     }
   }
 `;
@@ -48,20 +40,9 @@ export const updateGame = /* GraphQL */ `
   ) {
     updateGame(input: $input, condition: $condition) {
       id
-      type
-      players {
-        team
-      }
-      turn {
-        number
-        player {
-          team
-        }
-      }
+      turn
       pieces {
-        player {
-          team
-        }
+        player
         type
         captured
         position {
@@ -69,15 +50,18 @@ export const updateGame = /* GraphQL */ `
           col
         }
       }
-      check {
-        player {
-          team
-        }
+      checkStatusWhite {
+        status
+        mate
+      }
+      checkStatusBlack {
         status
         mate
       }
       createdAt
       updatedAt
+      version
+      owner
     }
   }
 `;
@@ -88,20 +72,9 @@ export const deleteGame = /* GraphQL */ `
   ) {
     deleteGame(input: $input, condition: $condition) {
       id
-      type
-      players {
-        team
-      }
-      turn {
-        number
-        player {
-          team
-        }
-      }
+      turn
       pieces {
-        player {
-          team
-        }
+        player
         type
         captured
         position {
@@ -109,15 +82,18 @@ export const deleteGame = /* GraphQL */ `
           col
         }
       }
-      check {
-        player {
-          team
-        }
+      checkStatusWhite {
+        status
+        mate
+      }
+      checkStatusBlack {
         status
         mate
       }
       createdAt
       updatedAt
+      version
+      owner
     }
   }
 `;

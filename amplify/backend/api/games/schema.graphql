@@ -34,8 +34,6 @@ type Game @versioned @model @auth(rules: [{ allow: owner, operations: [create, u
   id: ID!
   turn: Int!
 	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured
-	check: {
-		white: CheckStatus!
-		black: CheckStatus!
-	}
+	checkStatusWhite: CheckStatus!
+	checkStatusBlack: CheckStatus!
 }

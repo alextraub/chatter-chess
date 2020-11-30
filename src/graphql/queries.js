@@ -5,20 +5,9 @@ export const getGame = /* GraphQL */ `
   query GetGame($id: ID!) {
     getGame(id: $id) {
       id
-      type
-      players {
-        team
-      }
-      turn {
-        number
-        player {
-          team
-        }
-      }
+      turn
       pieces {
-        player {
-          team
-        }
+        player
         type
         captured
         position {
@@ -26,15 +15,18 @@ export const getGame = /* GraphQL */ `
           col
         }
       }
-      check {
-        player {
-          team
-        }
+      checkStatusWhite {
+        status
+        mate
+      }
+      checkStatusBlack {
         status
         mate
       }
       createdAt
       updatedAt
+      version
+      owner
     }
   }
 `;
@@ -47,23 +39,24 @@ export const listGames = /* GraphQL */ `
     listGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        type
-        players {
-          team
-        }
-        turn {
-          number
-        }
+        turn
         pieces {
+          player
           type
           captured
         }
-        check {
+        checkStatusWhite {
+          status
+          mate
+        }
+        checkStatusBlack {
           status
           mate
         }
         createdAt
         updatedAt
+        version
+        owner
       }
       nextToken
     }
