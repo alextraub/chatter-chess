@@ -1,22 +1,33 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "Lambda resource stack creation using Amplify CLI",
   "Parameters": {
-    "CloudWatchRule": {
+    "resourceName": {
       "Type": "String",
-      "Default": "NONE",
-      "Description": " Schedule Expression"
+      "Default": ""
+    },
+    "trigger": {
+      "Type": "String",
+      "Default": "true"
+    },
+    "functionName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "roleName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "parentResource": {
+      "Type": "String",
+      "Default": ""
+    },
+    "parentStack": {
+      "Type": "String",
+      "Default": ""
     },
     "env": {
       "Type": "String"
-    },
-    "apigamesGraphQLAPIIdOutput": {
-      "Type": "String",
-      "Default": "apigamesGraphQLAPIIdOutput"
-    },
-    "apigamesGraphQLAPIEndpointOutput": {
-      "Type": "String",
-      "Default": "apigamesGraphQLAPIEndpointOutput"
     }
   },
   "Conditions": {
@@ -41,12 +52,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "ccalexaskill",
+            "accountsPreSignup",
             {
               "Fn::Join": [
                 "",
                 [
-                  "ccalexaskill",
+                  "accountsPreSignup",
                   "-",
                   {
                     "Ref": "env"
@@ -63,12 +74,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "API_GAMES_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apigamesGraphQLAPIIdOutput"
-            },
-            "API_GAMES_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apigamesGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -78,12 +83,11 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs12.x",
-        "Layers": [],
+        "Runtime": "nodejs10.x",
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-chatterchess-dev-135711-deployment",
-          "S3Key": "amplify-builds/alexaskill-76776a43765972644859-build.zip"
+          "S3Key": "amplify-builds/accountsPreSignup-2f663549577a45687642-build.zip"
         }
       }
     },
@@ -93,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "chatterchessLambdaRole1c9b9613",
+            "accountsPreSignup",
             {
               "Fn::Join": [
                 "",
                 [
-                  "chatterchessLambdaRole1c9b9613",
+                  "accountsPreSignup",
                   "-",
                   {
                     "Ref": "env"
@@ -121,6 +125,45 @@
               "Action": [
                 "sts:AssumeRole"
               ]
+            }
+          ]
+        }
+      }
+    },
+    "lambdaadminlinkaccountsforuserpolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "lambda-admin-link-accounts-for-users-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "cognito-idp:ListUsers",
+                "cognito-idp:AdminLinkProviderForUser"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:cognito-idp:${region}:${account}:userpool/us-east-1_N3Ql8LVqz",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
             }
           ]
         }
@@ -168,59 +211,6 @@
           ]
         }
       }
-    },
-    "AmplifyResourcesPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-lambda-execution-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "appsync:Create*",
-                "appsync:StartSchemaCreation",
-                "appsync:GraphQL",
-                "appsync:Get*",
-                "appsync:List*",
-                "appsync:Update*",
-                "appsync:Delete*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apigamesGraphQLAPIIdOutput"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
     }
   },
   "Outputs": {
@@ -237,14 +227,14 @@
         ]
       }
     },
-    "Region": {
-      "Value": {
-        "Ref": "AWS::Region"
-      }
-    },
     "LambdaExecutionRole": {
       "Value": {
         "Ref": "LambdaExecutionRole"
+      }
+    },
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
       }
     }
   }

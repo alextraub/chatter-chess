@@ -9,6 +9,18 @@ Parameters:
     Type: String
   
   
+  
+  
+  functionaccountsPreSignupArn: 
+    Type: String
+    Default: functionaccountsPreSignupArn
+  
+  functionaccountsPreSignupName: 
+    Type: String
+    Default: functionaccountsPreSignupName
+  
+  
+  
 
     
   identityPoolName:
@@ -231,6 +243,19 @@ Resources:
         
       
       
+      LambdaConfig:
+        
+        
+        
+        
+        
+        
+        
+          PreSignUp: !Ref functionaccountsPreSignupArn
+        
+        
+        
+      
       
       AutoVerifiedAttributes: !Ref autoVerifiedAttributes
       
@@ -241,10 +266,10 @@ Resources:
       Policies:
         PasswordPolicy:
           MinimumLength: !Ref passwordPolicyMinLength
-          RequireLowercase: false
+          RequireLowercase: true
           RequireNumbers: false
           RequireSymbols: false
-          RequireUppercase: false
+          RequireUppercase: true
       
       UsernameAttributes: !Ref usernameAttributes
           
@@ -263,6 +288,15 @@ Resources:
     
     
   
+  
+  UserPoolPreSignupLambdaInvokePermission: 
+    Type: "AWS::Lambda::Permission"
+    DependsOn: UserPool
+    Properties: 
+      Action: "lambda:invokeFunction"
+      Principal: "cognito-idp.amazonaws.com"
+      FunctionName: !Ref functionaccountsPreSignupName
+      SourceArn: !GetAtt UserPool.Arn
   
    
     
