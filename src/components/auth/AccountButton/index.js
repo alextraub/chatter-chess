@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import { Button, Spinner, Tooltip } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const SignInAndOutButton = ({ user: { loading, data } }) => {
+const AccountButton = ({ user: { loading, data } }) => {
 	const [isLoading, setLoading] = useState(true); // Signals a change of the currently authenticated user
 
 	const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -57,11 +57,11 @@ const SignInAndOutButton = ({ user: { loading, data } }) => {
 	)
 }
 
-SignInAndOutButton.propTypes = {
+AccountButton.propTypes = {
 	user: PropTypes.shape({
 		loading: PropTypes.bool, // An API call is in progress when true
 		data: PropTypes.any // Data payload from the authenticated user, or null if there isn't one
 	})
 }
 
-export default SignInAndOutButton;
+export default AccountButton;

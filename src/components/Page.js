@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import SignInAndOutButton from './SignInAndOutButton';
+import AccountButton from './auth/AccountButton';
 import { Container } from 'reactstrap';
-import { useHistory, useLocation } from 'react-router-dom';
 import redirect from '../utils/redirect';
 
-const Page = ({ children, hasAccountButton, centered, requireSignIn, user }) => {
-	const location = useLocation();
-	const history = useHistory();
+const Page = ({ children, hasAccountButton, centered, requireSignIn, user, location, history }) => {
 
 	useEffect(() => {
 		const rCondtion = () => requireSignIn && !user.loading && user.data === null;
@@ -16,7 +13,7 @@ const Page = ({ children, hasAccountButton, centered, requireSignIn, user }) => 
 
 	const renderAccountButton = () => {
 		return hasAccountButton ?
-			<SignInAndOutButton user={user} /> : '';
+			<AccountButton user={user} /> : '';
 	}
 
 	return (
@@ -39,7 +36,9 @@ Page.propTypes = {
 		data: PropTypes.object
 	}).isRequired,
 	children: PropTypes.element,
-	requireSignIn: PropTypes.bool
+	requireSignIn: PropTypes.bool,
+	history: PropTypes.object,
+	location: PropTypes.object
 }
 
 export default Page;

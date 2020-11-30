@@ -14,15 +14,15 @@ const SignInForm = ({ initialAlert, user }) => {
 	const [alert, setAlert] = useState({ ...initialAlert });
 
 	const handleLogin = useCallback(() => {
+		// Redirect condtion
 		const shouldRedirect = () => user.data !== null;
-		// const fallback = location.state === undefined ||
-		// 	location.state.from === undefined || location.state.from === location.pathname;
-		// const rPath = fallback ? '/' : location.state.from;
 
+		// Return if a redirect took place
 		return redirect('/', location, history, {}, shouldRedirect);
 	}, [location, history, user.data]);
 
 	useEffect(() => {
+		// Redirect users that are already signed in
 		if(!handleLogin()) {
 			if(location.state && location.state.alert !== undefined) {
 				setAlert(location.state.alert);
@@ -30,11 +30,13 @@ const SignInForm = ({ initialAlert, user }) => {
 		}
 	}, [location, history, user.data, handleLogin]);
 
+	// State for the form input fields
 	const [formData, setFormData] = useState({
 		email: '',
 		password: ''
 	});
 
+	/* Handler for onChange event for email and password fields, based on their input name attribute */
 	const handleChange = e => {
 		setFormData({
 			...formData,
@@ -42,6 +44,7 @@ const SignInForm = ({ initialAlert, user }) => {
 		})
 	}
 
+	/* Helper function to hide any currently displayed alert */
 	const hideAlert = () => {
 		setAlert({
 			...alert,
@@ -49,6 +52,7 @@ const SignInForm = ({ initialAlert, user }) => {
 		});
 	}
 
+	/* Helper function to display an error alert using danger theme colors */
 	const setError = newContent => {
 		setAlert({
 			...alert,
@@ -62,12 +66,12 @@ const SignInForm = ({ initialAlert, user }) => {
 
 		await Auth.signIn(formData.email, formData.password)
 			.then(creds => {
-				if(creds) {
+				if(creds) { // Successfully got credentials from the API response
 					handleLogin();
 				}
-			}, data => {
+			}, data => { // Failed to sign in
 				console.log(data);
-				if(!user.loading) {
+				if(!user.loading) { // Don't display an error until loading is finished
 					setError(<>
 						Email or password is invalid.&nbsp;<Link to={linkTo('/resend-verification', location)}>Resend verification link</Link>
 					</>)
@@ -75,6 +79,7 @@ const SignInForm = ({ initialAlert, user }) => {
 			});
 	}
 
+	/* Renders out the form portion of the component */
 	const renderForm = () => (
 		<Form onSubmit={handleSubmit}>
 			<FormGroup>
@@ -99,7 +104,8 @@ const SignInForm = ({ initialAlert, user }) => {
 					placeholder="Password"
 					onChange={handleChange} />
 			</FormGroup>
-			<Button type="submit">Login</Button>
+			<Button type="submit" className="m-lg-2">Login</Button>
+			<br className="d-lg-none" />
 			<Link to={linkTo("/forgot-password", location)}>Reset password</Link>
 		</Form>
 	)

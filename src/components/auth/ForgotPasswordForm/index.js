@@ -11,7 +11,7 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 	const location = useLocation();
 	const history = useHistory();
 
-	const [step, setStep] = useState(0);
+	const [step, setStep] = useState(0); // 0 - send code via email, 1 - change password
 	const [email, setEmail] = useState('');
 	const [alert, setAlert] = useState({
 		...initialAlert
@@ -20,17 +20,11 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 	const [passwords, setPasswords] = useState({
 		password: '',
 		confirmPassword: ''
-	});
+	}); // Holds both the password and confirmation of the password
 
 	const [passwordChanged, setPasswordChanged] = useState(false);
 
-	const setError = content => {
-		setAlert({
-			type: 'danger',
-			content
-		})
-	}
-
+	/* IMPORTANT - this function may not reflect the serverside validation, it is only here to cut down on the number of API requests made during account signup */
 	const validPassword = () => {
 		const { password } = passwords;
 
@@ -38,20 +32,14 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 			password.match(/[a-z]/) !== null && password.match(/[A-Z]/) !== null;
 	}
 
+	/* IMPORTANT - this function may not reflect the serverside validation, it is only here to cut down on the number of API requests made during account signup */
 	const invalidPassword = () => {
 		return passwordChanged && !validPassword();
 	}
 
-	function handlePasswordChange(e) {
-		if(e.target.name === 'password' && !passwordChanged) {
-			setPasswordChanged(true);
-		}
-		setPasswords({
-			...passwords,
-			[e.target.name]: e.target.value
-		});
-	}
 
+
+	/* Helper function to hide any displayed alert */
 	const hideAlert = () => {
 		setAlert({
 			...alert,
@@ -59,6 +47,7 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 		});
 	}
 
+	/* Helper function to redirect the user back to the signin page and display an alert informing them that their password has been changted */
 	const showSuccessAlert = () => {
 		redirect('/signin', location, history, {
 			alert: {
@@ -68,9 +57,38 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 		});
 	}
 
+	/* Helper function to display an alert using danger theme colors */
+	const setError = content => {
+		setAlert({
+			type: 'danger',
+			content
+		})
+	}
+
+	/* Handles onChange events for the passwordd fields, based on the input field's name attribute */
+	function handlePasswordChange(e) {
+	// Handle first password (name not type) field onChange event
+		if(e.target.name === 'password' && !passwordChanged) {
+			setPasswordChanged(true);
+		}
+
+		setPasswords({
+			...passwords,
+			[e.target.name]: e.target.value
+		});
+	}
+
+	/* Only allow digits to be entered into the code field in step 1 */
+	const handleCodeChange = e => {
+		if(e.target.value.length === 0 || e.target.value.charAt(e.target.value.length - 1).match(/[0-9]/)) {
+			setCode(e.target.value);
+		}
+	}
+
 	const handleSubmit = async e => {
 		e.preventDefault();
 
+		// Handle sneding of verification email
 		if(step === 0) {
 			try {
 				await Auth.forgotPassword(email)
@@ -90,7 +108,8 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 			} catch {
 				//
 			}
-		} else if(step === 1) {
+		} else if(step === 1) { // Handle submission of new password verification
+			// Client side error messages
 			if(code.length !== 6) {
 				setError('Verification code must be 6 digits');
 			} if(!validPassword()) {
@@ -102,12 +121,13 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 			} else if(passwords.password !== passwords.confirmPassword) {
 				setError('Make sure your passwords match')
 			} else {
+				// Server side API request and response handling
 				try {
 					await Auth.forgotPasswordSubmit(email, code, passwords.password)
 						.then(() => {
-							showSuccessAlert();
+							showSuccessAlert(); // Change successful
 						}, () => {
-							setError('Oh no! Something went wrong!');
+							setError('Oh no! Something went wrong!'); // Password change failed
 						});
 				} catch {
 					//
@@ -117,6 +137,11 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 		}
 	}
 
+
+
+
+
+	/* Renders the form for step 0 */
 	const renderStep0 = () => {
 		return <Form inline onSubmit={handleSubmit}>
 			<InputGroup>
@@ -132,12 +157,7 @@ const ForgotPasswordForm = ({ initialAlert }) => {
 		</Form>
 	}
 
-	const handleCodeChange = e => {
-		if(e.target.value.length === 0 || e.target.value.charAt(e.target.value.length - 1).match(/[0-9]/)) {
-			setCode(e.target.value);
-		}
-	}
-
+	/* Render the form for step 1 */
 	const renderStep1 = () => {
 		return <Form onSubmit={handleSubmit}>
 			<FormGroup>

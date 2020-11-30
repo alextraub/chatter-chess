@@ -7,14 +7,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Amplify from "aws-amplify";
 import awsConfig from "./awsConfig";
-import { BrowserRouter as Router } from 'react-router-dom';
 
 Amplify.configure(awsConfig);
 
 ReactDOM.render(
-	<Router>
-		<App />
-	</Router>,
+	<App />,
 	document.getElementById('root')
 );
 

@@ -13,26 +13,29 @@ const SignUpForm = ({ initialAlert, user }) => {
 	const history = useHistory();
 
 	useEffect(() => {
+		// Redirect users that are already signed in
 		const shouldRedirect = () => user.data !== null;
 		const fallback = location.state === undefined ||
 			location.state.from === undefined || location.state.from === location.pathname;
 		const rPath = fallback ? '/' : location.state.from;
 
-		if(!redirect(rPath, location, history, {}, shouldRedirect)) {
-			if(location.state && location.state.alert !== undefined) {
+		if(!redirect(rPath, location, history, {}, shouldRedirect)) { // If no redirect happened this render
+			if(location.state && location.state.alert !== undefined) { // Remove any alerts in the route state that have already been shown
 				setAlert(location.state.alert);
 			}
 		}
 	}, [location, history, user.data]);
 
+	// Keep track of all the form input data
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
 		confirmPassword: ''
 	});
-	const [passwordChanged, setPasswordChanged] = useState(false);
-	const [alert, setAlert] = useState({ ...initialAlert })
+	const [passwordChanged, setPasswordChanged] = useState(false); // Detect the first time the password field has a change made
+	const [alert, setAlert] = useState({ ...initialAlert }); // Load in the initailAlert and allow it to be updated depending on the formData
 
+	/* Clears the alert content which will cause the component to hide the alert element */
 	const hideAlert = () => {
 		setAlert({
 			...alert,
@@ -40,6 +43,7 @@ const SignUpForm = ({ initialAlert, user }) => {
 		});
 	}
 
+	/* Helper function that sets an alert and displays it with the danger theme colors */
 	const setError = newContent => {
 		setAlert({
 			...alert,
@@ -48,16 +52,20 @@ const SignUpForm = ({ initialAlert, user }) => {
 		});
 	}
 
+	/* Fired anytime a change event is fired from one of the form input fields and updates the related attribute in the formData based on the input's name attribute */
 	function handleChange(e) {
+		// Handle first password input change
 		if(e.target.name === 'password' && !passwordChanged) {
 			setPasswordChanged(true);
 		}
+
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value
 		});
 	}
 
+	/* IMPORTANT - this function may not reflect the serverside validation, it is only here to cut down on the number of API requests made during account signup */
 	const validPassword = () => {
 		const { password } = formData;
 
@@ -65,12 +73,14 @@ const SignUpForm = ({ initialAlert, user }) => {
 			password.match(/[a-z]/) !== null && password.match(/[A-Z]/) !== null;
 	}
 
+	/* IMPORTANT - this function may not reflect the serverside validation, it is only here to cut down on the number of API requests made during account signup */
 	const invalidPassword = () => {
 		return passwordChanged && !validPassword();
 	}
 
 	async function handleSubmit(e) {
 		e.preventDefault();
+		// Client side error messages
 		if(!validPassword()) {
 			if(formData.password.length < 8) {
 				setError('Password must be at least 8 charcters');
@@ -80,6 +90,7 @@ const SignUpForm = ({ initialAlert, user }) => {
 		} else if(formData.password !== formData.confirmPassword) {
 			setError('Make sure your passwords match')
 		} else {
+			// Server side API request
 			try {
 				await Auth.signUp({
 					username: formData.email,
@@ -88,20 +99,22 @@ const SignUpForm = ({ initialAlert, user }) => {
 						email: formData.email
 					}
 				}).then(() => {
+					// On successful signup
 					redirect('/signin', location, history, {
 						alert: {
 							type: 'success',
 							content: 'Signed up successfully. Check your email for a verifcation link.'
 						}
 					});
-				}, data => setError(data.message))
-					.catch(err => console.log(err));
-			} catch (error) {
+				}, data => setError(data.message)) // Signup failure
+					.catch(err => console.log(err)); // Signup threw an exception
+			} catch (error) { // Catch all
 				console.log(error);
 			}
 		}
 	}
 
+	/* Renders out the form portion of the signup component */
 	const renderForm = () => {
 		return (
 			<Form onSubmit={handleSubmit}>

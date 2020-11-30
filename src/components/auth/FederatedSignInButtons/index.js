@@ -7,6 +7,9 @@ import PropTypes from 'prop-types';
 import { useLocation, useHistory } from 'react-router-dom';
 import redirect from '../../../utils/redirect';
 
+/*
+	A simple UI component that can make requests for OAuth verification with a fixed list of providers through the Amplify API to Cognito.
+ */
 const FederatedSignInButtons = ({ setAlert=() => {}, size='md', iconSize='2x', round, className='', user }) => {
 	const location = useLocation();
 	const history = useHistory();
@@ -29,6 +32,9 @@ const FederatedSignInButtons = ({ setAlert=() => {}, size='md', iconSize='2x', r
 		}
 	]
 
+	/*
+		Helper function to set an alert of parent component with danger theme colors
+	 */
 	const setError = content => {
 		setAlert({
 			type: 'danger',

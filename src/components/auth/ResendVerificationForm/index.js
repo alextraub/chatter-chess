@@ -15,6 +15,7 @@ const ResendVerificationForm = ({ initialAlert }) => {
 		...initialAlert
 	});
 
+	/* Helper function to hide any currently displayed alert */
 	const hideAlert = () => {
 		setAlert({
 			...alert,
@@ -22,6 +23,7 @@ const ResendVerificationForm = ({ initialAlert }) => {
 		});
 	}
 
+	/* Helper function that will redirect to the signin page that will also display an alert informing user that an email was sent */
 	const showSuccessAlert = () => {
 		redirect('/signin', location, history, {
 			alert: {
