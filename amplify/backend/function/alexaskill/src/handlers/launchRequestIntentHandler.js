@@ -7,8 +7,7 @@ module.exports = {
 
 		return handlerInput.responseBuilder
 			.speak(speechText)
-			.reprompt(speechText)
-			.withSimpleCard('Hello World', speechText)
+			.reprompt('What would you like to do?')
 			.getResponse();
 	}
 };

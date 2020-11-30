@@ -1,5 +1,4 @@
 {
-	"userPoolId": "us-east-1_N3Ql8LVqz",
 	"triggerSource": "PreSignUp_ExternalProvider",
 	"request": {
 		"userAttributes": {

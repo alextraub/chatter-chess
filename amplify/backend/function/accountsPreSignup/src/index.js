@@ -1,4 +1,7 @@
-/*
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT *//*
 A lambda function that automatically links any OAuth signups with a user with the same email, if one exists, otherwise the auth flow continues
 as it normally would.
 */
