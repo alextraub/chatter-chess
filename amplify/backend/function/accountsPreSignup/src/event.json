@@ -3,7 +3,7 @@
 	"triggerSource": "PreSignUp_ExternalProvider",
 	"request": {
 		"userAttributes": {
-			"email": "test@domain.com"
+			"email": "atraub123@gmail.com"
 		}
 	},
 	"response": {}
