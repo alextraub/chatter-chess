@@ -5,44 +5,48 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { Auth, Hub } from 'aws-amplify';
-import { createGame, deleteGame } from "./graphql/mutations";
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import * as mutations from "./graphql/mutations";
+import Amplify, { API } from 'aws-amplify';
 import awsconfig from './aws-exports';
+import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
+import GameList from "./components/GameList";
 Amplify.configure(awsconfig);
+const {v4 : uuidv4} = require('uuid');
 
 const App = () => {
 	const [user, setUser] = useState({ data: null, loading: true });
 
 	useEffect(() => {
+		const uuid = uuidv4();
+
 		const addGame = async() => {
 			try {
-				const game = {owner: Auth.currentAuthenticatedUser()};
-				const gameData = await API.graphql(graphqlOperation(createGame, {input: game}));
+				const game = {id: uuid, type: "Online"};
+				const gameData = await API.graphql({query: mutations.createGame, variables: {input: game}, authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS});
 				console.log('Game', gameData);
 			} catch (error) {
 				console.log('error on creating game', error);
 			}
 		};
-		const removeGame = async() => {
-			try {
-				const game = {owner: Auth.currentAuthenticatedUser()};
-				await API.graphql(graphqlOperation(deleteGame, {input: game}));
-			} catch (error) {
-				console.log('error on deleting game', error);
-			}
-		};
+
 		Hub.listen('auth', ({ payload: { event, data } }) => {
 			// eslint-disable-next-line default-case
+			console.log(event);
 			switch (event) {
 			case 'signIn':
-			case 'cognitoHostedUI':
-				getUser().then(userData => setUser({ data: userData, loading: false }));
 				addGame();
 				break;
+			case 'cognitoHostedUI':
+				getUser().then(userData => setUser({ data: userData, loading: false }));
+				break;
 			case 'signOut':
-				removeGame();
+				// removeGame();
 				setUser({ data: null, loading: false });
 				break;
+			// case 'oAuthSignOut':
+			// 	removeGame();
+			// 	setUser({ data: null, loading: false });
+			// 	break;
 			case 'signIn_failure':
 			case 'cognitoHostedUI_failure':
 				console.error('Sign in failure', data);
@@ -68,6 +72,9 @@ const App = () => {
 				<Switch>
 					<Route path="/privacy">
 						<PrivacyPolicy />
+					</Route>
+					<Route path="/games">
+						<GameList />
 					</Route>
 					<Route path="/">
 						<GameContainer />

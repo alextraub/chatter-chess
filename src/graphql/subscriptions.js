@@ -2,23 +2,12 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateGame = /* GraphQL */ `
-  subscription OnCreateGame {
-    onCreateGame {
+  subscription OnCreateGame($owner: String!) {
+    onCreateGame(owner: $owner) {
       id
-      type
-      players {
-        team
-      }
-      turn {
-        number
-        player {
-          team
-        }
-      }
+      turn
       pieces {
-        player {
-          team
-        }
+        player
         type
         captured
         position {
@@ -26,36 +15,28 @@ export const onCreateGame = /* GraphQL */ `
           col
         }
       }
-      check {
-        player {
-          team
-        }
+      checkStatusWhite {
+        status
+        mate
+      }
+      checkStatusBlack {
         status
         mate
       }
       createdAt
       updatedAt
+      version
+      owner
     }
   }
 `;
 export const onUpdateGame = /* GraphQL */ `
-  subscription OnUpdateGame {
-    onUpdateGame {
+  subscription OnUpdateGame($owner: String!) {
+    onUpdateGame(owner: $owner) {
       id
-      type
-      players {
-        team
-      }
-      turn {
-        number
-        player {
-          team
-        }
-      }
+      turn
       pieces {
-        player {
-          team
-        }
+        player
         type
         captured
         position {
@@ -63,36 +44,28 @@ export const onUpdateGame = /* GraphQL */ `
           col
         }
       }
-      check {
-        player {
-          team
-        }
+      checkStatusWhite {
+        status
+        mate
+      }
+      checkStatusBlack {
         status
         mate
       }
       createdAt
       updatedAt
+      version
+      owner
     }
   }
 `;
 export const onDeleteGame = /* GraphQL */ `
-  subscription OnDeleteGame {
-    onDeleteGame {
+  subscription OnDeleteGame($owner: String!) {
+    onDeleteGame(owner: $owner) {
       id
-      type
-      players {
-        team
-      }
-      turn {
-        number
-        player {
-          team
-        }
-      }
+      turn
       pieces {
-        player {
-          team
-        }
+        player
         type
         captured
         position {
@@ -100,15 +73,18 @@ export const onDeleteGame = /* GraphQL */ `
           col
         }
       }
-      check {
-        player {
-          team
-        }
+      checkStatusWhite {
+        status
+        mate
+      }
+      checkStatusBlack {
         status
         mate
       }
       createdAt
       updatedAt
+      version
+      owner
     }
   }
 `;

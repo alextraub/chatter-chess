@@ -1,0 +1,14 @@
+.gameList {
+    display: flex;
+    flex-direction: column;
+}
+
+.gameCard {
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+}
+
+.gameButton {
+    padding: 5px;
+}

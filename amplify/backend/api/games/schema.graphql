@@ -48,8 +48,8 @@ type Turn {
 type Game @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
   id: ID!
 	type: GameType!
-	players: [Player]!
-  turn: Turn!
-	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured
-	check: [CheckStatus!]! # Each team should have 1 element in the list
+	players: [Player]
+  turn: Turn
+	pieces: [Piece] # All pieces, for all teams, captured and uncaptured
+	check: [CheckStatus] # Each team should have 1 element in the list
 }
