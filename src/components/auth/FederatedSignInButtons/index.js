@@ -10,7 +10,7 @@ import redirect from '../../../utils/redirect';
 /*
 	A simple UI component that can make requests for OAuth verification with a fixed list of providers through the Amplify API to Cognito.
  */
-const FederatedSignInButtons = ({ setAlert=() => {}, size='md', iconSize='2x', round, className='', user }) => {
+const FederatedSignInButtons = ({ setAlert=() => {}, size='md', iconSize='2x', round, className='' }) => {
 	const location = useLocation();
 	const history = useHistory();
 
@@ -47,23 +47,17 @@ const FederatedSignInButtons = ({ setAlert=() => {}, size='md', iconSize='2x', r
 			{providers.map(({ name, icon, provider }) => (
 				<ListGroupItem style={{border: 'none', background: 'none'}} key={name}>
 					<Button size={size} onClick={async () => {
-						if(user.loading) {
-							return;
-						} else if(user.data !== null) {
-							setError('You are already signed in');
-						} else {
-							try {
-								await Auth.federatedSignIn({ provider })
-									.then(creds => {
-										const rConditon = () => !!creds;
-										const rPath = location.state === undefined || location.state.from === undefined || location.state.from === location.pathname ?
-											'/' : location.state.from;
+						try {
+							await Auth.federatedSignIn({ provider })
+								.then(creds => {
+									const rConditon = () => !!creds;
+									const rPath = location.state === undefined || location.state.from === undefined || location.state.from === location.pathname ?
+										'/' : location.state.from;
 
-										redirect(rPath, location, history, {}, rConditon);
-									});
-							} catch (error) {
-								setError('Something went wrong whwile trying to authenticat you. Please try again later.');
-							}
+									redirect(rPath, location, history, {}, rConditon);
+								});
+						} catch (error) {
+							setError('Something went wrong whwile trying to authenticat you. Please try again later.');
 						}
 					}}
 					className={`${round ? 'btn-circle' : ''} social ${name}`.trim()}>
@@ -80,11 +74,7 @@ FederatedSignInButtons.propTypes = {
 	iconSize: PropTypes.string,
 	round: PropTypes.bool,
 	className: PropTypes.string,
-	setAlert: PropTypes.func,
-	user: PropTypes.shape({
-		data: PropTypes.object,
-		loading: PropTypes.bool
-	}).isRequired
+	setAlert: PropTypes.func
 }
 
 export default FederatedSignInButtons;

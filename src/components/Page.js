@@ -1,19 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import AccountButton from './auth/AccountButton';
 import { Container } from 'reactstrap';
-import redirect from '../utils/redirect';
 
-const Page = ({ children, hasAccountButton, centered, requireSignIn, user, location, history }) => {
-
-	useEffect(() => {
-		const rCondtion = () => requireSignIn && !user.loading && user.data === null;
-		redirect('/signin', location, history, {}, rCondtion);
-	});
+const Page = ({ children, noAccountButton, requireSignIn, centered }) => {
 
 	const renderAccountButton = () => {
-		return hasAccountButton ?
-			<AccountButton user={user} /> : '';
+		return !noAccountButton ?
+			<AccountButton requireSignIn={requireSignIn} /> : '';
 	}
 
 	return (
@@ -29,16 +23,10 @@ const Page = ({ children, hasAccountButton, centered, requireSignIn, user, locat
 }
 
 Page.propTypes = {
-	hasAccountButton: PropTypes.bool,
-	centered: PropTypes.bool,
-	user: PropTypes.shape({
-		loading: PropTypes.bool,
-		data: PropTypes.object
-	}).isRequired,
-	children: PropTypes.element,
 	requireSignIn: PropTypes.bool,
-	history: PropTypes.object,
-	location: PropTypes.object
+	noAccountButton: PropTypes.bool,
+	centered: PropTypes.bool,
+	children: PropTypes.element
 }
 
 export default Page;

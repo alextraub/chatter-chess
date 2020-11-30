@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Row, Col, Form, Input, CardText, FormGroup, Label, Button } from 'reactstrap';
 import { Auth } from 'aws-amplify';
 import AuthUI from '../AuthUI';
@@ -7,19 +7,22 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import linkTo from '../../../utils/linkTo';
 import redirect from '../../../utils/redirect';
+import { AuthContext } from '../AuthProvider';
 
-const SignInForm = ({ initialAlert, user }) => {
+const SignInForm = ({ initialAlert }) => {
 	const location = useLocation();
 	const history = useHistory();
 	const [alert, setAlert] = useState({ ...initialAlert });
+	const auth = useContext(AuthContext);
+	const [loading, isLoading] = useState(false);
 
 	const handleLogin = useCallback(() => {
 		// Redirect condtion
-		const shouldRedirect = () => user.data !== null;
+		const shouldRedirect = () => auth.authenticated;
 
 		// Return if a redirect took place
 		return redirect('/', location, history, {}, shouldRedirect);
-	}, [location, history, user.data]);
+	}, [location, history, auth.authenticated]);
 
 	useEffect(() => {
 		// Redirect users that are already signed in
@@ -28,7 +31,7 @@ const SignInForm = ({ initialAlert, user }) => {
 				setAlert(location.state.alert);
 			}
 		}
-	}, [location, history, user.data, handleLogin]);
+	}, [location, history, handleLogin]);
 
 	// State for the form input fields
 	const [formData, setFormData] = useState({
@@ -63,18 +66,28 @@ const SignInForm = ({ initialAlert, user }) => {
 
 	const handleSubmit = async e => {
 		e.preventDefault();
+		isLoading(true);
 
 		await Auth.signIn(formData.email, formData.password)
 			.then(creds => {
 				if(creds) { // Successfully got credentials from the API response
 					handleLogin();
+					isLoading(false);
 				}
 			}, data => { // Failed to sign in
-				console.log(data);
-				if(!user.loading) { // Don't display an error until loading is finished
+				if(!loading) { // Don't display an error until loading is finished
 					setError(<>
 						Email or password is invalid.&nbsp;<Link to={linkTo('/resend-verification', location)}>Resend verification link</Link>
 					</>)
+					isLoading(false);
+				}
+			})
+			.catch(() => {
+				if(!loading) { // Don't display an error until loading is finished
+					setError(<>
+						Email or password is invalid.&nbsp;<Link to={linkTo('/resend-verification', location)}>Resend verification link</Link>
+					</>)
+					isLoading(false);
 				}
 			});
 	}
@@ -122,7 +135,7 @@ const SignInForm = ({ initialAlert, user }) => {
 				<Col>{renderForm()}</Col>
 				<Col>
 					<CardText>Sign in using a different method</CardText>
-					<FederatedSignInButtons user={user} className="my-1" setAlert={setAlert} round />
+					<FederatedSignInButtons className="my-1" setAlert={setAlert} round />
 				</Col>
 			</Row>
 		</AuthUI>
@@ -133,11 +146,7 @@ SignInForm.propTypes = {
 	initialAlert: PropTypes.shape({
 		type: PropTypes.string,
 		content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-	}),
-	user: PropTypes.shape({
-		loading: PropTypes.bool,
-		data: PropTypes.object
-	}).isRequired
+	})
 }
 
 SignInForm.defaultProps = {

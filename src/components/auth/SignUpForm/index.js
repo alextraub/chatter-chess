@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Form, Input, FormGroup, Label, Button, Row, Col, CardText } from 'reactstrap';
 import { Auth } from 'aws-amplify';
 import FederatedSignInButtons from '../FederatedSignInButtons';
@@ -7,14 +7,16 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import linkTo from '../../../utils/linkTo';
 import redirect from '../../../utils/redirect';
+import { AuthContext } from '../AuthProvider';
 
-const SignUpForm = ({ initialAlert, user }) => {
+const SignUpForm = ({ initialAlert }) => {
+	const auth = useContext(AuthContext);
 	const location = useLocation();
 	const history = useHistory();
 
 	useEffect(() => {
 		// Redirect users that are already signed in
-		const shouldRedirect = () => user.data !== null;
+		const shouldRedirect = () => auth.authenticated;
 		const fallback = location.state === undefined ||
 			location.state.from === undefined || location.state.from === location.pathname;
 		const rPath = fallback ? '/' : location.state.from;
@@ -24,7 +26,7 @@ const SignUpForm = ({ initialAlert, user }) => {
 				setAlert(location.state.alert);
 			}
 		}
-	}, [location, history, user.data]);
+	}, [location, history, auth.authenticated]);
 
 	// Keep track of all the form input data
 	const [formData, setFormData] = useState({
@@ -178,7 +180,7 @@ const SignUpForm = ({ initialAlert, user }) => {
 				</Col>
 				<Col>
 					<CardText>Sign in using a different method</CardText>
-					<FederatedSignInButtons user={user} className="my-1" setAlert={setAlert} round />
+					<FederatedSignInButtons className="my-1" setAlert={setAlert} round />
 				</Col>
 			</Row>
 		</AuthUI>
@@ -190,11 +192,7 @@ SignUpForm.propTypes = {
 	initialAlert: PropTypes.shape({
 		type: PropTypes.string,
 		content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-	}),
-	user: PropTypes.shape({
-		loading: PropTypes.bool,
-		data: PropTypes.object
-	}).isRequired
+	})
 }
 
 SignUpForm.defaultProps = {
