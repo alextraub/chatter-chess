@@ -24,8 +24,8 @@ const ChessPiece = ({ black, type, size, quantity, className, offsetX }) => {
 		case 'rook': return faChessRook;
 		case 'knight': return faChessKnight;
 		case 'bishop': return faChessBishop;
-		case 'queen': return faChessKing;
-		case 'king': return faChessQueen;
+		case 'queen': return faChessQueen;
+		case 'king': return faChessKing;
 		default: return faSquare;
 		}
 	}

@@ -1,3 +1,4 @@
+import "../node_modules//bootstrap/dist/css/bootstrap.min.css";
 import 'jquery/dist/jquery.slim';
 import './index.css';
 import React from 'react';
