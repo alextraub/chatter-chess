@@ -32,6 +32,10 @@ body {
 	}
 } */
 
+.social {
+	box-shadow: none !important;
+}
+
 .social.facebook {
 	border-color: #3b5998;
 	background-color: #3b5998;
@@ -40,6 +44,11 @@ body {
 .social.facebook:hover {
 	border-color: #1877f2;
 	background-color: #1877f2;
+}
+
+.social.facebook:focus:active {
+	border-color: #18a7f2;
+	background-color: #18a7f2;
 }
 
 .social.google {
@@ -52,6 +61,11 @@ body {
 	background-color: #ea4335;
 }
 
+.social.google:focus:active {
+	border-color: #fe7335;
+	background-color: #fe7335;
+}
+
 .social.amazon {
 	border-color: #e98300;
 	background-color: #e98300;
@@ -61,6 +75,11 @@ body {
 .social.amazon:hover {
 	border-color: #ff9900;
 	background-color: #ff9900;
+}
+
+.social.amazon:focus:active {
+	border-color: #ffcc00;
+	background-color: #ffcc00;
 }
 
 /* Credits: https://www.geeksforgeeks.org/how-to-get-circular-buttons-in-bootstrap-4/ */

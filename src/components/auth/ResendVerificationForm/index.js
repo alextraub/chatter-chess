@@ -3,13 +3,9 @@ import { Form, Input, InputGroup, Button } from 'reactstrap';
 import { Auth } from 'aws-amplify';
 import AuthUI from '../AuthUI';
 import PropTypes from 'prop-types';
-import { useLocation, useHistory } from 'react-router-dom';
 import redirect from '../../../utils/redirect';
 
-const ResendVerificationForm = ({ initialAlert }) => {
-	const location = useLocation();
-	const history = useHistory();
-
+const ResendVerificationForm = ({ initialAlert, location, history }) => {
 	const [email, setEmail] = useState('');
 	const [alert, setAlert] = useState({
 		...initialAlert
@@ -80,7 +76,9 @@ ResendVerificationForm.propTypes = {
 	initialAlert: PropTypes.shape({
 		type: PropTypes.string,
 		content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-	})
+	}),
+	location: PropTypes.object,
+	history: PropTypes.object
 }
 
 

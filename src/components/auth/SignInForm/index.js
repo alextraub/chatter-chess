@@ -3,15 +3,13 @@ import { Row, Col, Form, Input, CardText, FormGroup, Label, Button } from 'react
 import { Auth } from 'aws-amplify';
 import AuthUI from '../AuthUI';
 import FederatedSignInButtons from '../FederatedSignInButtons';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import linkTo from '../../../utils/linkTo';
 import redirect from '../../../utils/redirect';
 import { AuthContext } from '../AuthProvider';
 
-const SignInForm = ({ initialAlert }) => {
-	const location = useLocation();
-	const history = useHistory();
+const SignInForm = ({ initialAlert, history, location }) => {
 	const [alert, setAlert] = useState({ ...initialAlert });
 	const auth = useContext(AuthContext);
 	const [loading, isLoading] = useState(false);
@@ -146,7 +144,9 @@ SignInForm.propTypes = {
 	initialAlert: PropTypes.shape({
 		type: PropTypes.string,
 		content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-	})
+	}),
+	history: PropTypes.object,
+	location: PropTypes.object
 }
 
 SignInForm.defaultProps = {

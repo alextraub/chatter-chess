@@ -3,16 +3,14 @@ import { Form, Input, FormGroup, Label, Button, Row, Col, CardText } from 'react
 import { Auth } from 'aws-amplify';
 import FederatedSignInButtons from '../FederatedSignInButtons';
 import AuthUI from '../AuthUI';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import linkTo from '../../../utils/linkTo';
 import redirect from '../../../utils/redirect';
 import { AuthContext } from '../AuthProvider';
 
-const SignUpForm = ({ initialAlert }) => {
+const SignUpForm = ({ initialAlert, location, history }) => {
 	const auth = useContext(AuthContext);
-	const location = useLocation();
-	const history = useHistory();
 
 	useEffect(() => {
 		// Redirect users that are already signed in
@@ -158,8 +156,9 @@ const SignUpForm = ({ initialAlert }) => {
 						valid={validPassword() && formData.confirmPassword === formData.password}
 					/>
 				</FormGroup>
-				<Button>Sign up</Button>
-				<Link to={linkTo("/resend-verification", location)}>Resend verification email</Link>
+				<Button className="m-lg-2">Sign up</Button>
+				<br className="d-lg-none" />
+				<Link to={linkTo("/resend-verification", location)}>Resend email</Link>
 			</Form>
 		);
 	}
@@ -192,7 +191,9 @@ SignUpForm.propTypes = {
 	initialAlert: PropTypes.shape({
 		type: PropTypes.string,
 		content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-	})
+	}),
+	location: PropTypes.object,
+	history: PropTypes.object
 }
 
 SignUpForm.defaultProps = {

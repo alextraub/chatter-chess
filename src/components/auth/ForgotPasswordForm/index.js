@@ -3,13 +3,11 @@ import { Form, FormGroup, Label, Input, InputGroup, Button } from 'reactstrap';
 import { Auth } from 'aws-amplify';
 import AuthUI from '../AuthUI';
 import PropTypes from 'prop-types';
-import { useLocation, useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import redirect from '../../../utils/redirect';
 import linkTo from '../../../utils/linkTo';
 
-const ForgotPasswordForm = ({ initialAlert }) => {
-	const location = useLocation();
-	const history = useHistory();
+const ForgotPasswordForm = ({ initialAlert, location, history }) => {
 
 	const [step, setStep] = useState(0); // 0 - send code via email, 1 - change password
 	const [email, setEmail] = useState('');
@@ -218,7 +216,9 @@ ForgotPasswordForm.propTypes = {
 	initialAlert: PropTypes.shape({
 		type: PropTypes.string,
 		content: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
-	})
+	}),
+	location: PropTypes.object,
+	history: PropTypes.object
 }
 
 
