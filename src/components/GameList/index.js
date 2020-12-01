@@ -11,11 +11,8 @@ const {v4 : uuidv4} = require('uuid');
 Amplify.configure(awsconfig);
 
 const GameList = () => {
-    const uuidForDelete = uuidv4();
 
     const [games, setGames] = useState([]);
-
-    // const [gameToBeDeleted, setGameToBeDeleted] = useState(uuidForDelete);
 
     useEffect(() => {
         fetchGames();
@@ -24,7 +21,8 @@ const GameList = () => {
     const fetchGames = async () => {
         try {
             console.log("about to list games");
-            const gameData = await API.graphql({query: queries.listGames, variables: {owner: Auth.currentAuthenticatedUser().email}, authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS});
+            console.log("current username:", (await Auth.currentAuthenticatedUser()).getUsername());
+            const gameData = await API.graphql({query: queries.listGames, variables: {owner: (await Auth.currentAuthenticatedUser()).getUsername()}, authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS});
             console.log("game data retrieved");
             const gameList = gameData.data.listGames.items;
             console.log('game list', gameList);
@@ -37,38 +35,38 @@ const GameList = () => {
     const addGame = async() => {
         try {
             const uuid = uuidv4();
-            const pieces = [{player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "PAWN", captured: false},
-                {player: "WHITE", type: "ROOK", captured: false},
-                {player: "WHITE", type: "ROOK", captured: false},
-                {player: "WHITE", type: "KNIGHT", captured: false},
-                {player: "WHITE", type: "KNIGHT", captured: false},
-                {player: "WHITE", type: "BISHOP", captured: false},
-                {player: "WHITE", type: "BISHOP", captured: false},
-                {player: "WHITE", type: "KING", captured: false},
-                {player: "WHITE", type: "QUEEN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "PAWN", captured: false},
-                {player: "BLACK", type: "ROOK", captured: false},
-                {player: "BLACK", type: "ROOK", captured: false},
-                {player: "BLACK", type: "KNIGHT", captured: false},
-                {player: "BLACK", type: "KNIGHT", captured: false},
-                {player: "BLACK", type: "BISHOP", captured: false},
-                {player: "BLACK", type: "BISHOP", captured: false},
-                {player: "BLACK", type: "KING", captured: false},
-                {player: "BLACK", type: "QUEEN", captured: false}
+            const pieces = [{player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 0}},
+                {player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 1}},
+                {player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 2}},
+                {player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 3}},
+                {player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 4}},
+                {player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 5}},
+                {player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 6}},
+                {player: "WHITE", type: "PAWN", captured: false, position: {row: 1, col: 7}},
+                {player: "WHITE", type: "ROOK", captured: false, position: {row: 0, col: 0}},
+                {player: "WHITE", type: "ROOK", captured: false, position: {row: 0, col: 7}},
+                {player: "WHITE", type: "KNIGHT", captured: false, position: {row: 0, col: 1}},
+                {player: "WHITE", type: "KNIGHT", captured: false, position: {row: 0, col: 6}},
+                {player: "WHITE", type: "BISHOP", captured: false, position: {row: 0, col: 2}},
+                {player: "WHITE", type: "BISHOP", captured: false, position: {row: 0, col: 5}},
+                {player: "WHITE", type: "KING", captured: false, position: {row: 0, col: 4}},
+                {player: "WHITE", type: "QUEEN", captured: false, position: {row: 0, col: 3}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 0}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 1}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 2}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 3}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 4}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 5}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 6}},
+                {player: "BLACK", type: "PAWN", captured: false, position: {row: 6, col: 7}},
+                {player: "BLACK", type: "ROOK", captured: false, position: {row: 7, col: 0}},
+                {player: "BLACK", type: "ROOK", captured: false, position: {row: 7, col: 7}},
+                {player: "BLACK", type: "KNIGHT", captured: false, position: {row: 7, col: 1}},
+                {player: "BLACK", type: "KNIGHT", captured: false, position: {row: 7, col: 6}},
+                {player: "BLACK", type: "BISHOP", captured: false, position: {row: 7, col: 2}},
+                {player: "BLACK", type: "BISHOP", captured: false, position: {row: 7, col: 5}},
+                {player: "BLACK", type: "KING", captured: false, position: {row: 7, col: 4}},
+                {player: "BLACK", type: "QUEEN", captured: false, position: {row: 7, col: 3}}
             ];
             const checkStatusWhite = {
                 status: false,
@@ -95,8 +93,6 @@ const GameList = () => {
 
     const removeGame = async(game) => {
     	try {
-            // console.log('generated uuid', uuidForDelete);
-    	    // console.log('uuid', gameToBeDeleted);
     		console.log('About to remove game');
     		const gameToBeDeleted = {id: game.id, expectedVersion: game.version};
     		console.log('Removing Game', game);
@@ -109,7 +105,7 @@ const GameList = () => {
 
     return (
         <div className="gameList">
-            <h1 style={{color: 'white'}}>Games</h1>
+            <h1 style={{color: 'white'}}>Your Games</h1>
             <Button color="primary" onClick={() => {
                 addGame();
             }}>Create New Game</Button>
@@ -123,9 +119,8 @@ const GameList = () => {
                             <div style={{float: 'left'}}>
                                 <Button className="gameButton" color="success" onClick={() => {
 
-                                }}>Play Game</Button>
+                                }}>Play Game</Button>{' '}
                                 <Button className="gameButton" color="danger" onClick={() => {
-                                    // setGameToBeDeleted(game.id);
                                     removeGame(game);
                                 }}>Forfeit Game</Button>
                             </div>
