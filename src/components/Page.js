@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AccountButton from './auth/AccountButton';
 import { Container } from 'reactstrap';
+import AuthType from '../types/AuthType';
 
-const Page = ({ children, noAccountButton, requireSignIn, centered }) => {
+const Page = ({ children, noAccountButton, authType, centered, location, history }) => {
 
 	const renderAccountButton = () => {
 		return !noAccountButton ?
-			<AccountButton requireSignIn={requireSignIn} /> : '';
+			<AccountButton authType={authType} location={location} history={history} /> : '';
 	}
 
 	return (
@@ -23,10 +24,12 @@ const Page = ({ children, noAccountButton, requireSignIn, centered }) => {
 }
 
 Page.propTypes = {
-	requireSignIn: PropTypes.bool,
+	authType: PropTypes.oneOf(Object.entries(AuthType).map(([_, v]) => v)),
 	noAccountButton: PropTypes.bool,
 	centered: PropTypes.bool,
-	children: PropTypes.element
+	children: PropTypes.element,
+	location: PropTypes.object,
+	history: PropTypes.object
 }
 
 export default Page;

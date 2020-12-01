@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Auth, Hub } from 'aws-amplify';
 
@@ -21,51 +21,32 @@ const AuthProvider = props => {
 	const [hasSession, setHasSession] = useState(false); // Make sure session only is loaded on the first load
 
 	/*
-		Loads a session with any saved authenticated user
-		This should only be called on the first load where there isn't any session loaded yet
-	 */
-	const loadSession = useCallback(async () => {
-		try {
-			await Auth.currentSession();
-			const user = await Auth.currentAuthenticatedUser();
-			setAuthState({
-				authenticated: true,
-				user
-			});
-		} catch (err) {
-			setAuthState({
-				authenticated: false,
-				user: null
-			});
-		}
-	}, []);
-
-	/*
-		Loads current authenticated user.
-		This should only be called after a session has been loaded and there is no current authenticated user prior to the call to this function
-	*/
-	const loadUser = useCallback(async () => {
-		try {
-			const user = await Auth.currentAuthenticatedUser();
-			setAuthState({
-				user,
-				authenticated: true
-			});
-		} catch {
-			setAuthState({
-				user: null,
-				authenticated: false
-			})
-		}
-	}, []);
-
-	/*
 		Keeps authentication state updated when a session is yet to be loaded, a user signs in, or a user signs out.
 	*/
 	useEffect(() => {
+		async function loadSession() {
+			await Auth.currentSession();
+			return Auth.currentAuthenticatedUser();
+		}
+
 		if(!hasSession) {
-			loadSession();
+			try {
+				loadSession().then(data => {
+					setAuthState({
+						user: data,
+						authenticated: true
+					})
+				}).catch(() => {});
+			} catch (err) {
+				console.log(err);
+			}
 			setHasSession(true);
+		}
+
+		function getUser() {
+			return Auth.currentAuthenticatedUser()
+				.then(usr => usr)
+				.catch(err => console.log(err));
 		}
 
 		Hub.listen('auth', ({ payload: { event, data } }) => {
@@ -74,11 +55,16 @@ const AuthProvider = props => {
 					user: null,
 					authenticated: false
 				});
-			} else if(event === 'signIn' && hasSession) {
-				loadUser();
+			} else if(event === 'signIn' && hasSession && !authState.authenticated) {
+				getUser().then(usr => {
+					setAuthState({
+						user: usr,
+						authenticated: true
+					})
+				})
 			}
 		});
-	}, [hasSession, loadSession, authState, loadUser]);
+	}, [hasSession, authState]);
 
 	return (
 		<AuthContext.Provider value={authState}>

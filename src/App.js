@@ -1,3 +1,5 @@
+/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/display-name */
 import React from "react";
 import GameContainer from './components/GameContainer';
 import PrivacyPolicy from './components/PrivacyPolicy';
@@ -7,7 +9,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ForgotPasswordForm, ResendVerificationForm, SignInForm, SignUpForm } from './components/auth';
 import Page from './components/Page';
 import AuthProvider from './components/auth/AuthProvider';
-
+import routes from './routes';
 
 const App = () => {
 	// const addGame = async() => {
@@ -28,11 +30,21 @@ const App = () => {
 	// 	}
 	// };
 
+	const routeOptions = ({ path, component, key=path, passRouterProps=false, centered=false, requireSignIn=false, noAccountButton=false }) => ({
+		key,
+		path,
+		component,
+		passRouterProps,
+		centered,
+		requireSignIn,
+		noAccountButton
+	});
+
 	return (
 		<Router>
 			<AuthProvider>
 				<Switch>
-					<Route exact path="/signin">
+					{/* <Route exact path="/signin">
 						<Page centered noAccountButton>
 							<SignInForm />
 						</Page>
@@ -61,7 +73,8 @@ const App = () => {
 						<Page>
 							<PrivacyPolicy />
 						</Page>
-					</Route>
+					</Route> */}
+					{routes}
 				</Switch>
 			</AuthProvider>
 		</Router>

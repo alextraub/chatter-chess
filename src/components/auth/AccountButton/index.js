@@ -2,14 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Auth } from 'aws-amplify';
 import { Button, Spinner, Tooltip } from 'reactstrap';
 import { AuthContext } from '../AuthProvider';
-import { useLocation, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import AuthType from '../../../types/AuthType';
 
-
-const AccountButton = ({requireSignIn}) => {
+const AccountButton = ({ authType, location, history }) => {
 	const auth = useContext(AuthContext);
-	const history = useHistory();
-	const location = useLocation();
 
 	const [signingOut, isSigningOut] = useState(false); // Signals a change of the currently authenticated user
 
@@ -19,12 +16,12 @@ const AccountButton = ({requireSignIn}) => {
 			isSigningOut(false);
 		}
 
-		if(!auth.authenticated && requireSignIn) {
+		if(!auth.authenticated && authType === AuthType.AUTH_ONLY) {
 			history.push('/signin', {
 				from: location.pathname
 			})
 		}
-	}, [signingOut, auth.authenticated, requireSignIn, location.pathname, history]);
+	}, [signingOut, auth.authenticated, authType, location.pathname, history]);
 
 	const [tooltipOpen, setTooltipOpen] = useState(false);
 	const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
@@ -53,11 +50,18 @@ const AccountButton = ({requireSignIn}) => {
 						{auth.user.attributes.email}
 					</Tooltip>
 				</> :
-				<Button color="primary" onClick={() => {
-					history.push('/signin', {
-						from: location.pathname
-					});
-				}}>Sign in</Button>
+				<>
+					<Button color="primary" onClick={() => {
+						history.push('/signin', {
+							from: location.pathname
+						});
+					}}>Sign in</Button>
+					<Button color="primary" outline onClick={() => {
+						history.push('/signup', {
+							from: location.pathname
+						});
+					}}>Register</Button>
+				</>
 		}
 	}
 
@@ -69,7 +73,9 @@ const AccountButton = ({requireSignIn}) => {
 }
 
 AccountButton.propTypes = {
-	requireSignIn: PropTypes.bool
+	authType: PropTypes.oneOf(Object.entries(AuthType).map(([_, v]) => v)),
+	location: PropTypes.object,
+	history: PropTypes.object
 }
 
 export default AccountButton;
