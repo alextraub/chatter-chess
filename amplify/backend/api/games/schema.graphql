@@ -1,9 +1,4 @@
-enum GameType {
-	Local,
-	Online
-}
-
-enum Team {
+enum Player {
 	WHITE,
 	BLACK
 }
@@ -16,10 +11,6 @@ enum PieceType {
 	QUEEN,
 	KING,
 	GENERIC
-}
-
-type Player {
-	team: Team!
 }
 
 type Position {
@@ -35,21 +26,14 @@ type Piece {
 }
 
 type CheckStatus {
-	player: Player!
 	status: Boolean! # true if in check
 	mate: Boolean # Should never be true if status is false
 }
 
-type Turn {
-	number: Int! # The number of turns taken in the game thus far
-	player: Player! # Which player's turn it is
-}
-
-type Game @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
+type Game @versioned @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
   id: ID!
-	type: GameType!
-	players: [Player]
-  turn: Turn
-	pieces: [Piece] # All pieces, for all teams, captured and uncaptured
-	check: [CheckStatus] # Each team should have 1 element in the list
+  turn: Int!
+	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured
+	checkStatusWhite: CheckStatus!
+	checkStatusBlack: CheckStatus!
 }

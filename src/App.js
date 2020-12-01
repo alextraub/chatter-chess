@@ -21,7 +21,54 @@ const App = () => {
 
 		const addGame = async() => {
 			try {
-				const game = {id: uuid, type: "Online"};
+				const pieces = [{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "PAWN", captured: false},
+					{player: "WHITE", type: "ROOK", captured: false},
+					{player: "WHITE", type: "ROOK", captured: false},
+					{player: "WHITE", type: "KNIGHT", captured: false},
+					{player: "WHITE", type: "KNIGHT", captured: false},
+					{player: "WHITE", type: "BISHOP", captured: false},
+					{player: "WHITE", type: "BISHOP", captured: false},
+					{player: "WHITE", type: "KING", captured: false},
+					{player: "WHITE", type: "QUEEN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "PAWN", captured: false},
+					{player: "BLACK", type: "ROOK", captured: false},
+					{player: "BLACK", type: "ROOK", captured: false},
+					{player: "BLACK", type: "KNIGHT", captured: false},
+					{player: "BLACK", type: "KNIGHT", captured: false},
+					{player: "BLACK", type: "BISHOP", captured: false},
+					{player: "BLACK", type: "BISHOP", captured: false},
+					{player: "BLACK", type: "KING", captured: false},
+					{player: "BLACK", type: "QUEEN", captured: false}
+				];
+				const checkStatusWhite = {
+					status: false,
+					mate: false
+				};
+				const checkStatusBlack = {
+					status: false,
+					mate: false
+				};
+				const game = {
+					id: uuid,
+					turn: 1,
+					pieces: pieces,
+					checkStatusWhite: checkStatusWhite,
+					checkStatusBlack: checkStatusBlack,
+				};
 				const gameData = await API.graphql({query: mutations.createGame, variables: {input: game}, authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS});
 				console.log('Game', gameData);
 			} catch (error) {
