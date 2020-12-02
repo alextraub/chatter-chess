@@ -106,7 +106,7 @@ class GameContainer extends React.Component {
 	 */
 	rollbackMove(from, fromPiece, to, toPiece) {
 		// Remove fromPiece from correct PieceSet in order to more easily add pieces using boardState
-		if(fromPiece.player === 0) {
+		if (fromPiece.player === 0) {
 			this.boardState.whitePieces.remove(fromPiece, from);
 		} else {
 			this.boardState.blackPieces.remove(fromPiece, from);
@@ -116,7 +116,7 @@ class GameContainer extends React.Component {
 		this.boardState.placePiece(fromPiece, from);
 
 		// Undo and place any captured piece
-		if(toPiece !== null) {
+		if (toPiece !== null) {
 			toPiece.captured = false;
 			this.boardState.placePiece(toPiece, to);
 		} else {
@@ -136,10 +136,10 @@ class GameContainer extends React.Component {
 		const toPiece = this.boardState.getPiece(to);
 		this.boardState.movePiece(from, to);
 
-		if(this.isInCheck(this.currentPlayer())) {
+		if (this.isInCheck(this.currentPlayer())) {
 			this.rollbackMove(from, fromPiece, to, toPiece);
 
-			return false ;
+			return false;
 		}
 
 		if (toPiece !== null) {
@@ -165,7 +165,7 @@ class GameContainer extends React.Component {
 					...prevCheck
 				}
 			});
-			if(!this.state.check.white.mate && !this.state.check.black.mate) {
+			if (!this.state.check.white.mate && !this.state.check.black.mate) {
 				await this.nextTurn();
 			}
 		}
@@ -180,7 +180,7 @@ class GameContainer extends React.Component {
 	getCheckFlags(player) {
 		let { check } = this.state;
 		const newStatus = this.isInCheck(player);
-		if(player === 0) {
+		if (player === 0) {
 			check = {
 				...check,
 				white: {
@@ -334,7 +334,7 @@ class GameContainer extends React.Component {
 		const result = Object.entries(pieces)
 			// Filter out any piece type with no captured pieces and then any that cannot be swapped in
 			.filter(([_, pieceArr]) => {
-				if(pieceArr.length > 0 && pieceArr[0].canSwapIn) {
+				if (pieceArr.length > 0 && pieceArr[0].canSwapIn) {
 					this.boardState.placePiece(pieceArr[0], to);
 					const causesCheck = this.isInCheck(this.currentPlayer());
 					return !causesCheck;
@@ -349,7 +349,7 @@ class GameContainer extends React.Component {
 				}
 			});
 
-		if(this.boardState.getPiece(to) !== curPiece) {
+		if (this.boardState.getPiece(to) !== curPiece) {
 			this.boardState.placePiece(curPiece, to);
 		}
 		return result;
@@ -372,7 +372,7 @@ class GameContainer extends React.Component {
 		newPiece.captured = false; // New piece no longer is captured
 		// Replace the piece
 		this.boardState.placePiece(newPiece, swapping);
-		if(this.currentPlayer() === 0) {
+		if (this.currentPlayer() === 0) {
 			this.capturedWhitePieces.pieces.pawn.push(piece);
 		} else {
 			this.capturedBlackPieces.pieces.pawn.push(piece);
@@ -442,16 +442,16 @@ class GameContainer extends React.Component {
 		);
 	}
 
-	isInCheck(player, checkCallback=inCheck) {
+	isInCheck(player, checkCallback = inCheck) {
 		const { pieces } = player === 0 ?
 			this.boardState.whitePieces :
 			this.boardState.blackPieces;
-		if(!pieces['king']) {
+		if (!pieces['king']) {
 			return false;
 		}
 
-		for(let pos of pieces['king']) {
-			if(checkCallback(pos, this.boardState, player)) {
+		for (let pos of pieces['king']) {
+			if (checkCallback(pos, this.boardState, player)) {
 				return true;
 			}
 		}
@@ -459,6 +459,12 @@ class GameContainer extends React.Component {
 		return false;
 	}
 
+	handleResetClick = () => {
+		return (
+			<div>{this.board}</div>
+		);
+
+	}
 	isInCheckMate(player) {
 		return this.isInCheck(player, inCheckMate);
 	}
@@ -468,7 +474,8 @@ class GameContainer extends React.Component {
 			<>
 				{/* <LoginModal loading={this.props.user.loading} isOpen={!this.props.user.data} /> */}
 				<div data-testid="game-container">
-					<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => {this.performSwap(type)}} />
+					<button onClick={this.handleResetClick}>reset</button>
+					<SwapPieces open={this.state.swapping !== false} swapList={this.state.swapList} performSwap={type => { this.performSwap(type) }} />
 					{this.renderStandardUI()}
 				</div>
 			</>
