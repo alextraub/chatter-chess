@@ -153,7 +153,7 @@
               ],
               "Resource": {
                 "Fn::Sub": [
-                  "arn:aws:cognito-idp:${region}:${account}:userpool/us-east-1_N3Ql8LVqz",
+                  "arn:aws:cognito-idp:${region}:${account}:userpool/us-east-1_rFvKDv48y",
                   {
                     "region": {
                       "Ref": "AWS::Region"

@@ -10,6 +10,8 @@ import Amplify, { API } from 'aws-amplify';
 import awsconfig from './aws-exports';
 // import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import GameList from "./components/GameList";
+import { Link } from 'react-router-dom'
+import Button from "@material-ui/core/Button";
 Amplify.configure(awsconfig);
 // const {v4 : uuidv4} = require('uuid');
 
@@ -110,6 +112,7 @@ const App = () => {
 	return (
 		<Router>
 			<SignInAndOutButton user={user} />
+			<Button component={Link} to="/games">Your Games</Button>
 			<Container className="justify-content-center">
 				<Switch>
 					<Route path="/privacy">

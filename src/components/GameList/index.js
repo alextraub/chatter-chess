@@ -32,6 +32,16 @@ const GameList = () => {
         }
     };
 
+    const fetchGame = async(game) => {
+    	try {
+    		const gameData = await API.graphql({query: queries.getGame, variables: {input: game}, authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS})
+			console.log("Fetched Game", gameData);
+		} catch (error) {
+    		console.log('error on fetching game', error);
+		}
+	}
+
+
     const addGame = async() => {
         try {
             const uuid = uuidv4();
@@ -118,7 +128,7 @@ const GameList = () => {
                             </div>
                             <div style={{float: 'left'}}>
                                 <Button className="gameButton" color="success" onClick={() => {
-
+									fetchGame(game);
                                 }}>Play Game</Button>{' '}
                                 <Button className="gameButton" color="danger" onClick={() => {
                                     removeGame(game);
