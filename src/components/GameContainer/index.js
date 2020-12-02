@@ -460,8 +460,51 @@ class GameContainer extends React.Component {
 	}
 
 	handleResetClick = () => {
-		return this.setState({ board: this.boardState.getBoard(), capturedWhitePieces: { ...this.capturedWhitePieces }, capturedBlackPieces: { ...this.capturedBlackPieces } });
-
+		this.boardState = boardState;
+		this.capturedWhitePieces = {
+			count: 0,
+			pieces: {
+				pawn: [],
+				rook: [],
+				knight: [],
+				bishop: [],
+				queen: [],
+				king: [],
+				generic: []
+			}
+		}
+		this.capturedBlackPieces = {
+			count: 0,
+			pieces: {
+				pawn: [],
+				rook: [],
+				knight: [],
+				bishop: [],
+				queen: [],
+				king: [],
+				generic: []
+			}
+		};
+		this.setState({
+			board: [...this.boardState.getBoard()],
+			check: {
+				white: {
+					previous: false,
+					status: false,
+					mate: false
+				},
+				black: {
+					previous: false,
+					status: false,
+					mate: false
+				}
+			},
+			capturedWhitePieces: { ...this.capturedWhitePieces },
+			capturedBlackPieces: { ...this.capturedBlackPieces },
+			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
+			swapList: [], // Possible types of pieces to swap
+			turn: this.isWhite
+		});
 	}
 	isInCheckMate(player) {
 		return this.isInCheck(player, inCheckMate);
