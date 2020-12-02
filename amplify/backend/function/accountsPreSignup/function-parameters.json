@@ -7,12 +7,10 @@
   "functionName": "accountsPreSignup",
   "resourceName": "accountsPreSignup",
   "parentStack": "auth",
-  "triggerEnvs": "[]",
+  "triggerEnvs": [],
   "triggerDir": "C:\\Users\\Alex\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PreSignup",
   "triggerTemplate": "PreSignup.json.ejs",
   "roleName": "accountsPreSignup",
   "skipEdit": true,
-  "enableCors": false,
-  "triggerEventPath": "PreSignup.event.json",
-  "permissions": {}
+  "enableCors": false
 }

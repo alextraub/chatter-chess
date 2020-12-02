@@ -2,6 +2,19 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Lambda resource stack creation using Amplify CLI",
   "Parameters": {
+    "DOMAINBLACKLIST": {
+      "Type": "String",
+      "Default": ""
+    },
+    "DOMAINWHITELIST": {
+      "Type": "String",
+      "Default": ""
+    },
+    "modules": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Comma-delimmited list of modules to be executed by a lambda trigger. Sent to resource as an env variable."
+    },
     "resourceName": {
       "Type": "String",
       "Default": ""
@@ -72,8 +85,17 @@
             "ENV": {
               "Ref": "env"
             },
+            "MODULES": {
+              "Ref": "modules"
+            },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "DOMAINWHITELIST": {
+              "Ref": "DOMAINWHITELIST"
+            },
+            "DOMAINBLACKLIST": {
+              "Ref": "DOMAINBLACKLIST"
             }
           }
         },
@@ -87,7 +109,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-chatterchess-dev-135711-deployment",
-          "S3Key": "amplify-builds/accountsPreSignup-2f663549577a45687642-build.zip"
+          "S3Key": "amplify-builds/accountsPreSignup-5852516870666863452f-build.zip"
         }
       }
     },
@@ -125,45 +147,6 @@
               "Action": [
                 "sts:AssumeRole"
               ]
-            }
-          ]
-        }
-      }
-    },
-    "lambdaadminlinkaccountsforuserpolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "lambda-admin-link-accounts-for-users-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "cognito-idp:ListUsers",
-                "cognito-idp:AdminLinkProviderForUser"
-              ],
-              "Resource": {
-                "Fn::Sub": [
-                  "arn:aws:cognito-idp:${region}:${account}:userpool/us-east-1_N3Ql8LVqz",
-                  {
-                    "region": {
-                      "Ref": "AWS::Region"
-                    },
-                    "account": {
-                      "Ref": "AWS::AccountId"
-                    }
-                  }
-                ]
-              }
             }
           ]
         }
