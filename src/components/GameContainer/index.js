@@ -460,7 +460,10 @@ class GameContainer extends React.Component {
 	}
 
 	handleResetClick = () => {
-		return this.setState({ board: this.boardState.getBoard(), capturedWhitePieces: { ...this.capturedWhitePieces }, capturedBlackPieces: { ...this.capturedBlackPieces } });
+		return (
+			<div>{this.board}</div>
+		);
+
 	}
 	isInCheckMate(player) {
 		return this.isInCheck(player, inCheckMate);
