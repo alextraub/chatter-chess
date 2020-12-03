@@ -12,6 +12,7 @@ const HelpIntentHandler = require('./handlers/helpIntentHandler');
 const CancelAndStopIntentHandler = require('./handlers/cancelAndStopIntentHandler');
 const SessionEndedRequestHandler = require('./handlers/sessionEndedRequestHandler');
 const ErrorHandler = require('./handlers/errorHandler');
+const MoveIntentHandler = require('./handlers/moveIntentHandler');
 
 let skill;
 
@@ -26,7 +27,8 @@ exports.handler = async function (event, context) {
 				HelloWorldIntentHandler,
 				HelpIntentHandler,
 				CancelAndStopIntentHandler,
-				SessionEndedRequestHandler
+				SessionEndedRequestHandler,
+				MoveIntentHandler
 			)
 			.addErrorHandlers(ErrorHandler)
 			.create();

@@ -1,3 +1,5 @@
+const Alexa = require('ask-sdk');
+
 module.exports = {
 	canHandle(handlerInput) {
 		return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -10,7 +12,7 @@ module.exports = {
 			const {from, to} = x.slots;
 			speakOutput = `Moving ${from.value} to ${to.value}`;
 		} else {
-			speakOutput = 'I wont make that move';
+			speakOutput = 'I will not make that move';
 		}
 		return handlerInput.responseBuilder
 			.speak(speakOutput)
