@@ -13,16 +13,29 @@ import Queen from './Queen';
 
 export default Piece;
 
-const createPiece = (type, boardState=null, player=0) => {
-	switch(type) {
-	case 'pawn': return new Pawn(boardState, player);
-	case 'rook': return new Rook(boardState, player);
-	case 'knight': return new Knight(boardState, player);
-	case 'bishop': return new Bishop(boardState, player);
-	case 'queen': return new Queen(boardState, player);
-	case 'king': return new King(boardState, player);
-	default: return new DPiece(boardState, player);
+const createPiece = (type, boardState=null, player=0, captured=false) => {
+	let piece;
+	switch(type.toLowerCase()) {
+	case 'pawn': piece = new Pawn(boardState, player);
+		break;
+	case 'rook': piece = new Rook(boardState, player);
+		break;
+	case 'knight': piece = new Knight(boardState, player);
+		break;
+	case 'bishop': piece = new Bishop(boardState, player);
+		break;
+	case 'queen': piece = new Queen(boardState, player);
+		break;
+	case 'king': piece = new King(boardState, player);
+		break;
+	default: piece = new DPiece(boardState, player);
+		break;
 	}
+	if(captured) {
+		piece.captured = true;
+	}
+
+	return piece;
 }
 
 export {

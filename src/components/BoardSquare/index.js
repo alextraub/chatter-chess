@@ -2,7 +2,6 @@ import './BoardSquare.css';
 import React from "react";
 import PropTypes from "prop-types";
 import ChessPiece from '../ChessPiece';
-import Piece from '../../game/Piece';
 
 /**
  *

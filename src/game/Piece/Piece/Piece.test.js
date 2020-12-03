@@ -110,6 +110,7 @@ test('Pieces can move to a square occupied by an enemy Piece', () => {
 });
 test('Pieces cannot move to a square occupied by another Piece belonging to the same player', () => {
 	boardState.getPiece.mockReturnValue(blackPiece);
+	positionUtils.boardPositionToString = jest.fn()
 	positionUtils.boardPositionToString.mockReturnValueOnce('A2').mockReturnValue('A1');
 	expect(blackPiece.canMove([0, 0], [0, 1], 0)).toBe(false);
 	expect(blackPiece.canMove([0, 0], [0, 1], 1)).toBe('You already have a piece at A2');
@@ -162,7 +163,7 @@ test('isNextSquareInPathEmpty returns correct values when provided position is n
 	expect(whitePiece1.isNextSquareInPathEmpty([0,2])).toBe(false);
 	expect(whitePiece2.isNextSquareInPathEmpty([3,2], 0)).toBe(false);
 
-	positionUtils.boardPositionToString.mockReturnValue('E4');
+	positionUtils.boardPositionToString = jest.fn(() => 'E4');
 	expect(blackPiece.isNextSquareInPathEmpty([4,5], 1)).toEqual('There is a piece at E4 blocking your generic\'s path');
 });
 
@@ -263,4 +264,71 @@ test('toObject has correct captured property for captured pieces', () => {
 	blackPiece.captured = true;
 	expect(blackPiece.toObject().captured).toBe(true);
 	blackPiece.captured = false;
+});
+
+jest.unmock('../../utils/positionUtils');
+test('Piece.asQueryObject returns an object with properties: type, player, captured, position', () => {
+	const p = Piece.asQueryObject(whitePiece1, [0, 0]);
+
+	expect(p.type).not.toBeUndefined();
+	expect(p.player).not.toBeUndefined();
+	expect(p.captured).not.toBeUndefined();
+	expect(p.position).not.toBeUndefined();
+});
+
+test('Piece.asQueryObject has type of all upper case of the piece type field', () => {
+	expect(Piece.asQueryObject(whitePiece1, [0,0]).type).toEqual('GENERIC');
+	expect(Piece.asQueryObject(whitePiece2, [0,0]).type).toEqual('GENERIC');
+	expect(Piece.asQueryObject(blackPiece, [0,0]).type).toEqual('GENERIC');
+});
+
+test('Piece.asQueryObject has player WHITE for white pieces', () => {
+	expect(Piece.asQueryObject(whitePiece1, [0,0]).player).toEqual('WHITE');
+	expect(Piece.asQueryObject(whitePiece2, [0,0]).player).toEqual('WHITE');
+	expect(Piece.asQueryObject(blackPiece, [0,0]).player).not.toEqual('GENERIC');
+});
+
+test('Piece.asQueryObject has player BLACK for black pieces', () => {
+	expect(Piece.asQueryObject(whitePiece1, [0,0]).player).not.toEqual('BLACK');
+	expect(Piece.asQueryObject(whitePiece2, [0,0]).player).not.toEqual('BLACK');
+	expect(Piece.asQueryObject(blackPiece, [0,0]).player).toEqual('BLACK');
+});
+
+test('Piece.asQueryObject captured property reflects the piece\'s captured property', () => {
+	const p1 = new DPiece();
+	expect(Piece.asQueryObject(p1, [0,0]).captured).toBe(false);
+	p1.captured = true;
+	expect(Piece.asQueryObject(p1, [0,0]).captured).toBe(true);
+});
+
+test('Piece.asQueryObject throws an error if passed an uncaptured piece without a position', () => {
+	expect(() => Piece.asQueryObject(whitePiece1)).toThrow();
+});
+
+test('Piece.asQueryObject throws an error if passed an uncaptured piece with an invalid position', () => {
+	expect(() => Piece.asQueryObject(whitePiece1, null)).toThrow();
+	expect(() => Piece.asQueryObject(whitePiece2, [])).toThrow();
+	expect(() => Piece.asQueryObject(blackPiece, "C 1")).toThrow();
+	expect(() => Piece.asQueryObject(whitePiece1, [-3, 4])).toThrow();
+	expect(() => Piece.asQueryObject(whitePiece2, [1,2,3])).toThrow();
+	expect(() => Piece.asQueryObject(blackPiece, 'a9')).toThrow();
+	expect(() => Piece.asQueryObject(whitePiece1, '9a')).toThrow();
+	expect(() => Piece.asQueryObject(whitePiece2, 's2')).toThrow();
+	expect(() => Piece.asQueryObject(blackPiece, [2,3])).not.toThrow();
+	expect(() => Piece.asQueryObject(whitePiece1, 'a3')).not.toThrow();
+	expect(() => Piece.asQueryObject(whitePiece1, 'B2')).not.toThrow();
+});
+
+test('Piece.asQueryObject has correct position when passed in as a tuple', () => {
+	expect(Piece.asQueryObject(whitePiece1, [3,2]).position).toEqual({
+		row: 3,
+		col: 2
+	});
+});
+
+test('Piece.asQueryObject has correct position when passed in as a string', () => {
+	expect(Piece.asQueryObject(whitePiece1, 'D3').position).toEqual({
+		row: 5,
+		col: 3
+	});
 });

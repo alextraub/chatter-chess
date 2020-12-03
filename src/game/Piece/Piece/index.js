@@ -1,5 +1,5 @@
 import BoardState from '../../BoardState';
-import { boardPositionToString } from '../../utils/positionUtils';
+import { boardPositionToString, isValidBoardPosition, boardPositionToTuple } from '../../utils/positionUtils';
 
 /**
  * A single chess piece with unknown type.
@@ -211,6 +211,27 @@ class Piece {
 			player: this.player,
 			captured: this.captured
 		}
+	}
+
+	static asQueryObject(piece, position) {
+		if(!piece.captured) {
+			if(!isValidBoardPosition(position)) {
+				throw new TypeError(`Expected a position but got ${position}`);
+			}
+		}
+
+		const pos = typeof(position) === 'string' ?
+			boardPositionToTuple(position) : position;
+
+		return {
+			type: piece.type.toUpperCase(),
+			player: piece.isWhite() ? 'WHITE' : 'BLACK',
+			captured: piece.captured,
+			position: piece.canptured ? null : {
+				row: pos[0],
+				col: pos[1]
+			}
+		};
 	}
 
 	toJSON() {
