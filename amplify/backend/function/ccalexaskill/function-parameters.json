@@ -1,4 +1,5 @@
 {
+  "lambdaLayers": [],
   "permissions": {
     "api": {
       "games": [
@@ -8,6 +9,5 @@
         "delete"
       ]
     }
-  },
-  "lambdaLayers": []
+  }
 }

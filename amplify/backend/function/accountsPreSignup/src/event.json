@@ -1,9 +1,8 @@
 {
-	"triggerSource": "PreSignUp_ExternalProvider",
-	"request": {
-		"userAttributes": {
-			"email": "atraub123@gmail.com"
-		}
-	},
-	"response": {}
+    "request": {
+      "userAttributes": {
+        "email": "testEmail@domain.com"
+      }
+    },
+    "response": {}
 }

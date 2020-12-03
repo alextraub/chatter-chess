@@ -83,7 +83,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-chatterchess-dev-135711-deployment",
-          "S3Key": "amplify-builds/alexaskill-76776a43765972644859-build.zip"
+          "S3Key": "amplify-builds/ccalexaskill-73436f443373556b7865-build.zip"
         }
       }
     },
@@ -93,12 +93,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "chatterchessLambdaRole1c9b9613",
+            "chatterchessLambdaRole0437f07d",
             {
               "Fn::Join": [
                 "",
                 [
-                  "chatterchessLambdaRole1c9b9613",
+                  "chatterchessLambdaRole0437f07d",
                   "-",
                   {
                     "Ref": "env"

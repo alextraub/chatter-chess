@@ -13,6 +13,5 @@
   "roleName": "accountsPreSignup",
   "skipEdit": true,
   "enableCors": false,
-  "triggerEventPath": "PreSignup.event.json",
-  "permissions": {}
+  "triggerEventPath": "PreSignup.event.json"
 }

@@ -1,23 +1,11 @@
 {
-  "api": {
-    "games": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authaccounts"
-            }
-          },
-          "additionalAuthenticationProviders": []
-        }
-      }
-    }
-  },
   "function": {
-    "alexaskill": {
+    "accountsPreSignup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "ccalexaskill": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
@@ -31,12 +19,6 @@
           ]
         }
       ]
-    },
-    "accountsPreSignup": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
     }
   },
   "auth": {
@@ -55,6 +37,23 @@
         }
       ],
       "customAuth": false
+    }
+  },
+  "api": {
+    "games": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authaccounts"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
     }
   }
 }
