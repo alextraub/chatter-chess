@@ -7,8 +7,19 @@ import { SignInForm, SignUpForm, ResendVerificationForm, ForgotPasswordForm } fr
 import AuthType from './types/AuthType';
 import { Route } from 'react-router-dom';
 import Page from './components/Page';
+import GameList from "./components/GameList";
 
 const routes = [
+	{
+		path: '/games',
+		exact: true,
+		component: props => <GameList {...props} />,
+		authType: AuthType.ANY,
+		page: {
+			centered: false,
+			noAccountButton: false
+		}
+	},
 	{
 		path: '/',
 		exact: true,

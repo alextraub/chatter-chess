@@ -1,131 +1,82 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/display-name */
+import React from "react";
 import GameContainer from './components/GameContainer';
-import SignInAndOutButton from './components/SignInAndOutButton';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Container } from 'reactstrap';
-import { Auth, Hub } from 'aws-amplify';
-// import * as mutations from "./graphql/mutations";
-import Amplify, { API } from 'aws-amplify';
-import awsconfig from './aws-exports';
-// import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
-import GameList from "./components/GameList";
-import { Link } from 'react-router-dom'
-import Button from "@material-ui/core/Button";
-Amplify.configure(awsconfig);
-// const {v4 : uuidv4} = require('uuid');
+// import { createGame, deleteGame } from "./graphql/mutations";
+// import { API, graphqlOperation } from 'aws-amplify';
+import { ForgotPasswordForm, ResendVerificationForm, SignInForm, SignUpForm } from './components/auth';
+import Page from './components/Page';
+import AuthProvider from './components/auth/AuthProvider';
+import routes from './routes';
 
 const App = () => {
-	const [user, setUser] = useState({ data: null, loading: true });
+	// const addGame = async() => {
+	// 	try {
+	// 		const game = {owner: Auth.currentAuthenticatedUser()};
+	// 		const gameData = await API.graphql(graphqlOperation(createGame, {input: game}));
+	// 		console.log('Game', gameData);
+	// 	} catch (error) {
+	// 		console.log('error on creating game', error);
+	// 	}
+	// };
+	// const removeGame = async() => {
+	// 	try {
+	// 		const game = {owner: Auth.currentAuthenticatedUser()};
+	// 		await API.graphql(graphqlOperation(deleteGame, {input: game}));
+	// 	} catch (error) {
+	// 		console.log('error on deleting game', error);
+	// 	}
+	// };
 
-	useEffect(() => {
-		// const uuid = uuidv4();
-		//
-		// const addGame = async() => {
-		// 	try {
-		// 		const pieces = [{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "PAWN", captured: false},
-		// 			{player: "WHITE", type: "ROOK", captured: false},
-		// 			{player: "WHITE", type: "ROOK", captured: false},
-		// 			{player: "WHITE", type: "KNIGHT", captured: false},
-		// 			{player: "WHITE", type: "KNIGHT", captured: false},
-		// 			{player: "WHITE", type: "BISHOP", captured: false},
-		// 			{player: "WHITE", type: "BISHOP", captured: false},
-		// 			{player: "WHITE", type: "KING", captured: false},
-		// 			{player: "WHITE", type: "QUEEN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "PAWN", captured: false},
-		// 			{player: "BLACK", type: "ROOK", captured: false},
-		// 			{player: "BLACK", type: "ROOK", captured: false},
-		// 			{player: "BLACK", type: "KNIGHT", captured: false},
-		// 			{player: "BLACK", type: "KNIGHT", captured: false},
-		// 			{player: "BLACK", type: "BISHOP", captured: false},
-		// 			{player: "BLACK", type: "BISHOP", captured: false},
-		// 			{player: "BLACK", type: "KING", captured: false},
-		// 			{player: "BLACK", type: "QUEEN", captured: false}
-		// 		];
-		// 		const checkStatusWhite = {
-		// 			status: false,
-		// 			mate: false
-		// 		};
-		// 		const checkStatusBlack = {
-		// 			status: false,
-		// 			mate: false
-		// 		};
-		// 		const game = {
-		// 			id: uuid,
-		// 			turn: 1,
-		// 			pieces: pieces,
-		// 			checkStatusWhite: checkStatusWhite,
-		// 			checkStatusBlack: checkStatusBlack,
-		// 		};
-		// 		const gameData = await API.graphql({query: mutations.createGame, variables: {input: game}, authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS});
-		// 		console.log('Game', gameData);
-		// 	} catch (error) {
-		// 		console.log('error on creating game', error);
-		// 	}
-		// };
-
-		Hub.listen('auth', ({ payload: { event, data } }) => {
-			// eslint-disable-next-line default-case
-			console.log(event);
-			switch (event) {
-			case 'signIn':
-				// addGame();
-				// break;
-			case 'cognitoHostedUI':
-				getUser().then(userData => setUser({ data: userData, loading: false }));
-				break;
-			case 'signOut':
-				setUser({ data: null, loading: false });
-				break;
-			case 'signIn_failure':
-			case 'cognitoHostedUI_failure':
-				console.error('Sign in failure', data);
-				break;
-			}
-		});
-
-		getUser().then(userData => setUser({ data: userData, loading: false }));
-	}, []);
-
-	function getUser() {
-		return Auth.currentAuthenticatedUser()
-			.then(userData => userData)
-			.catch(err => {
-
-			});
-	}
+	const routeOptions = ({ path, component, key=path, passRouterProps=false, centered=false, requireSignIn=false, noAccountButton=false }) => ({
+		key,
+		path,
+		component,
+		passRouterProps,
+		centered,
+		requireSignIn,
+		noAccountButton
+	});
 
 	return (
 		<Router>
-			<SignInAndOutButton user={user} />
-			<Button component={Link} to="/games">Your Games</Button>
-			<Container className="justify-content-center">
+			<AuthProvider>
 				<Switch>
-					<Route path="/privacy">
-						<PrivacyPolicy />
+					{/* <Route exact path="/signin">
+						<Page centered noAccountButton>
+							<SignInForm />
+						</Page>
 					</Route>
-					<Route path="/games">
-						<GameList />
+					<Route exact path="/">
+						<Page requireSignIn>
+							<GameContainer />
+						</Page>
 					</Route>
-					<Route path="/">
-						<GameContainer />
+					<Route exact path="/signup">
+						<Page centered noAccountButton>
+							<SignUpForm />
+						</Page>
 					</Route>
+					<Route exact path="/forgot-password">
+						<Page centered>
+							<ForgotPasswordForm />
+						</Page>
+					</Route>
+					<Route exact path="/resend-verification">
+						<Page centered>
+							<ResendVerificationForm />
+						</Page>
+					</Route>
+					<Route exact path="/privacy">
+						<Page>
+							<PrivacyPolicy />
+						</Page>
+					</Route> */}
+					{routes}
 				</Switch>
-			</Container>
+			</AuthProvider>
 		</Router>
 	);
 };

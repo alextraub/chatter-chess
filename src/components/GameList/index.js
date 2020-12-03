@@ -16,7 +16,7 @@ const GameList = () => {
 
     useEffect(() => {
         fetchGames();
-    }, []);
+    }, [games, setGames]);
 
     const fetchGames = async () => {
         try {
