@@ -1,0 +1,30 @@
+{
+	"env": {
+		"browser": true,
+		"jest": true,
+		"node": true
+	},
+	"parser": "babel-eslint",
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended"
+	],
+	"plugins": [
+		"react",
+		"import",
+		"jsx-a11y",
+		"react-hooks",
+		"jest"
+	],
+	"rules": {
+		"arrow-parens": ["error", "as-needed"],
+    "comma-dangle": ["warn", "never"],
+		"no-duplicate-imports": "warn",
+		"no-unused-vars": "warn",
+
+		"import/no-unresolved": "error",
+
+		"react/no-deprecated": "warn",
+    "react/no-multi-comp": "error"
+	}
+}

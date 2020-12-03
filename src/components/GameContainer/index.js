@@ -459,20 +459,20 @@ class GameContainer extends React.Component {
 		return false;
 	}
 
-	handleResetClick = () => {
-		this.boardState = boardState;
-		this.capturedWhitePieces = {
-			count: 0,
-			pieces: {
-				pawn: [],
-				rook: [],
-				knight: [],
-				bishop: [],
-				queen: [],
-				king: [],
-				generic: []
+	handleResetClick() {
+		this.boardState = new boardState(),
+			this.capturedWhitePieces = {
+				count: 0,
+				pieces: {
+					pawn: [],
+					rook: [],
+					knight: [],
+					bishop: [],
+					queen: [],
+					king: [],
+					generic: []
+				}
 			}
-		}
 		this.capturedBlackPieces = {
 			count: 0,
 			pieces: {
@@ -503,7 +503,7 @@ class GameContainer extends React.Component {
 			capturedBlackPieces: { ...this.capturedBlackPieces },
 			swapping: false, // If waiting for a piece swap, will be a board position of the piece to swap, otherwise false
 			swapList: [], // Possible types of pieces to swap
-			turn: this.isWhite
+			turn: 0
 		});
 	}
 	isInCheckMate(player) {
