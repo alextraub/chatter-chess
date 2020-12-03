@@ -21,7 +21,7 @@ const AccountButton = ({ authType, location, history }) => {
 				from: location.pathname
 			})
 		}
-	}, [signingOut, auth.authenticated, authType, location.pathname, history]);
+	}, [signingOut, auth, authType, location.pathname, history]);
 
 	const [tooltipOpen, setTooltipOpen] = useState(false);
 	const toggleTooltip = () => setTooltipOpen(!tooltipOpen);

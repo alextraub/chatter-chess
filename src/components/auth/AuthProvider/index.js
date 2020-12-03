@@ -1,8 +1,9 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Auth, Hub } from 'aws-amplify';
 
 const defaultAuthState = {
+	loading: true,
 	user: null, // null means no user is authenticated
 	authenticated: false // true if there is currently an authenticated user, false otherwise
 }
@@ -20,28 +21,33 @@ const AuthProvider = props => {
 	const [authState, setAuthState] = useState(defaultAuthState); // Holds the value of the auth context
 	const [hasSession, setHasSession] = useState(false); // Make sure session only is loaded on the first load
 
-	/*
-		Keeps authentication state updated when a session is yet to be loaded, a user signs in, or a user signs out.
-	*/
-	useEffect(() => {
-		async function loadSession() {
-			await Auth.currentSession();
-			return Auth.currentAuthenticatedUser();
-		}
-
+	const loadSession = useCallback(async () => {
 		if(!hasSession) {
 			try {
-				loadSession().then(data => {
-					setAuthState({
-						user: data,
-						authenticated: true
-					})
-				}).catch(() => {});
+				await Auth.currentSession();
+				const user = await Auth.currentAuthenticatedUser();
+				setAuthState({
+					user: user,
+					authenticated: true,
+					loading: false
+				})
 			} catch (err) {
+				setAuthState({
+					...authState,
+					loading: false
+				})
 				console.log(err);
 			}
 			setHasSession(true);
 		}
+	}, [authState, hasSession]);
+
+	/*
+		Keeps authentication state updated when a session is yet to be loaded, a user signs in, or a user signs out.
+	*/
+	useEffect(() => {
+		loadSession();
+
 
 		function getUser() {
 			return Auth.currentAuthenticatedUser()
@@ -56,21 +62,26 @@ const AuthProvider = props => {
 					authenticated: false
 				});
 			} else if(event === 'signIn' && hasSession && !authState.authenticated) {
+				setAuthState({
+					...authState,
+					loading: true
+				})
 				getUser().then(usr => {
 					setAuthState({
 						user: usr,
-						authenticated: true
+						authenticated: true,
+						loading: false
 					})
 				})
 			}
 		});
-	}, [hasSession, authState]);
+	});
 
-	return (
+	return(
 		<AuthContext.Provider value={authState}>
 			{props.children}
 		</AuthContext.Provider>
-	);
+	)
 };
 
 AuthProvider.propTypes = {

@@ -11,22 +11,22 @@ import GameList from "./components/GameList";
 
 const routes = [
 	{
-		path: '/games',
-		exact: true,
-		component: props => <GameList {...props} />,
-		authType: AuthType.ANY,
-		page: {
-			centered: false,
-			noAccountButton: false
-		}
-	},
-	{
 		path: '/',
 		exact: true,
 		component: props => <GameContainer {...props} />,
 		authType: AuthType.AUTH_ONLY,
 		page: {
 			centered: false,
+			noAccountButton: false
+		}
+	},
+	{
+		path: '/games',
+		exact: true,
+		component: props => <GameList {...props} />,
+		authType: AuthType.AUTH_ONLY,
+		page: {
+			centered: true,
 			noAccountButton: false
 		}
 	},
@@ -80,12 +80,14 @@ const routes = [
 			noAccountButton: false
 		}
 	}
-].map(({ path, component, exact, authType, page: { centered, noAccountButton } }) => (
-	<Route exact={exact} key={path} path={path} render={props => (
-		<Page {...props} authType={authType} centered={centered} noAccountButton={noAccountButton}>
-			{component(props)}
-		</Page>
-	)} />
-));
+].map(({ path, component, exact, authType, page: { centered, noAccountButton } }) => {
+	return (
+		<Route exact={exact} key={path} path={path} render={props => (
+			<Page {...props} authType={authType} centered={centered} noAccountButton={noAccountButton}>
+				{component(props)}
+			</Page>
+		)} />
+	)
+});
 
 export default routes;

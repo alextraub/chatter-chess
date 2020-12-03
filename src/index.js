@@ -7,11 +7,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Amplify from "aws-amplify";
 import awsConfig from "./awsConfig";
+import AuthProvider from './components/auth/AuthProvider';
 
 Amplify.configure(awsConfig);
 
 ReactDOM.render(
-	<App />,
+	<AuthProvider>
+		<App />
+	</AuthProvider>,
 	document.getElementById('root')
 );
 
