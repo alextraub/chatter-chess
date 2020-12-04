@@ -8,9 +8,10 @@ import "./GameList.css";
 import { AuthContext } from "../auth/AuthProvider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import PropTypes from 'prop-types';
 const { v4: uuidv4 } = require("uuid");
 
-const GameList = () => {
+const GameList = ({ history, location }) => {
 	const auth = useContext(AuthContext);
 	const [games, setGames] = useState([]);
 	const [loading, isLoading] = useState(true);
@@ -294,12 +295,11 @@ const GameList = () => {
 				variables: { input: gameToBeDeleted },
 				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
 			});
+			history.push(location.pathname);
 		} catch (error) {
 			if(error.errors.some(e => e.message !== "Variable 'input' has coerced Null value for NonNull type 'Int!'")) {
 				console.log(error);
 			}
-		} finally {
-			setGames(games.filter((_, i) => i !== idx));
 		}
 	};
 
@@ -356,5 +356,10 @@ const GameList = () => {
 		</Card>
 	);
 };
+
+GameList.propTypes = {
+	history: PropTypes.object,
+	location: PropTypes.object
+}
 
 export default GameList;
