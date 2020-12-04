@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Auth } from 'aws-amplify';
-import { Button, Spinner, Tooltip } from 'reactstrap';
+import { Button, ButtonGroup, Spinner, Tooltip } from 'reactstrap';
 import { AuthContext } from '../AuthProvider';
 import PropTypes from 'prop-types';
 import AuthType from '../../../types/AuthType';
@@ -50,18 +50,18 @@ const AccountButton = ({ authType, location, history }) => {
 						{auth.user.attributes.email}
 					</Tooltip>
 				</> :
-				<>
+				<ButtonGroup>
 					<Button color="primary" onClick={() => {
 						history.push('/signin', {
 							from: location.pathname
 						});
 					}}>Sign in</Button>
-					<Button color="primary" outline onClick={() => {
+					<Button color="light" outline onClick={() => {
 						history.push('/signup', {
 							from: location.pathname
 						});
 					}}>Register</Button>
-				</>
+				</ButtonGroup>
 		}
 	}
 

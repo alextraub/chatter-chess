@@ -24,7 +24,7 @@ const Page = ({ children, noAccountButton, authType, centered, location, history
 			{renderAccountButton()}
 			<Container className={`justify-content-center ${centered ? 'd-flex h-100 ' : ''}`}>
 				{centered ?
-					<div className="w-75 mb-auto">{children}</div> :
+					<div className="w-75 mb-auto mt-5">{children}</div> :
 					<>{children}</>}
 			</Container>
 		</>
