@@ -2,7 +2,7 @@ import AccountButton from './AccountButton';
 import AuthUI from './AuthUI';
 import FederatedSignInButtons from './FederatedSignInButtons';
 import ForgotPasswordForm from './ForgotPasswordForm';
-import ResendVerificationForm from './ResendVerificationForm';
+import VerifyForm from './VerifyForm';
 import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
 
@@ -11,7 +11,7 @@ export {
 	AuthUI,
 	FederatedSignInButtons,
 	ForgotPasswordForm,
-	ResendVerificationForm,
+	VerifyForm,
 	SignInForm,
 	SignUpForm
 };

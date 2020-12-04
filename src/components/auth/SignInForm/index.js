@@ -75,7 +75,7 @@ const SignInForm = ({ initialAlert, history, location }) => {
 			}, data => { // Failed to sign in
 				if(!loading) { // Don't display an error until loading is finished
 					setError(<>
-						Email or password is invalid.&nbsp;<Link to={linkTo('/resend-verification', location)}>Resend verification link</Link>
+						Email or password is invalid.&nbsp;<Link to={linkTo('/verify', location)}>Resend verification link</Link>
 					</>)
 					isLoading(false);
 				}
@@ -83,7 +83,7 @@ const SignInForm = ({ initialAlert, history, location }) => {
 			.catch(() => {
 				if(!loading) { // Don't display an error until loading is finished
 					setError(<>
-						Email or password is invalid.&nbsp;<Link to={linkTo('/resend-verification', location)}>Resend verification link</Link>
+						Email or password is invalid.&nbsp;<Link to={linkTo('/verify', location)}>Resend verification link</Link>
 					</>)
 					isLoading(false);
 				}

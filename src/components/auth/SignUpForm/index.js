@@ -100,11 +100,12 @@ const SignUpForm = ({ initialAlert, location, history }) => {
 					}
 				}).then(() => {
 					// On successful signup
-					redirect('/signin', location, history, {
+					redirect('/verify', location, history, {
 						alert: {
 							type: 'success',
-							content: 'Signed up successfully. Check your email for a verifcation link.'
-						}
+							content: 'Verification code sent'
+						},
+						email: formData.email
 					});
 				}, data => setError(data.message)) // Signup failure
 					.catch(err => console.log(err)); // Signup threw an exception
@@ -158,7 +159,7 @@ const SignUpForm = ({ initialAlert, location, history }) => {
 				</FormGroup>
 				<Button className="m-lg-2">Sign up</Button>
 				<br className="d-lg-none" />
-				<Link to={linkTo("/resend-verification", location)}>Resend email</Link>
+				<Link to={linkTo("/verify", location)}>Resend email</Link>
 			</Form>
 		);
 	}

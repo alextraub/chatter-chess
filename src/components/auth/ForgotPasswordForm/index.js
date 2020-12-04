@@ -98,7 +98,7 @@ const ForgotPasswordForm = ({ initialAlert, location, history }) => {
 							setAlert({
 								type: 'danger',
 								content: <>
-								Oh no! Something went wrong!&nbsp;<Link to={linkTo('/resend-verification', location)}>Resend verification link</Link>
+								Oh no! Something went wrong!&nbsp;<Link to={linkTo('/verify', location)}>Resend verification link</Link>
 								</>
 							})
 						}

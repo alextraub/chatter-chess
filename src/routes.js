@@ -3,7 +3,7 @@
 import React from 'react';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import GameContainer from './components/GameContainer';
-import { SignInForm, SignUpForm, ResendVerificationForm, ForgotPasswordForm } from './components/auth';
+import { SignInForm, SignUpForm, VerifyForm, ForgotPasswordForm } from './components/auth';
 import AuthType from './types/AuthType';
 import { Route } from 'react-router-dom';
 import Page from './components/Page';
@@ -61,9 +61,9 @@ const routes = [
 		}
 	},
 	{
-		path: '/resend-verification',
+		path: '/verify',
 		exact: true,
-		component: props => <ResendVerificationForm {...props} />,
+		component: props => <VerifyForm {...props} />,
 		authType: AuthType.ANY,
 		page: {
 			centered: true,
