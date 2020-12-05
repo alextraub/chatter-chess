@@ -459,20 +459,20 @@ class GameContainer extends React.Component {
 		return false;
 	}
 
-	handleResetClick() {
-		this.boardState = new boardState(),
-			this.capturedWhitePieces = {
-				count: 0,
-				pieces: {
-					pawn: [],
-					rook: [],
-					knight: [],
-					bishop: [],
-					queen: [],
-					king: [],
-					generic: []
-				}
+	handleResetClick(boardState) {
+		this.boardState = new boardState();
+		this.capturedWhitePieces = {
+			count: 0,
+			pieces: {
+				pawn: [],
+				rook: [],
+				knight: [],
+				bishop: [],
+				queen: [],
+				king: [],
+				generic: []
 			}
+		}
 		this.capturedBlackPieces = {
 			count: 0,
 			pieces: {
