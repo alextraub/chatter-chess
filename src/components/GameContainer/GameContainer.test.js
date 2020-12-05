@@ -223,3 +223,26 @@ test('Pieces are added to the correct captured list', async () => {
 	expect(within(screen.getAllByTestId('capturedContainer')[0])
 		.getAllByLabelText('white rook')).toHaveLength(1);
 });
+
+test('[BUG] Moving in a way that keeps a player in check is prevented, then after the player makes a move that takes them out of check the game should switch to the other player, as expected', async () => {
+	const bState = new BoardState();
+
+	render(<GameContainer user={user} boardState={bState} />);
+
+	await makeMove('b1 c3');
+	await makeMove('b8 c6');
+	await makeMove('c3 b5');
+	await makeMove('c6 b4');
+	await makeMove('e2 e3');
+	await makeMove('e7 e6');
+	await makeMove('b5 c7');
+	await makeMove('d8 e7');
+
+	expect(screen.getByTestId('move-feedback')).toHaveTextContent('That move leaves you in check');
+
+	await makeMove('d8 c7');
+	expect(screen.getByTestId('move-feedback')).toBeEmptyDOMElement();
+
+	await makeMove('h2 h3');
+	expect(screen.getByTestId('move-feedback')).toBeEmptyDOMElement();
+});

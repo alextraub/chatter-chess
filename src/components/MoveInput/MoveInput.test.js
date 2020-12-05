@@ -246,7 +246,7 @@ test('Move submit button is enabled if it has disabled=false prop', () => {
 });
 
 test('Check errors are displayed for moving into check', async () => {
-	await render(<MoveInput
+	render(<MoveInput
 		currentPlayer={0}
 		getPiece={boardState.getPiece}
 		performMove={jest.fn(() => false)}
@@ -254,7 +254,7 @@ test('Check errors are displayed for moving into check', async () => {
 	/>);
 	mockValidMove(new DPiece(boardState));
 	await updateInputValue('A4 E4');
-	await fireEvent.click(screen.getByRole('button'));
+	fireEvent.click(screen.getByRole('button'));
 	expect(screen.getByTestId('move-feedback')).toHaveTextContent('That move leaves you in check');
 });
 

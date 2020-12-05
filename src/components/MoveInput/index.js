@@ -1,33 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {boardPositionToTuple, isValidBoardPositionString} from '../../game/utils/positionUtils'
 import { Form, InputGroup, FormFeedback, InputGroupAddon, Input, Button } from 'reactstrap';
 
-export default class MoveInput extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
+const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) => {
+	const [moveState, setMoveState] = useState({
+		move: '',
+		error: ''
+	});
+
+	function displayError(message) {
+		setMoveState({
 			move: '',
-			moveError: ''
-		};
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.validateInput = this.validateInput.bind(this);
-		this.validateMove = this.validateMove.bind(this);
+			error: message
+		});
 	}
 
-	static propTypes = {
-		currentPlayer: PropTypes.oneOf([0, 1]).isRequired,
-		getPiece: PropTypes.func.isRequired,
-		performMove: PropTypes.func.isRequired,
-		disabled: PropTypes.bool,
-		inCheck: PropTypes.func
-	}
-
-
-	validateInput(move) {
-		const positions = move.split(' ').filter(p => p !== '');
+	function validateInput() {
+		const positions = moveState.move.split(' ').filter(p => p !== '');
 		let from;
 		let to;
 		if(positions.length !== 2) {
@@ -51,16 +42,16 @@ export default class MoveInput extends React.Component {
 		return [from, to];
 	}
 
-	validateMove(from, to) {
+	function validateMove(from, to) {
 		const fromTuple = boardPositionToTuple(from);
 		let toTuple;
 
-		const piece = this.props.getPiece(fromTuple);
+		const piece = getPiece(fromTuple);
 		if(!piece) {
 			return `There isn't a piece at ${from}`;
 		}
-		if (piece.player !== this.props.currentPlayer) {
-			return `You may only move a ${this.props.currentPlayer === 0 ? 'white' : 'black'} piece`;
+		if (piece.player !== currentPlayer) {
+			return `You may only move a ${currentPlayer === 0 ? 'white' : 'black'} piece`;
 		}
 		toTuple = boardPositionToTuple(to);
 		const validMove = piece.canMove(fromTuple, toTuple, 1);
@@ -70,84 +61,75 @@ export default class MoveInput extends React.Component {
 			`${validMove}`;
 	}
 
-	async handleSubmit(event) {
+	async function handleSubmit(event) {
 		event.preventDefault();
-		const { move } = this.state;
+		const { move } = moveState;
 
-		let validPositions = this.validateInput(move.trim());
+		let validPositions = validateInput(move.trim());
 		if(typeof(validPositions) === 'string') {
-			this.setState({
-				...this.state,
-				move: '',
-				moveError: validPositions
-			});
+			displayError(validPositions);
 			return;
 		}
-		validPositions = this.validateMove(validPositions[0], validPositions[1]);
+		validPositions = validateMove(validPositions[0], validPositions[1]);
 		const isInvalidMove = typeof(validPositions) === 'string';
 		if(isInvalidMove) {
-			this.setState({
-				...this.state,
-				move: '',
-				moveError: validPositions
-			});
+			displayError(validPositions);
 		} else {
-
-			let errorMessage = '';
 			try {
-				this.props.performMove(validPositions[0], validPositions[1])
-				if(this.props.inCheck(this.props.currentPlayer)) {
-					errorMessage =
-						'That move leaves you in check';
+				performMove(validPositions[0], validPositions[1])
+				if(inCheck(currentPlayer)) {
+					displayError('That move leaves you in check');
 				}
-				this.setState({
-					...this.state,
-					moveError: errorMessage,
-					move: ''
-				});
+
 			} catch (error) {
 				//
 			}
-
-
-
 		}
 	}
 
-	handleInputChange(event) {
+	function handleInputChange(event) {
 		event.preventDefault();
-		this.setState({
-			...this.state,
+		setMoveState({
 			move: event.target.value,
-			moveError: ''
+			error: ''
 		});
 	}
 
-	render() {
-		return (
-			<Form data-testid="move-input" onSubmit={event => {this.handleSubmit(event)}} inline className="mb-1">
-				<FormFeedback tooltip={this.state.moveError !== ''} data-testid="move-feedback" className={this.state.message !== '' ? 'd-block' : ''}>{this.state.moveError}</FormFeedback>
-				<InputGroup>
-					<Input
-						data-testid="move-textbox"
-						type="text"
-						placeholder="Enter Move Here"
-						name="move"
-						value={this.state.move}
-						disabled={this.props.disabled}
-						invalid={this.state.moveError !== ''}
-						onChange={event => {this.handleInputChange(event)}}
-					/>
-					<InputGroupAddon addonType="append">
-						<Button
-							data-testid="move-submit"
-							color="warning"
-							name="move-submit"
-							disabled={this.props.disabled}
-							type="submit">Move</Button>
-					</InputGroupAddon>
-				</InputGroup>
-			</Form>
-		);
-	}
+	const { move, error } = moveState;
+
+	return (
+		<Form data-testid="move-input" onSubmit={handleSubmit} inline className="mb-1">
+			<FormFeedback tooltip={error !== ''} data-testid="move-feedback" className={error !== '' ? 'd-block' : ''}>{error}</FormFeedback>
+			<InputGroup>
+				<Input
+					data-testid="move-textbox"
+					type="text"
+					placeholder="Enter Move Here"
+					name="move"
+					value={move}
+					disabled={disabled}
+					invalid={error !== ''}
+					onChange={handleInputChange}
+				/>
+				<InputGroupAddon addonType="append">
+					<Button
+						data-testid="move-submit"
+						color="warning"
+						name="move-submit"
+						disabled={disabled}
+						type="submit">Move</Button>
+				</InputGroupAddon>
+			</InputGroup>
+		</Form>
+	);
 }
+
+MoveInput.propTypes = {
+	currentPlayer: PropTypes.oneOf([0, 1]).isRequired,
+	getPiece: PropTypes.func.isRequired,
+	performMove: PropTypes.func.isRequired,
+	disabled: PropTypes.bool,
+	inCheck: PropTypes.func
+}
+
+export default MoveInput;
