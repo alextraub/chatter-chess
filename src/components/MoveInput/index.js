@@ -107,7 +107,7 @@ const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) 
 			<FormFeedback tooltip={error !== ''} data-testid="move-feedback" className={error !== '' ? 'd-block' : ''}>{error}</FormFeedback>
 			<InputGroup>
 				<Input
-					autoComplete={false}
+					autoComplete="off"
 					data-testid="move-textbox"
 					type="text"
 					placeholder="Enter Move Here"
