@@ -1,6 +1,11 @@
 {
   "lambdaLayers": [],
   "permissions": {
+    "auth": {
+      "accounts": [
+        "read"
+      ]
+    },
     "api": {
       "games": [
         "create",

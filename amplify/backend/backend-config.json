@@ -11,6 +11,13 @@
       "service": "Lambda",
       "dependsOn": [
         {
+          "category": "auth",
+          "resourceName": "accounts",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
           "category": "api",
           "resourceName": "games",
           "attributes": [
@@ -51,7 +58,11 @@
               "userPoolId": "authaccounts"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     }

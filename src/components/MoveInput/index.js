@@ -79,6 +79,11 @@ const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) 
 				performMove(validPositions[0], validPositions[1])
 				if(inCheck(currentPlayer)) {
 					displayError('That move leaves you in check');
+				} else {
+					setMoveState({
+						move: '',
+						error: ''
+					})
 				}
 
 			} catch (error) {
@@ -102,6 +107,7 @@ const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) 
 			<FormFeedback tooltip={error !== ''} data-testid="move-feedback" className={error !== '' ? 'd-block' : ''}>{error}</FormFeedback>
 			<InputGroup>
 				<Input
+					autoComplete={false}
 					data-testid="move-textbox"
 					type="text"
 					placeholder="Enter Move Here"
