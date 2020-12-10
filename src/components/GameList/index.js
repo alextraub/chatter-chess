@@ -8,297 +8,319 @@ import "./GameList.css";
 import { AuthContext } from "../auth/AuthProvider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
+import LoadingDots from '../LoadingDots';
 const { v4: uuidv4 } = require("uuid");
 
-const GameList = ({ history, location }) => {
-	const auth = useContext(AuthContext);
-	const [games, setGames] = useState([]);
-	const [loading, isLoading] = useState(true);
+const GameList = () => {
+	const auth = useContext(AuthContext); // Access the globally authenticated user
+	const [games, setGames] = useState([]); // All the user's games
+	const [fetching, isFetching] = useState(true); // If an API request is being handled
+	const [loading, isLoading] = useState(false); // A general indicator to prevent multiple API requests happening at once
 
-	const fetchGames = useCallback(async () =>{
-		if(auth.user) {
-			try {
-				console.log("about to list games");
-				console.log("current username:", auth.user.getUsername());
-				const gameData = await API.graphql({
-					query: queries.listGames,
-					variables: {
-						owner: auth.user.getUsername()
-					},
-					authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-				});
-				console.log("game data retrieved");
-				const gameList = gameData.data.listGames.items;
-				console.log("game list", gameList);
-				setGames(gameList);
-			} catch (error) {
-				console.log("error on fetching games", error);
-			}
-		}
-	}, [auth.user]);
 
 
 	useEffect(() => {
-		if(loading && !auth.loading) {
+		const fetchGames = async () =>{
+			if(auth.user) { // If there is an authenticated user
+				try {
+					console.log("about to list games");
+					console.log("current username:", auth.user.getUsername());
+					isLoading(true);
+					const gameData = await API.graphql({
+						query: queries.listGames,
+						variables: {
+							owner: auth.user.getUsername()
+						},
+						authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+					}); // Fetch the data from the API
+					console.log("game data retrieved");
+					const gameList = gameData.data.listGames.items;
+					console.log("game list", gameList);
+					setGames(gameList);
+				} catch (error) {
+					console.log("error on fetching games", error);
+				} finally {
+					isLoading(false);
+				}
+			}
+		};
+
+		// Anytime fetching is set to true and the globally authenticated user is not being loaded
+		if(fetching && !auth.loading) {
 			fetchGames()
 				.then(() => {
-					isLoading(false);
+					isFetching(false);
 				});
 		}
-	}, [auth, loading, fetchGames]);
+	}, [auth, fetching]);
 
 
+	/* Fetch a single game */
 	const fetchGame = async game => {
-		try {
-			await API.graphql({
-				query: queries.getGame,
-				variables: { input: game },
-				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-			});
-			console.log("Fetched Game");
-		} catch (error) {
-			console.log("error on fetching game", error);
+		if(!loading) {
+			try {
+				isLoading(true);
+				await API.graphql({
+					query: queries.getGame,
+					variables: { input: game },
+					authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+				});
+				console.log("Fetched Game");
+			} catch (error) {
+				console.log("error on fetching game", error);
+			} finally {
+				isLoading(false);
+			}
 		}
 	};
 
 	const addGame = async () => {
-		try {
-			const uuid = uuidv4();
-			const pieces = [
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 0 }
-				},
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 1 }
-				},
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 2 }
-				},
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 3 }
-				},
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 4 }
-				},
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 5 }
-				},
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 6 }
-				},
-				{
-					player: "WHITE",
-					type: "PAWN",
-					captured: false,
-					position: { row: 1, col: 7 }
-				},
-				{
-					player: "WHITE",
-					type: "ROOK",
-					captured: false,
-					position: { row: 0, col: 0 }
-				},
-				{
-					player: "WHITE",
-					type: "ROOK",
-					captured: false,
-					position: { row: 0, col: 7 }
-				},
-				{
-					player: "WHITE",
-					type: "KNIGHT",
-					captured: false,
-					position: { row: 0, col: 1 }
-				},
-				{
-					player: "WHITE",
-					type: "KNIGHT",
-					captured: false,
-					position: { row: 0, col: 6 }
-				},
-				{
-					player: "WHITE",
-					type: "BISHOP",
-					captured: false,
-					position: { row: 0, col: 2 }
-				},
-				{
-					player: "WHITE",
-					type: "BISHOP",
-					captured: false,
-					position: { row: 0, col: 5 }
-				},
-				{
-					player: "WHITE",
-					type: "KING",
-					captured: false,
-					position: { row: 0, col: 4 }
-				},
-				{
-					player: "WHITE",
-					type: "QUEEN",
-					captured: false,
-					position: { row: 0, col: 3 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 0 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 1 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 2 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 3 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 4 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 5 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 6 }
-				},
-				{
-					player: "BLACK",
-					type: "PAWN",
-					captured: false,
-					position: { row: 6, col: 7 }
-				},
-				{
-					player: "BLACK",
-					type: "ROOK",
-					captured: false,
-					position: { row: 7, col: 0 }
-				},
-				{
-					player: "BLACK",
-					type: "ROOK",
-					captured: false,
-					position: { row: 7, col: 7 }
-				},
-				{
-					player: "BLACK",
-					type: "KNIGHT",
-					captured: false,
-					position: { row: 7, col: 1 }
-				},
-				{
-					player: "BLACK",
-					type: "KNIGHT",
-					captured: false,
-					position: { row: 7, col: 6 }
-				},
-				{
-					player: "BLACK",
-					type: "BISHOP",
-					captured: false,
-					position: { row: 7, col: 2 }
-				},
-				{
-					player: "BLACK",
-					type: "BISHOP",
-					captured: false,
-					position: { row: 7, col: 5 }
-				},
-				{
-					player: "BLACK",
-					type: "KING",
-					captured: false,
-					position: { row: 7, col: 4 }
-				},
-				{
-					player: "BLACK",
-					type: "QUEEN",
-					captured: false,
-					position: { row: 7, col: 3 }
-				}
-			];
-			const checkStatusWhite = {
-				status: false,
-				mate: false
-			};
-			const checkStatusBlack = {
-				status: false,
-				mate: false
-			};
-			const game = {
-				id: uuid,
-				turn: 1,
-				pieces: pieces,
-				checkStatusWhite: checkStatusWhite,
-				checkStatusBlack: checkStatusBlack
-			};
-			await API.graphql({
-				query: mutations.createGame,
-				variables: { input: game },
-				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-			});
-			setGames([...games, game]);
-		} catch (error) {
-			console.log("error on creating game", error);
+		if(!loading) {
+			try {
+				const uuid = uuidv4();
+				const pieces = [
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 0 }
+					},
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 1 }
+					},
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 2 }
+					},
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 3 }
+					},
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 4 }
+					},
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 5 }
+					},
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 6 }
+					},
+					{
+						player: "WHITE",
+						type: "PAWN",
+						captured: false,
+						position: { row: 1, col: 7 }
+					},
+					{
+						player: "WHITE",
+						type: "ROOK",
+						captured: false,
+						position: { row: 0, col: 0 }
+					},
+					{
+						player: "WHITE",
+						type: "ROOK",
+						captured: false,
+						position: { row: 0, col: 7 }
+					},
+					{
+						player: "WHITE",
+						type: "KNIGHT",
+						captured: false,
+						position: { row: 0, col: 1 }
+					},
+					{
+						player: "WHITE",
+						type: "KNIGHT",
+						captured: false,
+						position: { row: 0, col: 6 }
+					},
+					{
+						player: "WHITE",
+						type: "BISHOP",
+						captured: false,
+						position: { row: 0, col: 2 }
+					},
+					{
+						player: "WHITE",
+						type: "BISHOP",
+						captured: false,
+						position: { row: 0, col: 5 }
+					},
+					{
+						player: "WHITE",
+						type: "KING",
+						captured: false,
+						position: { row: 0, col: 4 }
+					},
+					{
+						player: "WHITE",
+						type: "QUEEN",
+						captured: false,
+						position: { row: 0, col: 3 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 0 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 1 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 2 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 3 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 4 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 5 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 6 }
+					},
+					{
+						player: "BLACK",
+						type: "PAWN",
+						captured: false,
+						position: { row: 6, col: 7 }
+					},
+					{
+						player: "BLACK",
+						type: "ROOK",
+						captured: false,
+						position: { row: 7, col: 0 }
+					},
+					{
+						player: "BLACK",
+						type: "ROOK",
+						captured: false,
+						position: { row: 7, col: 7 }
+					},
+					{
+						player: "BLACK",
+						type: "KNIGHT",
+						captured: false,
+						position: { row: 7, col: 1 }
+					},
+					{
+						player: "BLACK",
+						type: "KNIGHT",
+						captured: false,
+						position: { row: 7, col: 6 }
+					},
+					{
+						player: "BLACK",
+						type: "BISHOP",
+						captured: false,
+						position: { row: 7, col: 2 }
+					},
+					{
+						player: "BLACK",
+						type: "BISHOP",
+						captured: false,
+						position: { row: 7, col: 5 }
+					},
+					{
+						player: "BLACK",
+						type: "KING",
+						captured: false,
+						position: { row: 7, col: 4 }
+					},
+					{
+						player: "BLACK",
+						type: "QUEEN",
+						captured: false,
+						position: { row: 7, col: 3 }
+					}
+				];
+				const checkStatusWhite = {
+					status: false,
+					mate: false
+				};
+				const checkStatusBlack = {
+					status: false,
+					mate: false
+				};
+				const game = {
+					id: uuid,
+					turn: 1,
+					pieces: pieces,
+					checkStatusWhite: checkStatusWhite,
+					checkStatusBlack: checkStatusBlack
+				};
+				isLoading(true);
+				await API.graphql({
+					query: mutations.createGame,
+					variables: { input: game },
+					authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+				});
+				isFetching(true);
+			} catch (error) {
+				console.log("error on creating game", error);
+			} finally {
+				isLoading(false);
+			}
 		}
 	};
 
 	const removeGame = async idx => {
-		try {
-			const game = games[idx];
-			const gameToBeDeleted = { id: game.id, expectedVersion: game.version };
-			console.log("Removing Game", game);
-			await API.graphql({
-				query: mutations.deleteGame,
-				variables: { input: gameToBeDeleted },
-				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-			});
-			history.push(location.pathname);
-		} catch (error) {
-			if(error.errors.some(e => e.message !== "Variable 'input' has coerced Null value for NonNull type 'Int!'")) {
-				console.log(error);
+		if(!loading) {
+			try {
+				const game = games[idx];
+				const gameToBeDeleted = { id: game.id, expectedVersion: game.version };
+				console.log("Removing Game", game);
+				isLoading(true);
+				await API.graphql({
+					query: mutations.deleteGame,
+					variables: { input: gameToBeDeleted },
+					authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+				});
+				isFetching(true);
+			} catch (error) {
+				if(error.errors.some(e => e.message !== "Variable 'input' has coerced Null value for NonNull type 'Int!'")) {
+					console.log(error);
+				}
+			} finally {
+				isLoading(false);
 			}
 		}
 	};
@@ -308,9 +330,11 @@ const GameList = ({ history, location }) => {
 			<CardHeader className="d-flex flex-row w-100 justify-content-center">
 				<div className="d-inline-flex mr-auto">
 					<CardTitle className="d-inline-block" tag="h2">Your Games</CardTitle>
+					<LoadingDots hidden={!loading && !fetching} />
 				</div>
 				<div className="d-flex flex-end py-2">
 					<Button
+						disabled={loading}
 						color="primary"
 						onClick={() => addGame()}
 					>
@@ -326,6 +350,7 @@ const GameList = ({ history, location }) => {
 								<Row>
 									<Col md="3" sm="3" xs="2">
 										<Button
+											disabled={loading}
 											role="button"
 											aria-roledescription="play game"
 											color="success"
@@ -339,6 +364,7 @@ const GameList = ({ history, location }) => {
 									</Col>
 									<Col md="2">
 										<Button
+											disabled={loading}
 											role="button"
 											aria-roledescription="delete game"
 											color="danger"
@@ -356,10 +382,5 @@ const GameList = ({ history, location }) => {
 		</Card>
 	);
 };
-
-GameList.propTypes = {
-	history: PropTypes.object,
-	location: PropTypes.object
-}
 
 export default GameList;
