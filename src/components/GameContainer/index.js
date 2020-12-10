@@ -5,19 +5,30 @@ import BoardComponent from '../BoardComponent';
 import CapturedPieces from "../CapturedPieces";
 import SwapPieces from "../SwapPieces";
 import { Col, Row } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 import GameState from '../../game/GameState';
+import BoardState from '../../game/BoardState';
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
  * as well as renders the top-level UI components for the game.
  */
 class GameContainer extends React.Component {
+	static propTypes = {
+		turn: PropTypes.number,
+		boardState: PropTypes.instanceOf(BoardState)
+	};
+
+	static defaultProps = {
+		turn: 0,
+		boardState: new BoardState()
+	};
 
 	constructor(props) {
 		super(props);
 
-		this.gameState = new GameState();
+		this.gameState = new GameState(this.props.turn, this.props.boardState.pieces);
 
 		this.state = {
 			turn: this.gameState.turn,
@@ -30,7 +41,7 @@ class GameContainer extends React.Component {
 
 		this.syncGame();
 		this.performMove = this.performMove.bind(this);
-		this.performSwap = this.performSwap.bind(this);
+		this.performPromotion = this.performPromotion.bind(this);
 	}
 
 	syncGame() {

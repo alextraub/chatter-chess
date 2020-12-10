@@ -8,16 +8,13 @@ import { ListGroup, ListGroupItem, Badge } from 'reactstrap';
 export default class CapturedPieces extends React.Component {
 	static propTypes = {
 		pieces: PropTypes.shape({
-			count: PropTypes.number,
-			pieces: PropTypes.shape({
-				pawn: PropTypes.arrayOf(PropTypes.instanceOf(Pawn)),
-				rook: PropTypes.arrayOf(PropTypes.instanceOf(Rook)),
-				knight: PropTypes.arrayOf(PropTypes.instanceOf(Knight)),
-				bishop: PropTypes.arrayOf(PropTypes.instanceOf(Bishop)),
-				queen: PropTypes.arrayOf(PropTypes.instanceOf(Queen)),
-				king: PropTypes.arrayOf(PropTypes.instanceOf(King)),
-				generic: PropTypes.arrayOf(PropTypes.instanceOf(Piece))
-			})
+			pawn: PropTypes.arrayOf(PropTypes.instanceOf(Pawn)),
+			rook: PropTypes.arrayOf(PropTypes.instanceOf(Rook)),
+			knight: PropTypes.arrayOf(PropTypes.instanceOf(Knight)),
+			bishop: PropTypes.arrayOf(PropTypes.instanceOf(Bishop)),
+			queen: PropTypes.arrayOf(PropTypes.instanceOf(Queen)),
+			king: PropTypes.arrayOf(PropTypes.instanceOf(King)),
+			generic: PropTypes.arrayOf(PropTypes.instanceOf(Piece))
 		}).isRequired,
 		black: PropTypes.bool,
 		className: PropTypes.string
@@ -32,7 +29,7 @@ export default class CapturedPieces extends React.Component {
 		const { black, pieces } = this.props;
 		return (
 			<ListGroup data-testid="capturedContainer" className={this.props.className}>
-				{Object.entries(pieces.pieces)
+				{Object.entries(pieces)
 					.filter(entry => entry[1].length > 0)
 					.map(([type, pieceArray]) => (
 						<ListGroupItem color="primary" data-testid="captured-graphic" key={`${type}s`}>
