@@ -72,6 +72,10 @@ export default class GameState {
 		this.#turn++;
 	}
 
+	getCapturedPieces() {
+		return {...this.#capturedPieces};
+	}
+
 	get capturedPieces() {
 		const pieces = [];
 		const flattenPieces = player => {

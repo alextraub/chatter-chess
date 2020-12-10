@@ -32,7 +32,7 @@ class GameContainer extends React.Component {
 
 		this.state = {
 			turn: this.gameState.turn,
-			capturedPieces: this.gameState.capturedPieces,
+			capturedPieces: this.gameState.getCapturedPieces(),
 			check: this.gameState.check,
 			board: this.gameState.board,
 			swapping: false,
@@ -48,7 +48,7 @@ class GameContainer extends React.Component {
 		this.setState({
 			...this.state,
 			turn: this.gameState.turn,
-			capturedPieces: this.gameState.capturedPieces,
+			capturedPieces: this.gameState.getCapturedPieces(),
 			check: this.gameState.check,
 			board: this.gameState.board,
 			swapping: this.gameState.swapping,
@@ -67,7 +67,7 @@ class GameContainer extends React.Component {
 	}
 
 	performPromotion(type) {
-		this.gameState.performPromotion(type);
+		this.gameState.performPromotion(type.toLowerCase());
 		this.syncGame();
 	}
 
