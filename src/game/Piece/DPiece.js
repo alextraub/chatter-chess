@@ -1,4 +1,4 @@
-import Piece from './Piece';
+import Piece from './Piece/index';
 
 /**
 This class provides a way to call methods and the constructor from Piece without getting an error, and using the Piece class' implementation

@@ -227,7 +227,7 @@ test('getPieces with no argument returns an array with the positions of all piec
 	];
 
 	piecePositions.forEach(([r,c]) => {
-		expect(pieces.some(([x,y]) => x==r && y==c)).toBe(true);
+		expect(pieces.some(([x,y]) => x===r && y===c)).toBe(true);
 	});
 });
 

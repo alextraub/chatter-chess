@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 
 import BoardSquare from './';
-import { createPiece } from '../../game/Piece';
+import { createPiece } from '../../game/utils/pieceUtils';
 import BoardState from '../../game/BoardState';
 jest.mock('../../game/BoardState');
 jest.mock('../../mediaQuery');

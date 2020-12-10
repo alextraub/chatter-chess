@@ -1,15 +1,10 @@
-import React from 'react';
-import {API} from "aws-amplify";
-import * as queries from "../../graphql/queries";
-import {GRAPHQL_AUTH_MODE} from "@aws-amplify/api";
 import BoardState from "../BoardState";
 import PropTypes from "prop-types";
 import {inCheck, inCheckMate} from "../Check";
 
-export default class GameState extends React.Component {
+export default class GameState {
 
 	constructor(props) {
-		super(props);
 		this.boardState = this.props.boardState;
 		this.capturedWhitePieces = {
 			count: 0,

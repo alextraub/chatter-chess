@@ -213,6 +213,14 @@ class Piece {
 		}
 	}
 
+	// static canSwapOut(type) {
+	// 	return createPiece(type.toLowerCase(), null, 0).canSwapOut;
+	// }
+
+	// static canSwapIn(type) {
+	// 	return createPiece(type.toLowerCase(), null, 0).canSwapIn;
+	// }
+
 	static asQueryObject(piece, position) {
 		if(!piece.captured) {
 			if(!isValidBoardPosition(position)) {

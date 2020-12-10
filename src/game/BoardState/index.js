@@ -1,4 +1,5 @@
-import { createPiece } from '../Piece'
+import Piece from '../Piece';
+import { createPiece } from '../utils/pieceUtils';
 import PieceSet from '../PieceSet';
 import StandardBoard from './boards/standardGame';
 
@@ -99,5 +100,31 @@ export default class BoardState {
 				}
 			})
 		});
+	}
+
+	get pieces() {
+		const result = [];
+		for(let r=0; r<8; r++) {
+			for(let c=0; c<8; c++) {
+				if(this.board[r][c] !== null) {
+					result.push(Piece.asQueryObject(this.board[r][c], [r,c]))
+				}
+			}
+		}
+
+		return result;
+	}
+
+	delete() {
+		delete this.blackPieces;
+		delete this.whitePieces;
+		for (let r=0; r<8; r++) {
+			for(let c=0; c<8; c++) {
+				this.board[r][c] = null;
+			}
+			delete this.board[r];
+		}
+
+		delete this.board;
 	}
 }
