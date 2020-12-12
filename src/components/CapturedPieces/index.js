@@ -1,9 +1,8 @@
 import './CapturedPieces.css';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Piece, { Pawn, Rook, Knight, Bishop, Queen, King } from '../../game/Piece';
 import ChessPiece from '../ChessPiece';
-import { ListGroup, ListGroupItem, Badge } from 'reactstrap';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 
 export default class CapturedPieces extends React.Component {
 	static propTypes = {

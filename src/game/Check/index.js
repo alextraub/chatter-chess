@@ -7,11 +7,6 @@ export function inCheck([Row, Col], boardstate, team)
 		boardstate.blackPieces :
 		boardstate.whitePieces;
 
-<<<<<<< HEAD
-	return enemyPieces.getPieces().some(position => {
-		const p = boardstate.getPiece(position);
-		return p && p.canMove(position, [Row, Col]);
-=======
 	return enemyPieces.getPieces().some(p => {
 		if(p === null || p.position === null) {
 			return false;
@@ -19,7 +14,6 @@ export function inCheck([Row, Col], boardstate, team)
 		const { row, col } = p.position;
 		const piece = boardstate.getPiece([row, col]);
 		return piece !== null && piece.canMove([row, col], [Row, Col]);
->>>>>>> cc-188
 	});
 }
 
