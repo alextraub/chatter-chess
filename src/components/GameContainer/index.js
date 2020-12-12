@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 import MoveInput from '../MoveInput';
 import BoardComponent from '../BoardComponent';
@@ -11,21 +11,19 @@ import GameState from '../../game/GameState';
 import {API} from "aws-amplify";
 import * as queries from "../../graphql/queries";
 import {GRAPHQL_AUTH_MODE} from "@aws-amplify/api";
-import {AuthContext} from "../auth/AuthProvider";
 
 /**
  * Container component for a single instance of a chess game. It mantains the top level state
  * as well as renders the top-level UI components for the game.
  */
-const GameContainer = (props) => {
-	const auth = useContext(AuthContext); // Access the globally authenticated user
+const GameContainer = props => {
 	const [state, setState] = useState();
 	const [gameState, setGameState] = useState(props.gameState);
 
 	/**
 	 * Updates the React state to reflect the instance's game state property
 	 */
-	const syncGame = () => {
+	const syncGame = useCallback(() => {
 		setState({
 			...state,
 			turn: gameState.turn,
@@ -35,7 +33,7 @@ const GameContainer = (props) => {
 			swapping: gameState.swapping,
 			swapList: gameState.swapList
 		});
-	};
+	}, [gameState, state]);
 
 	const fetchGame = useCallback(async () => {
 		const {id} = props.match.params;
@@ -56,7 +54,7 @@ const GameContainer = (props) => {
 			console.log(error);
 		}
 
-	}, [syncGame, auth, props.match]);
+	}, [syncGame, props.match]);
 
 	useEffect(() => {
 		if (!gameState) {
@@ -106,7 +104,7 @@ const GameContainer = (props) => {
 	 *
 	 * @param {string} type the type of piece to promote the piece waiting to be promoted to.
 	 */
-	const performPromotion = async(type) => {
+	const performPromotion = async type => {
 		gameState.performPromotion(type);
 		syncGame();
 	}
