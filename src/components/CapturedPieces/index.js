@@ -8,13 +8,13 @@ import { ListGroup, ListGroupItem, Badge } from 'reactstrap';
 export default class CapturedPieces extends React.Component {
 	static propTypes = {
 		pieces: PropTypes.shape({
-			pawn: PropTypes.arrayOf(PropTypes.object),
-			rook: PropTypes.arrayOf(PropTypes.object),
-			knight: PropTypes.arrayOf(PropTypes.object),
-			bishop: PropTypes.arrayOf(PropTypes.object),
-			queen: PropTypes.arrayOf(PropTypes.object),
-			king: PropTypes.arrayOf(PropTypes.object),
-			generic: PropTypes.arrayOf(PropTypes.object)
+			PAWN: PropTypes.arrayOf(PropTypes.object),
+			ROOK: PropTypes.arrayOf(PropTypes.object),
+			KNIGHT: PropTypes.arrayOf(PropTypes.object),
+			BISHOP: PropTypes.arrayOf(PropTypes.object),
+			QUEEN: PropTypes.arrayOf(PropTypes.object),
+			KING: PropTypes.arrayOf(PropTypes.object),
+			GENERIC: PropTypes.arrayOf(PropTypes.object)
 		}).isRequired,
 		black: PropTypes.bool,
 		className: PropTypes.string

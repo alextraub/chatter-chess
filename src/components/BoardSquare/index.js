@@ -19,8 +19,8 @@ const BoardSquare = ({ black, piece, position }) => {
 			return '';
 		} else {
 			return <>
-				<ChessPiece className="d-flex d-sm-none" size="1x" black={piece.player === 1}  type={piece.type} />
-				<ChessPiece className="d-none d-sm-flex" size="2x" black={piece.player === 1}  type={piece.type} />
+				<ChessPiece className="d-flex d-sm-none" size="1x" black={piece.player === 'BLACK'}  type={piece.type} />
+				<ChessPiece className="d-none d-sm-flex" size="2x" black={piece.player === 'BLACK'}  type={piece.type} />
 			</>
 		}
 	}
@@ -45,8 +45,8 @@ const BoardSquare = ({ black, piece, position }) => {
 BoardSquare.propTypes = {
 	black: PropTypes.bool,
 	piece: PropTypes.shape({
-		type: PropTypes.string,
-		player: PropTypes.oneOf([0,1])
+		type: PropTypes.oneOf(['PAWN', 'ROOK', 'KNIGHT', 'BISHOP', 'QUEEN', 'KING', 'GENERIC']),
+		player: PropTypes.oneOf(['WHITE', 'BLACK'])
 	}),
 	position: PropTypes.string
 };

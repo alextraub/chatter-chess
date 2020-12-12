@@ -1,42 +1,15 @@
 import BoardState from '../BoardState'
 import {inCheck, inCheckMate} from './'
-import King from '../Piece/King'
-import Rook from '../Piece/Rook'
-//jest.mock('../../Game/BoardState')
+import Piece, { King, Rook } from '../Piece';
 
-
-const boardState = new BoardState();
-const whiteKing = new King(boardState, 0);
-const blackKing = new King(boardState, 1);
-const whiteRook = new Rook(boardState, 0);
-const blackRook = new Rook(boardState, 1);
-function emptyBoard(boardstate)
-{
-	boardstate.whitePieces.getPieces().forEach(([r,c]) => {
-		const piece = boardstate.getPiece([r,c]);
-		boardstate.whitePieces.remove(piece, [r,c]);
-		boardstate.board[r][c] = null;
-	});
-
-	boardstate.blackPieces.getPieces().forEach(([r,c]) => {
-		const piece = boardstate.getPiece([r,c]);
-		boardstate.blackPieces.remove(piece, [r,c]);
-		boardstate.board[r][c] = null;
-	});
-	// for(let r = 0; r < 8; ++r)
-	// {
-	// 	for(let c = 0; c < 8; ++c)
-	// 	{
-	// 		const piece = boardstate.board[r][c];
-
-	// 		boardstate.board[r][c] = null;
-	// 	}
-	// }
-}
+const whiteKing = new King(null, 0);
+const blackKing = new King(null, 1);
+const whiteRook = new Rook(null, 0);
+const blackRook = new Rook(null, 1);
 
 test('it can tell when the King isnt in check', () =>
 {
-	emptyBoard(boardState);
+	const boardState = new BoardState([]);
 	boardState.placePiece(blackKing, [7, 4]);
 	boardState.placePiece(whiteKing, [0, 3]);
 
@@ -46,7 +19,7 @@ test('it can tell when the King isnt in check', () =>
 
 test('it can tell when the King is in check', () =>
 {
-	emptyBoard(boardState);
+	const boardState = new BoardState([]);
 	boardState.placePiece(blackKing, [7, 4]);
 	boardState.placePiece(whiteRook, [0, 4]);
 
@@ -55,7 +28,7 @@ test('it can tell when the King is in check', () =>
 
 test('it can tell when the king is in check but not in check mate', () =>
 {
-	emptyBoard(boardState);
+	const boardState = new BoardState([]);
 	boardState.placePiece(whiteKing, [7, 4]);
 	boardState.placePiece(blackRook, [0, 4]);
 
@@ -65,7 +38,7 @@ test('it can tell when the king is in check but not in check mate', () =>
 
 test('it can tell when the king is in check mate', () =>
 {
-	emptyBoard(boardState);
+	const boardState = new BoardState([]);
 	boardState.placePiece(blackKing, [7, 4]);
 
 	boardState.placePiece(whiteRook, [0, 3]);
@@ -113,10 +86,11 @@ const removePiece = ([r,c], bState) => {
 	if(p === null) {
 		return;
 	} else {
+		const piece = Piece.asQueryObject(p, [r,c]);
 		if(p.player === 0) {
-			bState.whitePieces.remove(p, [r,c]);
+			bState.whitePieces.remove(piece);
 		} else {
-			bState.blackPieces.remove(p, [r,c]);
+			bState.blackPieces.remove(piece);
 		}
 		bState.board[r][c] = null;
 	}
@@ -127,10 +101,12 @@ const changePosition = ([fR,fC], [tR, tC], bState) => {
 	if(p === null) {
 		return;
 	} else {
+		const oldP = Piece.asQueryObject(p, [fR, fC]);
+		const newP = Piece.asQueryObject(p, [tR, tC]);
 		if(p.player === 0) {
-			bState.whitePieces.update(p, [fR,fC], [tR,tC]);
+			bState.whitePieces.update(oldP, newP);
 		} else {
-			bState.blackPieces.update(p, [fR,fC], [tR,tC]);
+			bState.blackPieces.update(oldP, newP);
 		}
 
 		bState.board[fR][fC] = null;

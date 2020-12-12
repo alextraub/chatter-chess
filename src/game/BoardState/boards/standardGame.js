@@ -1,24 +1,28 @@
 
 const board = [
-	...['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'].map((t, c) => ({
+	...['ROOK', 'KNIGHT', 'BISHOP', 'QUEEN', 'KING', 'BISHOP', 'KNIGHT', 'ROOK'].map((t, c) => ({
 		type: t,
-		player: 1,
-		position: [0, c]
+		player: 'BLACK',
+		position: { row: 0, col: c },
+		captured: false
 	})),
 	...[0,1,2,3,4,5,6,7].map(c => ({
-		type: 'pawn',
-		player: 1,
-		position: [1, c]
+		type: 'PAWN',
+		player: 'BLACK',
+		position: { row: 1, col: c },
+		captured: false
 	})),
 	...[0,1,2,3,4,5,6,7].map(c => ({
-		type: 'pawn',
-		player: 0,
-		position: [6, c]
+		type: 'PAWN',
+		player: 'WHITE',
+		position: { row: 6, col: c },
+		captured: false
 	})),
-	...['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'].map((t, c) => ({
+	...['ROOK', 'KNIGHT', 'BISHOP', 'QUEEN', 'KING', 'BISHOP', 'KNIGHT', 'ROOK'].map((t, c) => ({
 		type: t,
-		player: 0,
-		position: [7, c]
+		player: 'WHITE',
+		position: { row: 7, col: c },
+		captured: false
 	}))
 ]
 

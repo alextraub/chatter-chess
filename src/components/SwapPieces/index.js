@@ -8,11 +8,11 @@ const SwapPieces = props => {
 		const { swapList } = props;
 		return swapList.map(({type, black}) => (
 			<ListGroupItem tag="button"
-				aria-label={type}
+				aria-label={type.toLowerCase()}
 				data-testid="swap-button"
 				type="button"
 				action color="primary" key={type}
-				onClick={e => {props.performSwap(type)}}
+				onClick={e => {props.performPromotion(type)}}
 				className="d-inline-flex w-auto h-auto mx-1">
 				<ChessPiece type={type} black={black} />
 			</ListGroupItem>
@@ -35,9 +35,14 @@ const SwapPieces = props => {
 
 SwapPieces.propTypes = {
 	open: PropTypes.bool,
-	performSwap: PropTypes.func,
+	performPromotion: PropTypes.func,
 	swapList: PropTypes.arrayOf(PropTypes.shape({
-		type: PropTypes.string,
+		type: PropTypes.oneOf([
+			'ROOK',
+			'KNIGHT',
+			'BISHOP',
+			'QUEEN'
+		]),
 		black: PropTypes.bool
 	}))
 };

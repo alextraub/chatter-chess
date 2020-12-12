@@ -106,7 +106,7 @@ export default class MoveInput extends React.Component {
 					move: ''
 				});
 			} catch (error) {
-				//
+				console.error(error);
 			}
 
 

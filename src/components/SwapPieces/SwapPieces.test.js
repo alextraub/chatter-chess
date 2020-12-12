@@ -14,39 +14,39 @@ const wQueen = {type: 'queen', black: false};
 const bQueen = {type: 'queen', black: true};
 
 test('Component renders', async () => {
-	const swap = jest.fn();
-	const { getByTestId, rerender } = await render(<SwapPieces open swapList={[]} performSwap={swap} />);
+	const promote = jest.fn();
+	const { getByTestId, rerender } = await render(<SwapPieces open swapList={[]} performPromotion={promote} />);
 	expect(screen.getByTestId('swap-pieces')).toBeInTheDocument();
 
-	rerender(<SwapPieces swapList={[]} performSwap={swap} />);
+	rerender(<SwapPieces swapList={[]} performPromotion={promote} />);
 	expect(getByTestId('swap-pieces')).toBeInTheDocument();
 });
 
 test('performSwap is called with one white piece', async () => {
-	const swap = jest.fn();
-	const { getAllByTestId } = render(<SwapPieces open swapList={[wRook]} performSwap={() => {swap()}} />);
+	const promote = jest.fn();
+	const { getAllByTestId } = render(<SwapPieces open swapList={[wRook]} performPromotion={() => {promote()}} />);
 	fireEvent.click(getAllByTestId('swap-button')[0]);
-	expect(swap).toHaveBeenCalled();
+	expect(promote).toHaveBeenCalled();
 });
 
 test('performSwap is called with multiple white pieces', () => {
 	cleanup();
-	const swap = jest.fn();
-	const { getAllByTestId } = render(<SwapPieces open swapList={[wRook, wKnight, wBishop, wQueen]} performSwap={swap} />);
+	const promote = jest.fn();
+	const { getAllByTestId } = render(<SwapPieces open swapList={[wRook, wKnight, wBishop, wQueen]} performPromotion={promote} />);
 	fireEvent.click(getAllByTestId('swap-button')[1]);
-	expect(swap).toHaveBeenCalled();
+	expect(promote).toHaveBeenCalled();
 });
 
 test('performSwap is called with one black piece', () => {
-	const swap = jest.fn();
-	const { getAllByTestId } = render(<SwapPieces open swapList={[bRook]} performSwap={swap} />);
+	const promote = jest.fn();
+	const { getAllByTestId } = render(<SwapPieces open swapList={[bRook]} performPromotion={promote} />);
 	fireEvent.click(getAllByTestId('swap-button')[0]);
-	expect(swap).toHaveBeenCalled();
+	expect(promote).toHaveBeenCalled();
 });
 
 test('performSwap is called with multiple black pieces', () => {
-	const swap = jest.fn();
-	const { getAllByTestId } = render(<SwapPieces open swapList={[bRook, bKnight, bBishop, bQueen]} performSwap={swap} />);
+	const promote = jest.fn();
+	const { getAllByTestId } = render(<SwapPieces open swapList={[bRook, bKnight, bBishop, bQueen]} performPromotion={promote} />);
 	fireEvent.click(getAllByTestId('swap-button')[1]);
-	expect(swap).toHaveBeenCalled();
+	expect(promote).toHaveBeenCalled();
 });

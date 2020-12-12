@@ -1,4 +1,5 @@
 import DPiece from '../Piece/DPiece';
+import Piece from '../Piece';
 
 export function inCheck([Row, Col], boardstate, team)
 {
@@ -6,8 +7,13 @@ export function inCheck([Row, Col], boardstate, team)
 		boardstate.blackPieces :
 		boardstate.whitePieces;
 
-	return enemyPieces.getPieces().some(position => {
-		return boardstate.getPiece(position).canMove(position, [Row, Col]);
+	return enemyPieces.getPieces().some(p => {
+		if(p === null || p.position === null) {
+			return false;
+		}
+		const { row, col } = p.position;
+		const piece = boardstate.getPiece([row, col]);
+		return piece !== null && piece.canMove([row, col], [Row, Col]);
 	});
 }
 
@@ -103,16 +109,17 @@ export function inCheckMate([Row, Col], boardstate, team)
 		boardstate.blackPieces;
 
 	// Array of all enemy pieces that can capture the king
-	const threats = enemyPieceSet.getPieces(([r,c]) =>
+	const threats = enemyPieceSet.getPieces(({ position: { row: r, col: c} }) =>
 	{
-		return boardstate
-			.getPiece([r,c])
-			.canMove([r,c], [Row,Col]);
+		const piece = boardstate
+			.getPiece([r,c]);
+		return piece !== null && piece.canMove([r,c], [Row,Col]);
 	});
 
 	let blockablePositions = []; // Candidate positions to get out of check
-	for (let pos of threats)
+	for (let threat of threats)
 	{
+		const pos = [threat.position.row, threat.position.col];
 		const path = boardstate.getPiece(pos).getValidMovePath(pos, [Row,Col]);
 		for(let [x,y] of path) // Add unique candidate positions along the paths pieces in threats will take to capture the king
 		{
@@ -142,10 +149,10 @@ export function inCheckMate([Row, Col], boardstate, team)
 		{
 			if(team === 0)
 			{
-				boardstate.blackPieces.remove(curPiece, [r,c]);
+				boardstate.blackPieces.remove(Piece.asQueryObject(curPiece, [r,c]));
 			} else
 			{
-				boardstate.whitePieces.remove(curPiece, [r,c]);
+				boardstate.whitePieces.remove(Piece.asQueryObject(curPiece, [r,c]));
 			}
 		}
 
@@ -155,10 +162,10 @@ export function inCheckMate([Row, Col], boardstate, team)
 		// Remove the dummy piece from the team's PieceSet, so it won't be there after running this function
 		if(team === 0)
 		{
-			boardstate.whitePieces.remove(dummy, [r,c]);
+			boardstate.whitePieces.remove(Piece.asQueryObject(dummy, [r,c]));
 		} else
 		{
-			boardstate.blackPieces.remove(dummy, [r,c]);
+			boardstate.blackPieces.remove(Piece.asQueryObject(dummy, [r,c]));
 		}
 
 		// Restore the BoardState with the original piece
@@ -176,7 +183,7 @@ export function inCheckMate([Row, Col], boardstate, team)
 
 	// An array of all the ally pieces that can be moved in such a way to get the king out of check
 	const allyPieces = allyPieceSet
-		.getPieces(([r,c]) =>
+		.getPieces(({ position: { row: r, col: c } }) =>
 		{
 			if(r === Row && c === Col)
 			{
@@ -186,9 +193,9 @@ export function inCheckMate([Row, Col], boardstate, team)
 			// Loop through all the candidate positions
 			for(let [x,y] of blockablePositions)
 			{
-				if(boardstate
-					.getPiece([r,c])
-					.canMove([r,c], [x,y]))
+				const piece = boardstate.getPiece([r,c]);
+				if(piece !== null &&
+					piece.canMove([r,c], [x,y]))
 				{
 					return true; // If the allied piece can move to the candidate position, include it in allyPieces
 				}

@@ -20,17 +20,17 @@ const ChessPiece = ({ black, type, size, quantity, className, offsetX }) => {
 
 	const chessIcon = type => {
 		switch(type) {
-		case 'pawn': return faChessPawn;
-		case 'rook': return faChessRook;
-		case 'knight': return faChessKnight;
-		case 'bishop': return faChessBishop;
-		case 'queen': return faChessQueen;
-		case 'king': return faChessKing;
-		default: return faSquare;
+		case 'PAWN': return faChessPawn;
+		case 'ROOK': return faChessRook;
+		case 'KNIGHT': return faChessKnight;
+		case 'BISHOP': return faChessBishop;
+		case 'QUEEN': return faChessQueen;
+		case 'KING': return faChessKing;
+		case 'GENERIC': return faSquare;
 		}
 	}
 
-	const grow = type === 'king' || type === 'queen' ? 4 : 6;
+	const grow = type === 'KING' || type === 'QUEEN' ? 4 : 6;
 	const offsetH = offsetX === 0 ? '' :
 		offsetX < 0 ? `left-${offsetX}` : `right-${offsetX}`
 
@@ -46,7 +46,7 @@ const ChessPiece = ({ black, type, size, quantity, className, offsetX }) => {
 		</>
 	}
 
-	return <span data-label={`${black ? 'black' : 'white'} ${type}`} data-testid="chess-piece" className={`fa-layers fa-fw ${className}`.trim()} aria-label={`${black ? 'black' : 'white'} ${type}`}>
+	return <span data-label={`${black ? 'black' : 'white'} ${type.toLowerCase()}`} data-testid="chess-piece" className={`fa-layers fa-fw ${className}`.trim()} aria-label={`${black ? 'black' : 'white'} ${type.toLowerCase()}`}>
 		{piece}
 	</span>
 }
@@ -54,13 +54,13 @@ const ChessPiece = ({ black, type, size, quantity, className, offsetX }) => {
 ChessPiece.propTypes = {
 	black: PropTypes.bool,
 	type: PropTypes.oneOf([
-		'rook',
-		'knight',
-		'bishop',
-		'king',
-		'queen',
-		'pawn',
-		'generic'
+		'PAWN',
+		'ROOK',
+		'KNIGHT',
+		'BISHOP',
+		'QUEEN',
+		'KING',
+		'GENERIC'
 	]).isRequired,
 	quantity: PropTypes.number,
 	className: PropTypes.string,
