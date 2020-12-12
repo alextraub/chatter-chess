@@ -21,6 +21,16 @@ const routes = [
 		}
 	},
 	{
+		path: '/game/:id',
+		exact: true,
+		component: props => <GameContainer {...props} />,
+		authType: AuthType.AUTH_ONLY,
+		page: {
+			centered: false,
+			noAccountButton: false
+		}
+	},
+	{
 		path: '/games',
 		exact: true,
 		component: props => <GameList {...props} />,

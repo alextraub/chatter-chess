@@ -15,7 +15,8 @@ import GameState from '../../game/GameState';
  */
 class GameContainer extends React.Component {
 	static propTypes = {
-		gameState: PropTypes.instanceOf(GameState) // Used for testing
+		gameState: PropTypes.instanceOf(GameState), // Used for testing
+		location: PropTypes.object
 	};
 
 	constructor(props) {
@@ -139,6 +140,7 @@ class GameContainer extends React.Component {
 	}
 
 	render() {
+		console.log(this.props.location);
 		return (
 			<div data-testid="game-container">
 				<SwapPieces

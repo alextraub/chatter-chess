@@ -9,6 +9,7 @@ import { AuthContext } from "../auth/AuthProvider";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import LoadingDots from '../LoadingDots';
+import { useHistory } from 'react-router-dom';
 const { v4: uuidv4 } = require("uuid");
 
 const GameList = () => {
@@ -16,7 +17,7 @@ const GameList = () => {
 	const [games, setGames] = useState([]); // All the user's games
 	const [fetching, isFetching] = useState(true); // If an API request is being handled
 	const [loading, isLoading] = useState(false); // A general indicator to prevent multiple API requests happening at once
-
+	const history = useHistory();
 
 
 	useEffect(() => {
@@ -354,7 +355,7 @@ const GameList = () => {
 											role="button"
 											aria-roledescription="play game"
 											color="success"
-											onClick={() => fetchGame(idx)}
+											onClick={() => history.push(`/game/${game.id}`)}
 										>
 											<FontAwesomeIcon icon={faPlay} />
 										</Button>
