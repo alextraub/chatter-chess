@@ -19,7 +19,6 @@ const GameList = () => {
 	const [loading, isLoading] = useState(false); // A general indicator to prevent multiple API requests happening at once
 	const history = useHistory();
 
-
 	useEffect(() => {
 		const fetchGames = async () =>{
 			if(auth.user) { // If there is an authenticated user
