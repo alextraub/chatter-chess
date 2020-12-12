@@ -229,9 +229,9 @@ export default class GameState {
 	 */
 	rollbackMove(from, fromPiece, to, toPiece) {
 		if(fromPiece.player === 0) {
-			this.#boardState.whitePieces.remove(fromPiece, from);
+			this.#boardState.whitePieces.remove(Piece.asQueryObject(fromPiece, from));
 		} else {
-			this.#boardState.blackPieces.remove(fromPiece, from);
+			this.#boardState.blackPieces.remove(Piece.asQueryObject(fromPiece, from));
 		}
 		// Move the fromPiece to from
 		this.#boardState.placePiece(fromPiece, from);

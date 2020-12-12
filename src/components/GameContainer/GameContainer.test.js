@@ -226,3 +226,22 @@ test('Pieces are added to the correct captured list', async () => {
 	expect(within(screen.getAllByTestId('capturedContainer')[0])
 		.getAllByLabelText('white rook')).toHaveLength(1);
 });
+
+test('Moves are rolled back correctly when a move that leaves the player in check is made', async () => {
+	const gameState = new GameState(0, require('../../game/BoardState/boards/standardGame').default);
+	render(<GameContainer gameState={gameState} />);
+
+	await makeMove('b1 c3');
+	await makeMove('b8 c6');
+	await makeMove('c3 b5');
+	await makeMove('c6 d4');
+	await makeMove('e2 e3');
+	await makeMove('e7 e6');
+	await makeMove('b5 c7');
+
+	await makeMove('d8 f6');
+	expect(screen.getByTestId('move-feedback')).toHaveTextContent('That move leaves you in check');
+
+	await makeMove('f6 e5');
+	expect(screen.getByTestId('move-feedback')).toHaveTextContent('There isn\'t a piece at f6')
+})
