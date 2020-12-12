@@ -8,8 +8,16 @@ export default class BoardComponent extends React.Component {
 		static propTypes = {
 			player: PropTypes.oneOf([0, 1]),
 			board: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
-				type: PropTypes.string,
-				player: PropTypes.oneOf([0, 1])
+				type: PropTypes.oneOf([
+					'PAWN',
+					'ROOK',
+					'KNIGHT',
+					'BISHOP',
+					'QUEEN',
+					'KING',
+					'GENERIC'
+				]),
+				player: PropTypes.oneOf(['WHITE', 'BLACK'])
 			})))
 		}
 

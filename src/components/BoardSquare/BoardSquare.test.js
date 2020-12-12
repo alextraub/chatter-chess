@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 
 import BoardSquare from './';
-import { createPiece } from '../../game/Piece';
+import { createPiece } from '../../game/utils/pieceUtils';
 import BoardState from '../../game/BoardState';
 jest.mock('../../game/BoardState');
 jest.mock('../../mediaQuery');
@@ -37,7 +37,7 @@ test('Empty black square does not have a piece', () => {
 });
 
 test('White square with piece has child DOM element(s)', () => {
-	const { getByTestId } = render(<BoardSquare piece={createPiece('pawn', null)} />);
+	const { getByTestId } = render(<BoardSquare piece={{ type: 'PAWN', player: 'WHITE' }} />);
 	const boardSquare = getByTestId('board-square');
 	const boardPiece = screen.getAllByTestId('chess-piece')[0];
 	expect(boardSquare).toContainElement(boardPiece);
@@ -54,18 +54,18 @@ test('Row and col labels are displayed on empty black squares', () => {
 });
 
 test('Row and col labels are displayed on white occupied white squares', () => {
-	const { getByTestId } = render(<BoardSquare position="C5" piece={createPiece('generic', null)} />);
+	const { getByTestId } = render(<BoardSquare position="C5" piece={{ type: 'GENERIC', player: 'WHITE' }} />);
 	expect(getByTestId('position-container')).toHaveTextContent('C5');
 });
 test('Row and col labels are displayed on black occupied white squares', () => {
-	const { getByTestId } = render(<BoardSquare position="A1" piece={createPiece('generic', null)} />);
+	const { getByTestId } = render(<BoardSquare position="A1" piece={{ type: 'GENERIC', player: 'WHITE' }} />);
 	expect(getByTestId('position-container')).toHaveTextContent('A1');
 });
 test('Row and col labels are displayed on white occupied black squares', () => {
-	const { getByTestId } = render(<BoardSquare position="D7" piece={createPiece('generic', null)} black />);
+	const { getByTestId } = render(<BoardSquare position="D7" piece={{ type: 'GENERIC', player: 'WHITE' }} black />);
 	expect(getByTestId('position-container')).toHaveTextContent('D7');
 });
 test('Row and col labels are displayed on black occupied black squares', () => {
-	const { getByTestId } = render(<BoardSquare position="B8" piece={createPiece('generic', null, 1)} black />);
+	const { getByTestId } = render(<BoardSquare position="B8" piece={{ type: 'GENERIC', player: 'BLACK' }} black />);
 	expect(getByTestId('position-container')).toHaveTextContent('B8');
 });

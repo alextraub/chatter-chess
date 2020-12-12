@@ -227,7 +227,7 @@ class Piece {
 			type: piece.type.toUpperCase(),
 			player: piece.isWhite() ? 'WHITE' : 'BLACK',
 			captured: piece.captured,
-			position: piece.canptured ? null : {
+			position: piece.captured ? null : {
 				row: pos[0],
 				col: pos[1]
 			}

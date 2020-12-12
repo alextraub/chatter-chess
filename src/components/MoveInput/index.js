@@ -87,7 +87,7 @@ const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) 
 				}
 
 			} catch (error) {
-				//
+				console.error(error);
 			}
 		}
 	}
