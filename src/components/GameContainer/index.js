@@ -22,7 +22,6 @@ const GameContainer = props => {
 	const [gameState, setGameState] = useState(props.gameState);
 	const [loading, isLoading] = useState(false);
 	const [fetching, isFetching] = useState(!props.gameState);
-	const [version, setVersion] = useState(0);
 
 	const updateGame = async() => {
 		try {
@@ -83,7 +82,6 @@ const GameContainer = props => {
 										...data.getGame.checkStatusBlack
 									}
 								}))
-							setVersion(data.getGame.version);
 						} catch {
 							//
 						}

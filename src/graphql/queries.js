@@ -25,7 +25,6 @@ export const getGame = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      version
       owner
     }
   }
@@ -55,7 +54,6 @@ export const listGames = /* GraphQL */ `
         }
         createdAt
         updatedAt
-        version
         owner
       }
       nextToken

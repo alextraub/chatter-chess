@@ -28,7 +28,6 @@ export const createGame = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      version
       owner
     }
   }
@@ -60,7 +59,6 @@ export const updateGame = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      version
       owner
     }
   }
@@ -92,7 +90,6 @@ export const deleteGame = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      version
       owner
     }
   }
