@@ -26,12 +26,15 @@ const GameContainer = props => {
 	const updateGame = async() => {
 		try {
 			const game = GameState.asQueryObject(gameState);
+			console.log(game);
 			const {id} = props.match.params;
 			await API.graphql({
 				query: mutations.updateGame,
 				variables: {
-					...game,
-					id
+					input: {
+						...game,
+						id
+					}
 				},
 				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
 			});

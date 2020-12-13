@@ -98,7 +98,7 @@ export default class GameState {
 		return [
 			...this.#boardPieces,
 			...this.capturedPieces
-		];
+		].filter(item => !Array.isArray(item));
 	}
 
 	putCapturedPiece(piece) {
@@ -141,8 +141,8 @@ export default class GameState {
 		return {
 			turn: gameState.turn,
 			pieces: [...gameState.pieces],
-			whiteCheckStatus: gameState.check.WHITE,
-			blackCheckStatus: gameState.check.BLACK
+			checkStatusWhite: gameState.check.WHITE,
+			checkStatusBlack: gameState.check.BLACK
 		}
 	}
 
