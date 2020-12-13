@@ -40,7 +40,7 @@ const standardGame = {
 	turn: 0,
 	check: { ...startingCheckStatus },
 	pieces: [...standardGamePieces],
-	swapping: false,
+	swapping: null,
 	swapList: []
 }
 

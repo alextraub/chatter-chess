@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import LoadingDots from '../LoadingDots';
 import { useHistory } from 'react-router-dom';
+import { standardGame } from '../../game/utils/gameUtils';
 const { v4: uuidv4 } = require("uuid");
 
 const GameList = () => {
@@ -65,10 +66,7 @@ const GameList = () => {
 				};
 				const game = {
 					id: uuid,
-					turn: 0,
-					pieces: require('../../game/BoardState/boards/standardGame').default,
-					checkStatusWhite: checkStatusWhite,
-					checkStatusBlack: checkStatusBlack
+					...standardGame
 				};
 				isLoading(true);
 				await API.graphql({
