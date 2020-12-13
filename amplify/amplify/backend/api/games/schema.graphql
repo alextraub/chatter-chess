@@ -1,0 +1,40 @@
+enum Player {
+	WHITE,
+	BLACK
+}
+
+enum PieceType {
+	PAWN,
+	ROOK,
+	KNIGHT,
+	BISHOP,
+	QUEEN,
+	KING,
+	GENERIC
+}
+
+type Position {
+	row: Int!
+	col: Int!
+}
+
+type Piece {
+	player: Player!,
+	type: PieceType!
+	captured: Boolean!
+	position: Position # Not null if captured is false and null if captured is true
+}
+
+type CheckStatus {
+	status: Boolean! # true if in check
+	mate: Boolean # Should never be true if status is false
+}
+
+
+type Game @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
+  id: ID!
+  turn: Int!
+	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured
+	checkStatusWhite: CheckStatus!
+	checkStatusBlack: CheckStatus!
+}

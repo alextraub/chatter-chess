@@ -1,0 +1,18 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "auth": {
+      "accounts": [
+        "read"
+      ]
+    },
+    "api": {
+      "games": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}
