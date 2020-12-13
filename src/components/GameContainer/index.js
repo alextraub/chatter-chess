@@ -55,8 +55,8 @@ const GameContainer = props => {
 				swapList: gameState.swapList
 			});
 		}
-
-	}, [gameState, loading, fetching, updateGame]);
+		console.log(gameState.board);
+	}, [gameState, loading, fetching]);
 
 	const fetchGame = useCallback(async () => {
 		if(!loading) {
