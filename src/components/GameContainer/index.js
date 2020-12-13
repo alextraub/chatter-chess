@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import GameState from '../../game/GameState';
 import {API} from "aws-amplify";
 import * as queries from "../../graphql/queries";
+import * as mutations from "../../graphql/mutations";
 import {GRAPHQL_AUTH_MODE} from "@aws-amplify/api";
 
 /**
@@ -21,6 +22,23 @@ const GameContainer = props => {
 	const [gameState, setGameState] = useState(props.gameState);
 	const [loading, isLoading] = useState(false);
 	const [fetching, isFetching] = useState(!props.gameState);
+
+	const updateGame = useCallback(async() => {
+		try {
+			const game = GameState.asQueryObject(gameState);
+			const {id} = props.match.params;
+			await API.graphql({
+				query: mutations.updateGame,
+				variables: {
+					...game,
+					id
+				},
+				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}, [props.match, gameState]);
 
 	/**
 	 * Updates the React state to reflect the instance's game state property
@@ -37,7 +55,8 @@ const GameContainer = props => {
 				swapList: gameState.swapList
 			});
 		}
-	}, [gameState, loading, fetching]);
+
+	}, [gameState, loading, fetching, updateGame]);
 
 	const fetchGame = useCallback(async () => {
 		if(!loading) {
@@ -122,6 +141,7 @@ const GameContainer = props => {
 	const performMove = (from, to) => {
 		const result = gameState.performMove(from, to);
 		syncGame();
+		updateGame();
 		return result;
 	}
 
@@ -134,6 +154,7 @@ const GameContainer = props => {
 	const performPromotion = async type => {
 		gameState.performPromotion(type);
 		syncGame();
+		updateGame();
 	}
 
 	/**

@@ -282,7 +282,7 @@ const GameList = () => {
 				};
 				const game = {
 					id: uuid,
-					turn: 1,
+					turn: 0,
 					pieces: pieces,
 					checkStatusWhite: checkStatusWhite,
 					checkStatusBlack: checkStatusBlack
@@ -360,7 +360,7 @@ const GameList = () => {
 										</Button>
 									</Col>
 									<Col md="7" sm="5" xs="4">
-										<CardText className="d-inline text-center">{`Current Turn: ${game.turn % 2 === 0 ? "Black" : "White"}`}</CardText>
+										<CardText className="d-inline text-center">{`Current Turn: ${game.turn % 2 === 0 ? "White" : "Black"}`}</CardText>
 									</Col>
 									<Col md="2">
 										<Button
