@@ -189,13 +189,14 @@ const GameContainer = props => {
 
 	return (
 		<div data-testid="game-container">
-			{fetching || state === undefined ? 'Loading...' : <>
-				<SwapPieces
-					open={state.swapping !== false}
-					swapList={state.swapList}
-					erformPromotion={type => {performPromotion(type)}} />
-				{renderStandardUI()}
-			</>}
+			{fetching && state === undefined ? 'Loading...' : state === undefined ?
+				'Not found' : <>
+					<SwapPieces
+						open={state.swapping !== false}
+						swapList={state.swapList}
+						erformPromotion={type => {performPromotion(type)}} />
+					{renderStandardUI()}
+				</>}
 		</div>
 	);
 
