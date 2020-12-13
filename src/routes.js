@@ -13,10 +13,10 @@ const routes = [
 	{
 		path: '/',
 		exact: true,
-		component: props => <GameContainer {...props} />,
+		component: props => <GameList {...props} />,
 		authType: AuthType.AUTH_ONLY,
 		page: {
-			centered: false,
+			centered: true,
 			noAccountButton: false
 		}
 	},
