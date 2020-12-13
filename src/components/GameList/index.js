@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { API } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import { Col, Row, Button, Card, CardText, CardHeader, CardTitle, CardBody, ListGroup, ListGroupItem } from "reactstrap";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
@@ -136,7 +136,12 @@ const GameList = () => {
 											role="button"
 											aria-roledescription="play game"
 											color="success"
-											onClick={() => history.push(`/game/${game.id}`)}
+											onClick={async () => {
+												await Auth.updateUserAttributes(auth.user, {
+													'custom:activeGame': game.id
+												});
+												history.push(`/game/${game.id}`)
+											}}
 										>
 											<FontAwesomeIcon icon={faPlay} />
 										</Button>
