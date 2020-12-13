@@ -85,6 +85,9 @@ export default class BoardState {
 		}
 
 		this.board[row][col] = piece;
+		if(piece.captured) {
+			piece.captured = false;
+		}
 		const qPiece = Piece.asQueryObject(piece, [row, col]);
 		if(piece.player === 0) {
 			this.whitePieces.add(qPiece);

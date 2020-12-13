@@ -223,7 +223,7 @@ const GameContainer = props => {
 					<SwapPieces
 						open={state.swapping !== false}
 						swapList={state.swapList}
-						erformPromotion={type => {performPromotion(type)}} />
+						performPromotion={type => {performPromotion(type)}} />
 					{renderStandardUI()}
 				</>}
 		</div>
