@@ -22,8 +22,9 @@ const GameContainer = props => {
 	const [gameState, setGameState] = useState(props.gameState);
 	const [loading, isLoading] = useState(false);
 	const [fetching, isFetching] = useState(!props.gameState);
+	const [version, setVersion] = useState(0);
 
-	const updateGame = useCallback(async() => {
+	const updateGame = async() => {
 		try {
 			const game = GameState.asQueryObject(gameState);
 			const {id} = props.match.params;
@@ -31,14 +32,15 @@ const GameContainer = props => {
 				query: mutations.updateGame,
 				variables: {
 					...game,
-					id
+					id,
+					version
 				},
 				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
 			});
 		} catch (error) {
 			console.log(error);
 		}
-	}, [props.match, gameState]);
+	};
 
 	/**
 	 * Updates the React state to reflect the instance's game state property
@@ -82,6 +84,7 @@ const GameContainer = props => {
 										...data.getGame.checkStatusBlack
 									}
 								}))
+							setVersion(data.getGame.version);
 						} catch {
 							//
 						}
@@ -138,10 +141,10 @@ const GameContainer = props => {
 	 * @param {[number, number]} to position to move to
 	 * @returns {boolean}
 	 */
-	const performMove = (from, to) => {
+	const performMove = async(from, to) => {
 		const result = gameState.performMove(from, to);
 		syncGame();
-		updateGame();
+		await updateGame();
 		return result;
 	}
 
@@ -154,7 +157,7 @@ const GameContainer = props => {
 	const performPromotion = async type => {
 		gameState.performPromotion(type);
 		syncGame();
-		updateGame();
+		await updateGame();
 	}
 
 	/**
