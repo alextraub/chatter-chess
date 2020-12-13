@@ -19,13 +19,14 @@ import {GRAPHQL_AUTH_MODE} from "@aws-amplify/api";
 const GameContainer = props => {
 	const [state, setState] = useState();
 	const [gameState, setGameState] = useState(props.gameState);
+	const [loading, isLoading] = useState(false);
+	const [fetching, isFetching] = useState(props.gameState !== undefined);
 
 	/**
 	 * Updates the React state to reflect the instance's game state property
 	 */
 	const syncGame = useCallback(() => {
 		setState({
-			...state,
 			turn: gameState.turn,
 			capturedPieces: gameState.getCapturedPieces(),
 			check: gameState.check,
@@ -33,34 +34,46 @@ const GameContainer = props => {
 			swapping: gameState.swapping,
 			swapList: gameState.swapList
 		});
-	}, [gameState, state]);
+	}, [gameState]);
 
 	const fetchGame = useCallback(async () => {
-		const {id} = props.match.params;
-		try {
-			const gameData = await API.graphql({
-				query: queries.getGame,
-				variables: {
-					id
-				},
-				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-			}); // Fetch the data from the API
-			setGameState(new GameState(gameData.turn, gameData.pieces, {
-				WHITE: {...gameData.checkStatusWhite},
-				BLACK: {...gameData.checkStatusBlack}
-			}));
-			syncGame();
-		} catch (error) {
-			console.log(error);
+		if(!loading) {
+			isLoading(true);
+			const { id } = props.match.params;
+			try {
+				const gameData = await API.graphql({
+					query: queries.getGame,
+					variables: {
+						id
+					},
+					authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+				}); // Fetch the data from the API
+				setGameState(new GameState(gameData.turn, gameData.pieces, {
+					WHITE: {...gameData.checkStatusWhite},
+					BLACK: {...gameData.checkStatusBlack}
+				}));
+			} catch (error) {
+				console.log(error);
+			} finally {
+				isLoading(false);
+			}
 		}
 
-	}, [syncGame, props.match]);
+	}, [props.match, loading]);
 
 	useEffect(() => {
-		if (!gameState) {
-			fetchGame();
+		if(fetching && !loading) {
+			fetchGame()
+				.then(() => {
+					isFetching(false);
+				});
 		}
-	}, [gameState, fetchGame]);
+
+		if(!loading) {
+			syncGame();
+		}
+
+	}, [syncGame, fetching, loading, fetchGame]);
 
 	// /**
 	//  * Updates the React state to reflect the instance's game state property
@@ -92,7 +105,7 @@ const GameContainer = props => {
 	 * @param {[number, number]} to position to move to
 	 * @returns {boolean}
 	 */
-	const performMove = async(from, to) => {
+	const performMove = (from, to) => {
 		const result = gameState.performMove(from, to);
 		syncGame();
 		return result;
@@ -162,11 +175,13 @@ const GameContainer = props => {
 
 	return (
 		<div data-testid="game-container">
-			<SwapPieces
-				open={state.swapping !== false}
-				swapList={state.swapList}
-				performPromotion={type => {performPromotion(type)}} />
-			{renderStandardUI()}
+			{fetching ? 'Loading...' : <>
+				<SwapPieces
+					open={state.swapping !== false}
+					swapList={state.swapList}
+					erformPromotion={type => {performPromotion(type)}} />
+				{renderStandardUI()}
+			</>}
 		</div>
 	);
 
@@ -175,6 +190,10 @@ const GameContainer = props => {
 GameContainer.propTypes = {
 	gameState: PropTypes.instanceOf(GameState), // Used for testing
 	match: PropTypes.object
+}
+
+GameContainer.defaultProps = {
+	gameState: new GameState(0, require('../../game/BoardState/boards/standardGame').default)
 }
 
 

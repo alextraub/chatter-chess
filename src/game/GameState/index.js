@@ -86,7 +86,7 @@ export default class GameState {
 
 	get capturedPieces() {
 		const flattenPieces = player => {
-			Object.entries(this.#capturedPieces[player]).map(([_, pieceArray]) => {
+			return Object.entries(this.#capturedPieces[player]).map(([_, pieceArray]) => {
 				return [...pieceArray.map(piece => piece)]
 			})
 		}
