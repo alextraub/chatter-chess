@@ -1,6 +1,7 @@
 import BoardState from '../BoardState'
 import {inCheck, inCheckMate} from './'
 import Piece, { King, Rook } from '../Piece';
+import { standardGamePieces } from '../utils/gameUtils';
 
 const whiteKing = new King(null, 0);
 const blackKing = new King(null, 1);
@@ -49,7 +50,7 @@ test('it can tell when the king is in check mate', () =>
 })
 
 test('Fool\'s mate', () => {
-	const stdBoardState = new BoardState();
+	const stdBoardState = new BoardState(standardGamePieces);
 	stdBoardState.movePiece([6, 5], [5, 5]);
 	stdBoardState.movePiece([1, 4], [3, 4]);
 	stdBoardState.movePiece([6, 6], [4, 6]);
@@ -61,7 +62,7 @@ test('Fool\'s mate', () => {
 
 
 test('Capture piece to get out of check', () => {
-	const stdBoardState = new BoardState();
+	const stdBoardState = new BoardState(standardGamePieces);
 	stdBoardState.movePiece([6, 7], [4, 7]);
 	stdBoardState.movePiece([1, 4], [3, 4]);
 	stdBoardState.movePiece([6, 5], [5, 5]);
@@ -72,7 +73,7 @@ test('Capture piece to get out of check', () => {
 });
 
 test('Block piece to get out of check', () => {
-	const stdBoardState = new BoardState();
+	const stdBoardState = new BoardState(standardGamePieces);
 	stdBoardState.movePiece([1, 5], [2, 5]);
 	stdBoardState.movePiece([6, 5], [4, 5]);
 	stdBoardState.movePiece([7, 3], [3, 7]);
@@ -115,7 +116,7 @@ const changePosition = ([fR,fC], [tR, tC], bState) => {
 }
 
 test('Correctly identifies move that gets king out of check', () => {
-	const bState = new BoardState();
+	const bState = new BoardState(standardGamePieces);
 	removePiece([7,5], bState);
 	removePiece([0,5], bState);
 	removePiece([6,5], bState);

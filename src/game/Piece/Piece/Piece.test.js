@@ -76,6 +76,7 @@ test('Piece.captured must be a boolean', () => {
 	expect(() => whitePiece2.captured = 0).toThrow(TypeError);
 	expect(() => blackPiece.captured = [true]).toThrow(TypeError);
 	expect(() => whitePiece1.captured = true).not.toThrow(TypeError);
+	expect(() => whitePiece1.captured = false).not.toThrow(TypeError);
 });
 test('Piece.captured can be changed', () => {
 	const piece = new DPiece(boardState);
@@ -241,31 +242,6 @@ test('getValidMovePath returns all position from from to to for a diagonal move'
 	expect(whitePiece1.getValidMovePath([5,0],[2,3])).toEqual(path4);
 });
 
-test('toObject has correct type property', () => {
-	expect(whitePiece1.toObject().type).toEqual('generic');
-	expect(blackPiece.toObject().type).toEqual('generic');
-});
-
-test('toObject has correct player property', () => {
-	expect(whitePiece2.toObject().player).toBe(0);
-	expect(blackPiece.toObject().player).toBe(1);
-});
-
-test('toObject has correct captured property for uncaptured pieces', () => {
-	expect(whitePiece2.toObject().captured).toBe(false);
-	expect(blackPiece.toObject().captured).toBe(false);
-});
-
-test('toObject has correct captured property for captured pieces', () => {
-	whitePiece1.captured = true;
-	expect(whitePiece1.toObject().captured).toBe(true);
-	whitePiece1.captured = false;
-
-	blackPiece.captured = true;
-	expect(blackPiece.toObject().captured).toBe(true);
-	blackPiece.captured = false;
-});
-
 jest.unmock('../../utils/positionUtils');
 test('Piece.asQueryObject returns an object with properties: type, player, captured, position', () => {
 	const p = Piece.asQueryObject(whitePiece1, [0, 0]);
@@ -298,7 +274,7 @@ test('Piece.asQueryObject captured property reflects the piece\'s captured prope
 	const p1 = new DPiece();
 	expect(Piece.asQueryObject(p1, [0,0]).captured).toBe(false);
 	p1.captured = true;
-	expect(Piece.asQueryObject(p1, [0,0]).captured).toBe(true);
+	expect(Piece.asQueryObject(p1, null).captured).toBe(true);
 });
 
 test('Piece.asQueryObject throws an error if passed an uncaptured piece without a position', () => {

@@ -205,19 +205,13 @@ class Piece {
 			false : `You already have a piece at ${boardPositionToString([toRow, toCol])}`;
 	}
 
-	toObject() {
-		return {
-			type: this.type,
-			player: this.player,
-			captured: this.captured
-		}
-	}
-
 	static asQueryObject(piece, position) {
 		if(!piece.captured) {
 			if(!isValidBoardPosition(position)) {
 				throw new TypeError(`Expected a position but got ${position}`);
 			}
+		} else if(position !== null) {
+			throw new TypeError(`Captured pieces passed to Piece.asQueryObject may only have a null position, but was passed ${position}`);
 		}
 
 		const pos = typeof(position) === 'string' ?

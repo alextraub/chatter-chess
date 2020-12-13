@@ -18,28 +18,39 @@ import {GRAPHQL_AUTH_MODE} from "@aws-amplify/api";
  * as well as renders the top-level UI components for the game.
  */
 const GameContainer = props => {
-	const [state, setState] = useState();
+	const [state, setState] = useState(props.gameState ? {
+		turn: props.gameState.turn,
+		capturedPieces: props.gameState.getCapturedPieces(),
+		check: props.gameState.check,
+		board: props.gameState.board,
+		swapping: props.gameState.swapping,
+		swapList: props.gameState.swapList
+	} : undefined);
 	const [gameState, setGameState] = useState(props.gameState);
 	const [loading, isLoading] = useState(false);
-	const [fetching, isFetching] = useState(!props.gameState);
+	const [fetching, isFetching] = useState(!props.offline);
 
 	const updateGame = async() => {
-		try {
-			const game = GameState.asQueryObject(gameState);
-			console.log(game);
-			const {id} = props.match.params;
-			await API.graphql({
-				query: mutations.updateGame,
-				variables: {
-					input: {
-						...game,
-						id
-					}
-				},
-				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-			});
-		} catch (error) {
-			console.log(error);
+		if(!loading) {
+			isLoading(true);
+			try {
+				const game = GameState.asQueryObject(gameState);
+				const {id} = props.match.params;
+				await API.graphql({
+					query: mutations.updateGame,
+					variables: {
+						input: {
+							...game,
+							id
+						}
+					},
+					authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+				});
+			} catch (error) {
+				console.log(error);
+			} finally {
+				isLoading(false);
+			}
 		}
 	};
 
@@ -47,8 +58,7 @@ const GameContainer = props => {
 	 * Updates the React state to reflect the instance's game state property
 	 */
 	const syncGame = useCallback(() => {
-		if(!loading && !fetching && gameState !== undefined) {
-			console.log('syncing...');
+		if(gameState instanceof GameState) {
 			setState({
 				turn: gameState.turn,
 				capturedPieces: gameState.getCapturedPieces(),
@@ -58,16 +68,14 @@ const GameContainer = props => {
 				swapList: gameState.swapList
 			});
 		}
-		console.log(gameState.board);
-	}, [gameState, loading, fetching]);
+	}, [gameState]);
 
 	const fetchGame = useCallback(async () => {
 		if(!loading) {
-			console.log('fetching...')
 			isLoading(true);
 			const { id } = props.match.params;
 			try {
-				const gameData = await API.graphql({
+				await API.graphql({
 					query: queries.getGame,
 					variables: {
 						id
@@ -76,20 +84,25 @@ const GameContainer = props => {
 				})
 					.then(({ data }) => {
 						try {
-							setGameState(new GameState(
-								data.getGame.turn, data.getGame.pieces, {
+							setGameState(new GameState({
+								turn: data.getGame.turn,
+								pieces: [...data.getGame.pieces],
+								check: {
 									WHITE: {
 										...data.getGame.checkStatusWhite
 									},
 									BLACK: {
 										...data.getGame.checkStatusBlack
 									}
-								}))
+								}
+							}))
 						} catch {
 							//
 						}
 					}, () => {})
 					.catch(() => {}) // Fetch the data from the API
+			} catch {
+				setGameState(null);
 			} finally {
 				isLoading(false);
 			}
@@ -104,27 +117,13 @@ const GameContainer = props => {
 					isFetching(false);
 				});
 		}
+	}, [fetching, fetchGame]);
 
-		if(!loading && !fetching && gameState !== undefined) {
+	useEffect(() => {
+		if(!loading && !fetching) {
 			syncGame();
 		}
-
-	}, [syncGame, gameState, fetching, loading, fetchGame]);
-
-	// /**
-	//  * Updates the React state to reflect the instance's game state property
-	//  */
-	// const syncGame = () => {
-	// 	setState({
-	// 		...state,
-	// 		turn: gameState.turn,
-	// 		capturedPieces: gameState.getCapturedPieces(),
-	// 		check: gameState.check,
-	// 		board: gameState.board,
-	// 		swapping: gameState.swapping,
-	// 		swapList: gameState.swapList
-	// 	});
-	// };
+	}, [loading, fetching, syncGame]);
 
 	/**
 	 * Get a numeric value to represent which player's turn it is
@@ -144,7 +143,10 @@ const GameContainer = props => {
 	const performMove = async(from, to) => {
 		const result = gameState.performMove(from, to);
 		syncGame();
-		await updateGame();
+		if(result && !props.offline) {
+			console.log(gameState.pieces);
+			await updateGame();
+		}
 		return result;
 	}
 
@@ -157,7 +159,9 @@ const GameContainer = props => {
 	const performPromotion = async type => {
 		gameState.performPromotion(type);
 		syncGame();
-		await updateGame();
+		if(!props.offline) {
+			await updateGame();
+		}
 	}
 
 	/**
@@ -179,6 +183,7 @@ const GameContainer = props => {
 						getPiece={gameState.getPiece}
 						performMove={performMove}
 						disabled={isSwapping || gameOver}
+						loading={loading}
 					/>
 					{gameOver ? <span data-testid="winner">{check.WHITE.mate ? 'Black' : 'White'} wins!</span> : ''}</Col>
 				<Col md="12">
@@ -228,12 +233,9 @@ const GameContainer = props => {
 
 GameContainer.propTypes = {
 	gameState: PropTypes.instanceOf(GameState), // Used for testing
-	match: PropTypes.object
+	match: PropTypes.object,
+	offline: PropTypes.bool
 }
-
-// GameContainer.defaultProps = {
-// 	gameState: new GameState(0, require('../../game/BoardState/boards/standardGame').default)
-// }
 
 
 export default GameContainer;

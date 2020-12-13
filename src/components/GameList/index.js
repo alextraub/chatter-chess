@@ -23,8 +23,6 @@ const GameList = () => {
 		const fetchGames = async () =>{
 			if(auth.user) { // If there is an authenticated user
 				try {
-					console.log("about to list games");
-					console.log("current username:", auth.user.getUsername());
 					isLoading(true);
 					const gameData = await API.graphql({
 						query: queries.listGames,
@@ -33,9 +31,7 @@ const GameList = () => {
 						},
 						authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
 					}); // Fetch the data from the API
-					console.log("game data retrieved");
 					const gameList = gameData.data.listGames.items;
-					console.log("game list", gameList);
 					setGames(gameList);
 				} catch (error) {
 					console.log("error on fetching games", error);
@@ -54,25 +50,6 @@ const GameList = () => {
 		}
 	}, [auth, fetching]);
 
-
-	/* Fetch a single game */
-	const fetchGame = async game => {
-		if(!loading) {
-			try {
-				isLoading(true);
-				await API.graphql({
-					query: queries.getGame,
-					variables: { input: game },
-					authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-				});
-				console.log("Fetched Game");
-			} catch (error) {
-				console.log("error on fetching game", error);
-			} finally {
-				isLoading(false);
-			}
-		}
-	};
 
 	const addGame = async () => {
 		if(!loading) {
@@ -113,7 +90,6 @@ const GameList = () => {
 			try {
 				const game = games[idx];
 				const gameToBeDeleted = { id: game.id, expectedVersion: game.version };
-				console.log("Removing Game", game);
 				isLoading(true);
 				await API.graphql({
 					query: mutations.deleteGame,

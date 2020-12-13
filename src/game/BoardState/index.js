@@ -1,7 +1,6 @@
 import Piece from '../Piece';
 import { createPiece } from '../utils/pieceUtils';
 import PieceSet from '../PieceSet';
-import StandardBoard from './boards/standardGame';
 
 /* This file stores the positions of all current peices on the board
 and can return what piece is on a position on the board, all current
@@ -11,7 +10,7 @@ export default class BoardState {
 	whitePieces
 	blackPieces
 
-	constructor(pieces=StandardBoard)                                         //create board
+	constructor(pieces=[])                                         //create board
 	{
 		this.board = [
 			[null, null, null, null, null, null, null, null],

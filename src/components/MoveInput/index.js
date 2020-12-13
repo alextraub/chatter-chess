@@ -4,7 +4,7 @@ import {boardPositionToTuple, isValidBoardPositionString} from '../../game/utils
 import { Form, InputGroup, FormFeedback, InputGroupAddon, Input, Button } from 'reactstrap';
 
 
-const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) => {
+const MoveInput = ({ loading, currentPlayer, disabled, getPiece, performMove, inCheck }) => {
 	const [moveState, setMoveState] = useState({
 		move: '',
 		error: ''
@@ -108,6 +108,7 @@ const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) 
 			<InputGroup>
 				<Input
 					autoComplete="off"
+					autoFocus={!disabled}
 					data-testid="move-textbox"
 					type="text"
 					placeholder="Enter Move Here"
@@ -122,7 +123,7 @@ const MoveInput = ({ currentPlayer, disabled, getPiece, performMove, inCheck }) 
 						data-testid="move-submit"
 						color="warning"
 						name="move-submit"
-						disabled={disabled}
+						disabled={disabled || loading}
 						type="submit">Move</Button>
 				</InputGroupAddon>
 			</InputGroup>
@@ -135,7 +136,8 @@ MoveInput.propTypes = {
 	getPiece: PropTypes.func.isRequired,
 	performMove: PropTypes.func.isRequired,
 	disabled: PropTypes.bool,
-	inCheck: PropTypes.func
+	inCheck: PropTypes.func,
+	loading: PropTypes.bool
 }
 
 export default MoveInput;

@@ -2,17 +2,7 @@ import BoardState from '../BoardState';
 import { inCheck, inCheckMate } from '../Check';
 import {canSwapIn, createPiece} from '../utils/pieceUtils';
 import Piece from '../Piece';
-
-const initialCheck = {
-	WHITE: {
-		status: false,
-		mate: false
-	},
-	BLACK: {
-		status: false,
-		mate: false
-	}
-};
+import { standardGame } from '../utils/gameUtils';
 
 export default class GameState {
 	#turn
@@ -43,15 +33,18 @@ export default class GameState {
 	#swapping = false
 	#swapList = []
 
-	constructor(turn=0, pieces=[], check=initialCheck) {
-		this.#turn = turn;
-		this.#check = check;
+	constructor(initialState=standardGame) {
+		this.#turn = initialState.turn;
+		this.#check = initialState.check;
 
-		for(let piece of pieces) {
+		for(let piece of initialState.pieces) {
 			if(!piece.captured) {
 				this.#boardPieces.push(piece);
 			} else {
-				this.#capturedPieces[piece.player][piece.type].push(piece);
+				this.#capturedPieces[piece.player][piece.type] = [
+					...this.#capturedPieces[piece.player][piece.type],
+					piece
+				]
 			}
 		}
 
@@ -81,7 +74,10 @@ export default class GameState {
 	}
 
 	getCapturedPieces() {
-		return {...this.#capturedPieces};
+		return {
+			WHITE: {...this.#capturedPieces.WHITE},
+			BLACK: {...this.#capturedPieces.BLACK}
+		};
 	}
 
 	get capturedPieces() {
@@ -90,15 +86,24 @@ export default class GameState {
 				return [...pieceArray.map(piece => piece)]
 			})
 		}
+		let result = [];
+		for(let type of flattenPieces('WHITE')) {
+			result = [...result, ...type];
+		}
+		for(let type of flattenPieces('BLACK')) {
+			result = [...result, ...type];
+		}
 
-		return [...flattenPieces('WHITE'), ...flattenPieces('BLACK')];
+		console.log(result)
+		return result;
 	}
 
 	get pieces() {
+		const arr = [...this.#boardPieces];
 		return [
-			...this.#boardPieces,
+			...arr,
 			...this.capturedPieces
-		].filter(item => !Array.isArray(item));
+		].filter(e => !Array.isArray(e));
 	}
 
 	putCapturedPiece(piece) {

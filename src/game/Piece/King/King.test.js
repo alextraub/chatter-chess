@@ -152,28 +152,3 @@ test('Kings throw an error if checking their swapRow property', () => {
 	expect(() => whiteKing.swapRow).toThrow(EvalError);
 	expect(() => blackKing.swapRow).toThrow(EvalError);
 });
-
-test('toObject has correct type property', () => {
-	expect(whiteKing.toObject().type).toEqual('king');
-	expect(blackKing.toObject().type).toEqual('king');
-});
-
-test('toObject has correct player property', () => {
-	expect(whiteKing.toObject().player).toBe(0);
-	expect(blackKing.toObject().player).toBe(1);
-});
-
-test('toObject has correct captured property for uncaptured pieces', () => {
-	expect(whiteKing.toObject().captured).toBe(false);
-	expect(blackKing.toObject().captured).toBe(false);
-});
-
-test('toObject has correct captured property for captured pieces', () => {
-	whiteKing.captured = true;
-	expect(whiteKing.toObject().captured).toBe(true);
-	whiteKing.captured = false;
-
-	blackKing.captured = true;
-	expect(blackKing.toObject().captured).toBe(true);
-	blackKing.captured = false;
-});

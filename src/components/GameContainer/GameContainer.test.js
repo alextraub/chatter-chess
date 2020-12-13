@@ -5,6 +5,8 @@ import GameContainer from './';
 import BoardState from '../../game/BoardState';
 import GameState from '../../game/GameState';
 import Piece from '../../game/Piece';
+import { standardGamePieces, startingCheckStatus } from '../../game/utils/gameUtils';
+
 
 afterEach(cleanup);
 
@@ -60,7 +62,7 @@ const makeMove = async moveString => {
 }
 
 const renderCheckScenario1 = async moveString => {
-	const bState = new BoardState();
+	const bState = new BoardState(standardGamePieces);
 
 	removePiece([7,5], bState);
 	removePiece([0,5], bState);
@@ -81,8 +83,12 @@ const renderCheckScenario1 = async moveString => {
 	changePosition([0,3], [5,5], bState);
 	changePosition([7,6], [0,3], bState);
 
-	const gameState = new GameState(1, bState.pieces);
-	render(<GameContainer gameState={gameState} />);
+	const gameState = new GameState({
+		turn: 1,
+		pieces: bState.pieces,
+		check: startingCheckStatus
+	});
+	render(<GameContainer offline gameState={gameState} />);
 	await makeMove(moveString);
 
 	return gameState;
@@ -107,8 +113,7 @@ test('Capturing a piece to get out of check does not cause an error message to b
 });
 
 test('Check error is displayed', async () => {
-	const gameState = new GameState(0, new BoardState().pieces);
-	render(<GameContainer gameState={gameState} />);
+	render(<GameContainer offline gameState={new GameState()} />);
 
 	await makeMove('f2 f3');
 	await makeMove('e7 e5');
@@ -120,7 +125,7 @@ test('Check error is displayed', async () => {
 });
 
 test('Fool\'s mate', async () => {
-	render(<GameContainer gameState={new GameState(0, new BoardState().pieces)} />);
+	render(<GameContainer offline gameState={new GameState()} />);
 	expect(screen.getByTestId('move-textbox')).toBeEnabled();
 	expect(screen.getByTestId('move-submit')).toBeEnabled();
 
@@ -135,11 +140,11 @@ test('Fool\'s mate', async () => {
 });
 
 test('Pieces change position in the UI after being moved', async () => {
-	const bState = new BoardState([
+	const gameState = new GameState({turn: 0, pieces: [
 		{ type: 'PAWN', player: 'WHITE', position: { row: 6, col: 0 }, captured: false }
-	]);
+	], check: startingCheckStatus});
 
-	render(<GameContainer gameState={new GameState(0, bState.pieces)} />);
+	render(<GameContainer offline gameState={gameState} />);
 
 
 	expect(within(screen.getByTestId('A2'))
@@ -155,13 +160,13 @@ test('Pieces change position in the UI after being moved', async () => {
 });
 
 test('Pawn is swapped in the UI after selecting a piece to promote', async () => {
-	const gameState = new GameState(1, [
+	const gameState = new GameState({turn:1, pieces:[
 		{ type: 'ROOK', player: 'WHITE', captured: false, position: { row: 6, col: 0 } },
 		{ type: 'QUEEN', player: 'BLACK', captured: false, position: { row: 5, col: 0 } },
 		{ type: 'PAWN', player: 'WHITE', captured: false, position: { row: 1, col: 0 } }
-	]);
+	], check: startingCheckStatus});
 
-	render(<GameContainer gameState={gameState} />);
+	render(<GameContainer offline gameState={gameState} />);
 
 
 	await makeMove('a3 a2');
@@ -181,9 +186,8 @@ test('Pawn is swapped in the UI after selecting a piece to promote', async () =>
 });
 
 test('Blocking a piece to get out of check does not display an error message', async () => {
-	const bState = new BoardState();
 
-	render(<GameContainer gameState={new GameState(0, bState.pieces)} />);
+	render(<GameContainer offline gameState={new GameState()} />);
 
 	await makeMove('e2 e4');
 	await makeMove('d7 d5');
@@ -197,7 +201,7 @@ test('Blocking a piece to get out of check does not display an error message', a
 
 test('Pieces are added to the correct captured list', async () => {
 
-	render(<GameContainer />);
+	render(<GameContainer offline gameState={new GameState()} />);
 	await makeMove('a2 a4');
 	await makeMove('b7 b5');
 	await makeMove('a4 b5');
@@ -228,8 +232,7 @@ test('Pieces are added to the correct captured list', async () => {
 });
 
 test('Moves are rolled back correctly when a move that leaves the player in check is made', async () => {
-	const gameState = new GameState(0, require('../../game/BoardState/boards/standardGame').default);
-	render(<GameContainer gameState={gameState} />);
+	render(<GameContainer offline gameState={new GameState()} />);
 
 	await makeMove('b1 c3');
 	await makeMove('b8 c6');

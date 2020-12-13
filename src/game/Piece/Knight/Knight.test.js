@@ -129,28 +129,3 @@ test('Knights throw an error if checking their swapRow property', () => {
 	expect(() => whiteKnight.swapRow).toThrow(EvalError);
 	expect(() => blackKnight.swapRow).toThrow(EvalError);
 });
-
-test('toObject has correct type property', () => {
-	expect(whiteKnight.toObject().type).toEqual('knight');
-	expect(blackKnight.toObject().type).toEqual('knight');
-});
-
-test('toObject has correct player property', () => {
-	expect(whiteKnight.toObject().player).toBe(0);
-	expect(blackKnight.toObject().player).toBe(1);
-});
-
-test('toObject has correct captured property for uncaptured pieces', () => {
-	expect(whiteKnight.toObject().captured).toBe(false);
-	expect(blackKnight.toObject().captured).toBe(false);
-});
-
-test('toObject has correct captured property for captured pieces', () => {
-	whiteKnight.captured = true;
-	expect(whiteKnight.toObject().captured).toBe(true);
-	whiteKnight.captured = false;
-
-	blackKnight.captured = true;
-	expect(blackKnight.toObject().captured).toBe(true);
-	blackKnight.captured = false;
-});
