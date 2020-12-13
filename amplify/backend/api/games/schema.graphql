@@ -30,7 +30,7 @@ type CheckStatus {
 	mate: Boolean # Should never be true if status is false
 }
 
-type Game @versioned @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
+type Game @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
   id: ID!
   turn: Int!
 	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured

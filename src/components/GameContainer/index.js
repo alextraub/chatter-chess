@@ -32,8 +32,7 @@ const GameContainer = props => {
 				query: mutations.updateGame,
 				variables: {
 					...game,
-					id,
-					version
+					id
 				},
 				authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
 			});
