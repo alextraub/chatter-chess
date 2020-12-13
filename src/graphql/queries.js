@@ -15,13 +15,23 @@ export const getGame = /* GraphQL */ `
           col
         }
       }
-      checkStatusWhite {
-        status
-        mate
+      check {
+        WHITE {
+          status
+          mate
+        }
+        BLACK {
+          status
+          mate
+        }
       }
-      checkStatusBlack {
-        status
-        mate
+      swapping {
+        row
+        col
+      }
+      swapList {
+        type
+        black
       }
       createdAt
       updatedAt
@@ -44,13 +54,13 @@ export const listGames = /* GraphQL */ `
           type
           captured
         }
-        checkStatusWhite {
-          status
-          mate
+        swapping {
+          row
+          col
         }
-        checkStatusBlack {
-          status
-          mate
+        swapList {
+          type
+          black
         }
         createdAt
         updatedAt

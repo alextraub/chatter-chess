@@ -30,11 +30,21 @@ type CheckStatus {
 	mate: Boolean # Should never be true if status is false
 }
 
+type Check {
+  WHITE: CheckStatus!
+  BLACK: CheckStatus!
+}
+
+type SwapPieceType {
+  type: PieceType!
+  black: Boolean!
+}
 
 type Game @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
   id: ID!
   turn: Int!
 	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured
-	checkStatusWhite: CheckStatus!
-	checkStatusBlack: CheckStatus!
+	check: Check!
+  swapping: Position
+  swapList: [SwapPieceType]!
 }

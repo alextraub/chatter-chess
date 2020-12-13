@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { API, Auth } from "aws-amplify";
 import { Col, Row, Button, Card, CardText, CardHeader, CardTitle, CardBody, ListGroup, ListGroupItem } from "reactstrap";
 import * as queries from "../../graphql/queries";
@@ -138,7 +138,7 @@ const GameList = () => {
 											color="success"
 											onClick={async () => {
 												await Auth.updateUserAttributes(auth.user, {
-													'custom:activeGame': game.id
+													'custom:active_game': game.id
 												});
 												history.push(`/game/${game.id}`)
 											}}

@@ -87,15 +87,11 @@ const GameContainer = props => {
 							setGameState(new GameState({
 								turn: data.getGame.turn,
 								pieces: [...data.getGame.pieces],
-								check: {
-									WHITE: {
-										...data.getGame.checkStatusWhite
-									},
-									BLACK: {
-										...data.getGame.checkStatusBlack
-									}
-								}
-							}))
+								check: data.getGame.check,
+								swapping: typeof(data.getGame.swapping) === 'object' ?
+									[data.getGame.swapping.row, data.getGame.swapping.col] : false,
+								swapList: data.getGame.swapList
+							}));
 						} catch {
 							//
 						}
@@ -144,7 +140,6 @@ const GameContainer = props => {
 		const result = gameState.performMove(from, to);
 		syncGame();
 		if(result && !props.offline) {
-			console.log(gameState.pieces);
 			await updateGame();
 		}
 		return result;
@@ -232,10 +227,11 @@ const GameContainer = props => {
 }
 
 GameContainer.propTypes = {
-	gameState: PropTypes.instanceOf(GameState), // Used for testing
-	match: PropTypes.object,
-	offline: PropTypes.bool
+	gameState: PropTypes.instanceOf(GameState),
+	offline: PropTypes.bool,
+	match: PropTypes.object
 }
+
 
 
 export default GameContainer;

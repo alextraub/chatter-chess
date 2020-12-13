@@ -86,7 +86,9 @@ const renderCheckScenario1 = async moveString => {
 	const gameState = new GameState({
 		turn: 1,
 		pieces: bState.pieces,
-		check: startingCheckStatus
+		check: startingCheckStatus,
+		swapping: false,
+		swapList: []
 	});
 	render(<GameContainer offline gameState={gameState} />);
 	await makeMove(moveString);
@@ -142,7 +144,7 @@ test('Fool\'s mate', async () => {
 test('Pieces change position in the UI after being moved', async () => {
 	const gameState = new GameState({turn: 0, pieces: [
 		{ type: 'PAWN', player: 'WHITE', position: { row: 6, col: 0 }, captured: false }
-	], check: startingCheckStatus});
+	], check: startingCheckStatus, swapping: false, swapList: []});
 
 	render(<GameContainer offline gameState={gameState} />);
 
@@ -164,7 +166,7 @@ test('Pawn is swapped in the UI after selecting a piece to promote', async () =>
 		{ type: 'ROOK', player: 'WHITE', captured: false, position: { row: 6, col: 0 } },
 		{ type: 'QUEEN', player: 'BLACK', captured: false, position: { row: 5, col: 0 } },
 		{ type: 'PAWN', player: 'WHITE', captured: false, position: { row: 1, col: 0 } }
-	], check: startingCheckStatus});
+	], check: startingCheckStatus, swapping: false, swapList: []});
 
 	render(<GameContainer offline gameState={gameState} />);
 

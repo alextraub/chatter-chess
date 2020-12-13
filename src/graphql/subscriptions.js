@@ -15,13 +15,23 @@ export const onCreateGame = /* GraphQL */ `
           col
         }
       }
-      checkStatusWhite {
-        status
-        mate
+      check {
+        WHITE {
+          status
+          mate
+        }
+        BLACK {
+          status
+          mate
+        }
       }
-      checkStatusBlack {
-        status
-        mate
+      swapping {
+        row
+        col
+      }
+      swapList {
+        type
+        black
       }
       createdAt
       updatedAt
@@ -43,13 +53,23 @@ export const onUpdateGame = /* GraphQL */ `
           col
         }
       }
-      checkStatusWhite {
-        status
-        mate
+      check {
+        WHITE {
+          status
+          mate
+        }
+        BLACK {
+          status
+          mate
+        }
       }
-      checkStatusBlack {
-        status
-        mate
+      swapping {
+        row
+        col
+      }
+      swapList {
+        type
+        black
       }
       createdAt
       updatedAt
@@ -71,13 +91,23 @@ export const onDeleteGame = /* GraphQL */ `
           col
         }
       }
-      checkStatusWhite {
-        status
-        mate
+      check {
+        WHITE {
+          status
+          mate
+        }
+        BLACK {
+          status
+          mate
+        }
       }
-      checkStatusBlack {
-        status
-        mate
+      swapping {
+        row
+        col
+      }
+      swapList {
+        type
+        black
       }
       createdAt
       updatedAt

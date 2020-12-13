@@ -5,7 +5,7 @@
     "userPoolName": "chatterchess_accounts_userpool",
     "autoVerifiedAttributes": [
         "email"
-    ],
+		],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
         "SMS Text Message"

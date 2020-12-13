@@ -39,7 +39,9 @@ const startingCheckStatus = {
 const standardGame = {
 	turn: 0,
 	check: { ...startingCheckStatus },
-	pieces: [...standardGamePieces]
+	pieces: [...standardGamePieces],
+	swapping: false,
+	swapList: []
 }
 
 export {
