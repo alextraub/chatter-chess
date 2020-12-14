@@ -29,15 +29,12 @@ export default class GameState {
 		}
 	}
 	#check
-	#swapping
-	#swapList
+	#swapping = false;
+	#swapList = [];
 
 	constructor(initialState=standardGame) {
 		this.#turn = initialState.turn;
 		this.#check = initialState.check;
-		this.#swapping = typeof(initialState.swapping) === 'object' ?
-			[initialState.swapping.row, initialState.swapping.col] : false;
-		this.#swapList = initialState.swapList;
 
 		for(let piece of initialState.pieces) {
 			if(!piece.captured) {
@@ -148,13 +145,7 @@ export default class GameState {
 		return {
 			turn: gameState.turn,
 			pieces: [...gameState.pieces],
-			check: gameState.check,
-			swapList: gameState.swapList,
-			swapping: gameState.swapping !== false ?
-				{
-					row: gameState.swapping[0],
-					col: gameState.swapping[1]
-				} : null
+			check: gameState.check
 		}
 	}
 

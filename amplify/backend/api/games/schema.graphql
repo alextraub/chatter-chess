@@ -35,16 +35,9 @@ type Check {
   BLACK: CheckStatus!
 }
 
-type SwapPieceType {
-  type: PieceType!
-  black: Boolean!
-}
-
 type Game @model @auth(rules: [{ allow: owner, operations: [create, update, delete, read] }]) {
   id: ID!
   turn: Int!
 	pieces: [Piece]! # All pieces, for all teams, captured and uncaptured
 	check: Check!
-  swapping: Position
-  swapList: [SwapPieceType]!
 }
