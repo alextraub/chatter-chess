@@ -25,14 +25,6 @@ export const getGame = /* GraphQL */ `
           mate
         }
       }
-      swapping {
-        row
-        col
-      }
-      swapList {
-        type
-        black
-      }
       createdAt
       updatedAt
       owner
@@ -53,14 +45,6 @@ export const listGames = /* GraphQL */ `
           player
           type
           captured
-        }
-        swapping {
-          row
-          col
-        }
-        swapList {
-          type
-          black
         }
         createdAt
         updatedAt

@@ -25,14 +25,6 @@ export const onCreateGame = /* GraphQL */ `
           mate
         }
       }
-      swapping {
-        row
-        col
-      }
-      swapList {
-        type
-        black
-      }
       createdAt
       updatedAt
       owner
@@ -63,14 +55,6 @@ export const onUpdateGame = /* GraphQL */ `
           mate
         }
       }
-      swapping {
-        row
-        col
-      }
-      swapList {
-        type
-        black
-      }
       createdAt
       updatedAt
       owner
@@ -100,14 +84,6 @@ export const onDeleteGame = /* GraphQL */ `
           status
           mate
         }
-      }
-      swapping {
-        row
-        col
-      }
-      swapList {
-        type
-        black
       }
       createdAt
       updatedAt
