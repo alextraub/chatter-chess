@@ -32,6 +32,7 @@ const renderMoveInput = (currentPlayer=0, disabled=false) => {
 			then: () => true
 		}))}
 		disabled={disabled}
+		inCheck={jest.fn(() => false)}
 	/>);
 };
 

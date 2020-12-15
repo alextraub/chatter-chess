@@ -108,12 +108,15 @@ const GameContainer = props => {
 
 	useEffect(() => {
 		if(fetching) {
-			fetchGame()
-				.then(() => {
-					isFetching(false);
-				});
+			try {
+				fetchGame()
+					.catch(() => {})
+				isFetching(false);
+			} catch {
+				//
+			}
 		}
-	}, [fetching, fetchGame]);
+	}, [fetching, fetchGame, isFetching]);
 
 	useEffect(() => {
 		if(!loading && !fetching) {
@@ -227,10 +230,11 @@ const GameContainer = props => {
 }
 
 GameContainer.propTypes = {
-	gameState: PropTypes.instanceOf(GameState),
 	offline: PropTypes.bool,
-	match: PropTypes.object
+	match: PropTypes.object,
+	gameState: PropTypes.instanceOf(GameState)
 }
+
 
 
 

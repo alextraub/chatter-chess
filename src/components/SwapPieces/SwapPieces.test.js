@@ -4,14 +4,14 @@ import SwapPieces from "./";
 
 afterEach(cleanup);
 
-const wRook = {type: 'rook', black: false};
-const bRook = {type: 'rook', black: true};
-const wKnight = {type: 'knight', black: false};
-const bKnight = {type: 'knight', black: true};
-const wBishop = {type: 'bishop', black: false};
-const bBishop = {type: 'bishop', black: true};
-const wQueen = {type: 'queen', black: false};
-const bQueen = {type: 'queen', black: true};
+const wRook = {type: 'ROOK', black: false};
+const bRook = {type: 'ROOK', black: true};
+const wKnight = {type: 'KNIGHT', black: false};
+const bKnight = {type: 'KNIGHT', black: true};
+const wBishop = {type: 'BISHOP', black: false};
+const bBishop = {type: 'BISHOP', black: true};
+const wQueen = {type: 'QUEEN', black: false};
+const bQueen = {type: 'QUEEN', black: true};
 
 test('Component renders', async () => {
 	const promote = jest.fn();
