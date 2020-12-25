@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "auth": {
+      "accounts": [
+        "read"
+      ]
+    },
+    "api": {
+      "games": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "packages",
+      "version": 1
+    }
+  ]
+}
