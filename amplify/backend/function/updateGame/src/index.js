@@ -10,6 +10,8 @@ const urlParse = require("url").URL;
 const appsyncUrl = process.env.API_GAMES_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
+
+// Update mutation string
 const query = `
 mutation UpdateGame($input: UpdateGameInput!, $condition: ModelGameConditionInput) {
 	updateGame(input: $input, condition: $condition) {
@@ -41,10 +43,26 @@ mutation UpdateGame($input: UpdateGameInput!, $condition: ModelGameConditionInpu
 	}
 }`;
 
+/**
+ * Update a Game in DynamoDB table given a version and ID, with any values to update
+ *
+ * @param {{
+ * variables: {
+ * input: {
+ * id: string;
+ * _version: Number;
+ * turn?: Number;
+ * check?: object;
+ * pieces?: object[]
+ * }
+ * }
+ * }} event
+ */
 exports.handler = async event => {
-	console.log(event);
+	// Request object that will make the API request
 	const req = new AWS.HttpRequest(appsyncUrl, region);
 
+	/* Request params */
 	req.method = "POST";
 	req.path = "/graphql";
 	req.headers.host = endpoint;
@@ -55,9 +73,11 @@ exports.handler = async event => {
 		variables: event.variables
 	});
 
+	/* Sign req to verify proper access permissions */
 	const signer = new AWS.Signers.V4(req, "appsync", true);
 	signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
 
+	// Perform and stare the result of the mutation
 	const data = await new Promise((resolve, reject) => {
 		const httpRequest = https.request({ ...req, host: endpoint }, result => {
 			result.on('data', data => {

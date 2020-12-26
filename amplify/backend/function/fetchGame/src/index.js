@@ -10,6 +10,8 @@ const urlParse = require("url").URL;
 const appsyncUrl = process.env.API_GAMES_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
+
+// Query string
 const query = `
 query GetGame($id: ID!) {
 	getGame(id: $id) {
@@ -41,9 +43,21 @@ query GetGame($id: ID!) {
 	}
 }`;
 
+/**
+ * Returns a Game from the DynamoDB table using a passed ID variable
+ *
+ *
+ * @param {{
+ * variables: {
+ * id: string
+ * }
+ * }} event
+ */
 exports.handler = async event => {
+	// Request object for use in making the API call
 	const req = new AWS.HttpRequest(appsyncUrl, region);
 
+	/* Request params */
 	req.method = "POST";
 	req.path = "/graphql";
 	req.headers.host = endpoint;
@@ -54,9 +68,11 @@ exports.handler = async event => {
 		variables: event.variables
 	});
 
+	// Sign req to verify proper access permissions
 	const signer = new AWS.Signers.V4(req, "appsync", true);
 	signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
 
+	// Fetch and store the result of the query
 	const data = await new Promise((resolve, reject) => {
 		const httpRequest = https.request({ ...req, host: endpoint }, result => {
 			result.on('data', data => {

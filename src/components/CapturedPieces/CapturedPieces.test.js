@@ -16,22 +16,22 @@ const blackPawn = new Pawn(boardState, 1);
 const blackRook = new Rook(boardState, 1);
 const blackBishop = new Bishop(boardState, 1);
 const whitePieces = {
-	pawn: [whitePawn],
-	rook: [whiteRook],
-	knight: [],
-	bishop: [whiteBishop],
-	queen: [],
-	king: [],
-	generic: []
+	PAWN: [whitePawn],
+	ROOK: [whiteRook],
+	KNIGHT: [],
+	BISHOP: [whiteBishop],
+	QUEEN: [],
+	KING: [],
+	GENERIC: []
 };
 const blackPieces = {
-	pawn: [blackPawn, blackPawn],
-	rook: [blackRook],
-	knight: [],
-	bishop: [blackBishop],
-	queen: [],
-	king: [],
-	generic: []
+	PAWN: [blackPawn, blackPawn],
+	ROOK: [blackRook],
+	KNIGHT: [],
+	BISHOP: [blackBishop],
+	QUEEN: [],
+	KING: [],
+	GENERIC: []
 };
 
 

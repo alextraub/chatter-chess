@@ -19,6 +19,7 @@ const ChessPiece = ({ black, type, size, quantity, className, offsetX }) => {
 
 
 	const chessIcon = type => {
+		// eslint-disable-next-line default-case
 		switch(type) {
 		case 'PAWN': return faChessPawn;
 		case 'ROOK': return faChessRook;
