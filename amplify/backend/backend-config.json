@@ -24,6 +24,62 @@
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "packages",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "packages": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
+    },
+    "fetchGame": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "games",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "packages",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "updateGame": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "games",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "packages",
+          "attributes": [
+            "Arn"
+          ]
         }
       ]
     }
@@ -65,6 +121,14 @@
           ]
         }
       }
+    }
+  },
+  "storage": {
+    "Game5zx3o6kafrgabobf7buybjcnbudev": {
+      "service": "DynamoDB",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

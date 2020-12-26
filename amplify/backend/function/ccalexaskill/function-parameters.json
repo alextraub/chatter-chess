@@ -1,5 +1,11 @@
 {
-  "lambdaLayers": [],
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "packages",
+      "version": 1
+    }
+  ],
   "permissions": {
     "auth": {
       "accounts": [

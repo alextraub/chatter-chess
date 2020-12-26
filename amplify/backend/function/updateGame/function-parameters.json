@@ -1,14 +1,11 @@
 {
   "permissions": {
-    "auth": {
-      "accounts": [
-        "read"
-      ]
-    },
     "api": {
       "games": [
+        "create",
         "read",
-        "update"
+        "update",
+        "delete"
       ]
     }
   },
@@ -16,7 +13,7 @@
     {
       "type": "ProjectLayer",
       "resourceName": "packages",
-      "version": 1
+      "version": 4
     }
   ]
 }

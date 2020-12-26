@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "api": {
+      "games": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "packages",
+      "version": 3
+    }
+  ]
+}
